@@ -4,7 +4,7 @@
   "description": "FreeCodeCamp projects speedrun",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "webpack-dev-server -d --content-base client/src/ --inline --open --hot --history-api-fallback",
+    "start": "npm run build && opn http://localhost:3000 && supervisor -e js,jsx,html,css,scss server/index.js",
     "build": "webpack -d"
   },
   "dependencies": {
@@ -21,8 +21,11 @@
     "copy-webpack-plugin": "^4.0.1",
     "css-loader": "^0.28.7",
     "node-sass": "^4.5.3",
+    "nodemon": "^1.12.0",
+    "opn-cli": "^3.1.0",
     "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2",
+    "supervisor": "^0.12.0",
     "webpack": "^3.5.6",
     "webpack-dev-server": "^2.7.1"
   }
