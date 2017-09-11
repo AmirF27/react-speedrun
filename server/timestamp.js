@@ -14,18 +14,20 @@ function Timestamp(date) {
   this.natural = null;
 }
 
-Timestamp.prototype.convert = function() {
-  this.unix = null;
-  this.natural = null;
+Object.assign(Timestamp.prototype, {
+  convert() {
+    this.unix = null;
+    this.natural = null;
 
-  let date = moment(this.date, formats);
+    let date = moment(this.date, formats);
 
-  if (date.isValid()) {
-    this.unix = date.unix();
-    this.natural = date.format('MMMM DD, YYYY');
+    if (date.isValid()) {
+      this.unix = date.unix();
+      this.natural = date.format('MMMM DD, YYYY');
+    }
+
+    return this;
   }
-
-  return this;
-}
+});
 
 module.exports = Timestamp;
