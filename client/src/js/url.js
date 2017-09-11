@@ -10,5 +10,7 @@ export class Url {
     this.url.splice(this.url.lastIndexOf('/'), 0, API_PATH);
 
     this.url = this.url.join('');
+
+    return this;
   }
 }

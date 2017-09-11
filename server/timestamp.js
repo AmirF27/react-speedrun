@@ -8,16 +8,24 @@ const formats = [
   'X'
 ];
 
-module.exports = function(ts) {
-  let unix = null;
-  let natural = null;
+function Timestamp(date) {
+  this.date = date;
+  this.unix = null;
+  this.natural = null;
+}
 
-  let date = moment(ts, formats);
+Timestamp.prototype.convert = function() {
+  this.unix = null;
+  this.natural = null;
+
+  let date = moment(this.date, formats);
 
   if (date.isValid()) {
-    unix = date.unix();
-    natural = date.format('MMMM DD, YYYY');
+    this.unix = date.unix();
+    this.natural = date.format('MMMM DD, YYYY');
   }
 
-  return { unix, natural };
-};
+  return this;
+}
+
+module.exports = Timestamp;
