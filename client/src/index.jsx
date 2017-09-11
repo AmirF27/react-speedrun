@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import Header from './containers/Header';
+import Header from './containers/Header.jsx';
 
 ReactDOM.render((
   <div>

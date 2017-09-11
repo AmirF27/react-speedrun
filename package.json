@@ -2,7 +2,6 @@
   "name": "react-speedrun",
   "version": "1.0.0",
   "description": "FreeCodeCamp projects speedrun",
-  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "webpack-dev-server -d --content-base client/src/ --inline --open --hot --history-api-fallback",
