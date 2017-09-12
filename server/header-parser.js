@@ -5,15 +5,15 @@ function HeaderParser(req) {
 }
 
 Object.assign(HeaderParser.prototype, {
-  getIp() {
-    return this.req.headers['x-forwarded-for']
-        || this.req.connection.remoteAddress
-        || this.req.socket.remoteAddress
-        || this.req.connection.socket.remoteAdress;
+  getIP() {
+    return this.req.headers['x-forwarded-for'] ||
+           this.req.connection.remoteAddress ||
+           this.req.socket.remoteAddress ||
+           this.req.connection.socket.remoteAdress;
   },
 
   getLanguage() {
-    let lang = this.req.headers['accept-language'];
+    const lang = this.req.headers['accept-language'];
 
     return lang.slice(0, lang.indexOf(','));
   },
@@ -22,6 +22,14 @@ Object.assign(HeaderParser.prototype, {
     const ua = useragent.parse(this.req.headers['user-agent']);
 
     return ua.os;
+  },
+
+  getClientInfo() {
+    return {
+      ip: this.getIP(),
+      language: this.getLanguage(),
+      os: this.getOS()
+    };
   }
 });
 

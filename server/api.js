@@ -5,25 +5,15 @@ const HeaderParser = require('./header-parser');
 const api = express.Router();
 
 api.get('/timestamp/:date', function(req, res) {
-  let timestamp = new Timestamp(req.params.date);
-  timestamp = timestamp.convert();
+  const timestamp = new Timestamp(req.params.date);
 
-  res.json({
-    unix: timestamp.unix,
-    natural: timestamp.natural
-  });
+  res.json(timestamp.convert());
 });
 
 api.get('/header-parser', function(req, res) {
   const parser = new HeaderParser(req);
 
-  const info = {
-    ip: parser.getIp(),
-    os: parser.getOS(),
-    language: parser.getLanguage()
-  };
-
-  res.json(info);
+  res.json(parser.getClientInfo());
 });
 
 module.exports = api;

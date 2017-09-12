@@ -26,7 +26,10 @@ Object.assign(Timestamp.prototype, {
       this.natural = date.format('MMMM DD, YYYY');
     }
 
-    return this;
+    return {
+      unix: this.unix,
+      natural: this.natural
+    };
   }
 });
 
