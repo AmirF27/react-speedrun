@@ -4,12 +4,14 @@ import { BrowserRouter, Route } from 'react-router-dom';
 
 import Header from './containers/Header.jsx';
 import Timestamp from './containers/Timestamp.jsx';
+import HeaderParser from './containers/HeaderParser.jsx';
 
 ReactDOM.render((
   <BrowserRouter>
     <div>
       <Header></Header>
       <Route path='/timestamp' component={Timestamp}></Route>
+      <Route path='/header-parser' component={HeaderParser}></Route>
     </div>
   </BrowserRouter>
   ),

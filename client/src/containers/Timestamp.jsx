@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Url } from '../js/url';
+import Url from '../js/url';
 
 export default class Timestamp extends Component {
   render() {
@@ -16,22 +16,22 @@ export default class Timestamp extends Component {
         </p>
         <h3>Usage</h3>
         <p>
-          <code>{url.url}/&lt;natural date or Unix timestamp&gt;</code>
+          <code>{url.apiUrl}/&lt;natural date or Unix timestamp&gt;</code>
         </p>
         <h3>Examples</h3>
         <ol>
           <li>Natural language date (multiple formats work):
-            <p><code>{url.url}/December 27, 1991</code></p>
+            <p><code>{url.apiUrl}/December 27, 1991</code></p>
             <p>or</p>
-            <p><code>{url.url}/27 Dec 91</code></p>
+            <p><code>{url.apiUrl}/27 Dec 91</code></p>
             <p>Output: <code>&#123;"unix":693784800,"natural":"December 27, 1991"&#125;</code></p>
           </li>
           <li>Unix timestamp:
-            <p><code>{url.url}/1505077200</code></p>
+            <p><code>{url.apiUrl}/1505077200</code></p>
             <p>Output: <code>&#123;"unix":1505077200,"natural":"September 11, 2017"&#125;</code></p>
           </li>
           <li>Any other value:
-            <p><code>{url.url}/x</code></p>
+            <p><code>{url.apiUrl}/x</code></p>
             <p>Output: <code>&#123;"unix":null,"natural":null&#125;</code></p>
           </li>
         </ol>

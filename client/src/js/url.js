@@ -1,15 +1,18 @@
 const API_PATH = '/api';
 
-export class Url {
+export default class Url {
   constructor(url) {
     this.url = url;
+    this.apiUrl = null;
   }
 
   formatForApi() {
-    this.url = this.url.split('');
-    this.url.splice(this.url.lastIndexOf('/'), 0, API_PATH);
+    if (!this.apiUrl) {
+      this.apiUrl = this.url.split('');
+      this.apiUrl.splice(this.apiUrl.lastIndexOf('/'), 0, API_PATH);
 
-    this.url = this.url.join('');
+      this.apiUrl = this.apiUrl.join('');
+    }
 
     return this;
   }
