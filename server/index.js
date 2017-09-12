@@ -1,16 +1,19 @@
 const express = require('express');
 const path = require('path');
+const wagner = require('wagner-core');
 
 const INDEX_PAGE = path.resolve(__dirname, '../dist', 'index.html');
 const STATIC_PATH = path.resolve(__dirname, '../dist');
 const DEFAULT_PORT = 3000;
 const PORT = process.env.PORT || DEFAULT_PORT;
 
+require('./db')(wagner);
+
 const app = express();
 
 app.use(express.static(STATIC_PATH));
 
-app.use('/api', require('./api'));
+app.use('/api', require('./api')(wagner));
 
 app.get('*', function(req, res) {
   res.sendFile(INDEX_PAGE);

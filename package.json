@@ -4,17 +4,21 @@
   "description": "FreeCodeCamp projects speedrun",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "npm run build && opn http://localhost:3000 && supervisor -e js,jsx,html,css,scss server/index.js",
+    "start": "export NODE_ENV=development && npm run build && opn http://localhost:3000 && supervisor -e js,jsx,html,css,scss server/index.js",
     "build": "webpack -d"
   },
   "dependencies": {
     "express": "^4.15.4",
     "express-device": "^0.4.2",
     "express-useragent": "^1.0.7",
+    "http-status": "^1.0.1",
     "moment": "^2.18.1",
+    "mongoose": "^4.11.11",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
-    "useragent": "^2.2.1"
+    "shortid": "^2.2.8",
+    "useragent": "^2.2.1",
+    "wagner-core": "^0.2.0"
   },
   "devDependencies": {
     "babel-core": "^6.26.0",
