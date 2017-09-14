@@ -16,6 +16,7 @@
     "mongoose": "^4.11.11",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
+    "request-promise": "^4.2.1",
     "shortid": "^2.2.8",
     "useragent": "^2.2.1",
     "wagner-core": "^0.2.0"

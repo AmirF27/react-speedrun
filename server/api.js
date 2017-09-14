@@ -4,6 +4,8 @@ const Timestamp = require('./timestamp');
 const HeaderParser = require('./header-parser');
 
 module.exports = function(wagner) {
+  const ImageSearch = require('./image-search')(wagner);
+
   const api = express.Router();
 
   api.get('/timestamp/:date', function(req, res) {
@@ -45,6 +47,30 @@ module.exports = function(wagner) {
         }
       });
     }
+  }));
+
+  api.get('/image-search/:term', function(req, res) {
+    const search = new ImageSearch({
+      search_term: req.params.term,
+      offset: +req.query.offset
+    });
+
+    search.performSearch(function(results) {
+      res.json(results);
+    });
+  });
+
+  api.get('/image-search', wagner.invoke(function(Image) {
+    return function(req, res) {
+      Image.mostRecent(function(err, data) {
+        if (err) {
+          res.status(status.INTERNAL_SERVER_ERROR).
+              json({ error: 'An error occured while retrieving the data' });
+        } else {
+          res.json(data);
+        }
+      });
+    };
   }));
 
   return api;

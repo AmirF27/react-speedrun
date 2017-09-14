@@ -19,11 +19,10 @@ urlSchema.methods.shorten = function shorten(cb) {
   if (this.hasValidUrl()) {
     this.shortened = shortid.generate();
     this.save(function(err, url) {
-      url = {
+      return cb(null, {
         original: url.original,
         shortened: url.shortened
-      };
-      return cb(null, url);
+      });
     });
   } else {
     return cb({ error: 'Invalid URL' });
