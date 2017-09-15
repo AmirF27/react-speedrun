@@ -19,7 +19,7 @@ module.exports = function(wagner) {
       performSearch(cb) {
         rp(this.buildSearchUrl())
           .then(function fulfilled(response) {
-            results = JSON.parse(response).items.map(function(item) {
+            const results = JSON.parse(response).items.map(function(item) {
               return {
                 title: item.title,
                 url: item.link,
@@ -33,13 +33,13 @@ module.exports = function(wagner) {
       },
 
       buildSearchUrl() {
-        verifyParams();
+        verifyEnvParams();
 
         let url = `${CUSTOM_SEARCH_URL}?key=${process.env.GOOGLE_API_KEY}&` +
-                    `cx=${process.env.SEARCH_ENGINE_ID}&` +
-                    `q=${this.search_term}&searchType=image`;
+                  `cx=${process.env.SEARCH_ENGINE_ID}&` +
+                  `q=${this.search_term}&searchType=image`;
 
-        if (this.offset && this.offset >= 0) {
+        if (this.offset >= 0) {
           url += `&start=${this.offset + 1}`;
         }
 
@@ -51,7 +51,7 @@ module.exports = function(wagner) {
   });
 };
 
-function verifyParams() {
+function verifyEnvParams() {
   if (!process.env.GOOGLE_API_KEY) {
     console.error('Google API key not set');
     process.exit(1);

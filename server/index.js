@@ -7,6 +7,10 @@ const STATIC_PATH = path.resolve(__dirname, '../dist');
 const DEFAULT_PORT = 3000;
 const PORT = process.env.PORT || DEFAULT_PORT;
 
+if (process.env.NODE_ENV != 'production') {
+  require('dotenv').config();
+}
+
 require('./db')(wagner);
 
 const app = express();
