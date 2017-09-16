@@ -78,5 +78,16 @@ module.exports = function(wagner) {
     res.json({ size: req.file.size });
   });
 
+  api.post('/voting-app/new-poll', upload.any(), wagner.invoke(function(Poll) {
+    return function(req, res) {
+      const poll = new Poll({
+        title: req.body.title,
+        options: req.body.options
+      });
+
+      poll.save();
+    };
+  }));
+
   return api;
 };

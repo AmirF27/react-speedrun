@@ -1,5 +1,6 @@
 const express = require('express');
 const path = require('path');
+const bodyParser = require('body-parser');
 const wagner = require('wagner-core');
 
 const INDEX_PAGE = path.resolve(__dirname, '../dist', 'index.html');
@@ -14,6 +15,8 @@ if (process.env.NODE_ENV != 'production') {
 require('./db')(wagner);
 
 const app = express();
+
+app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(express.static(STATIC_PATH));
 

@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const urlSchema = require('./models/url');
 const imageSchema = require('./models/image');
+const pollSchema = require('./models/poll');
 
 module.exports = function(wagner) {
   if (!process.env.DB_PATH) {
@@ -12,7 +13,8 @@ module.exports = function(wagner) {
 
   const models = {
     Url: mongoose.model('Url', urlSchema, 'urls'),
-    Image: mongoose.model('Image', imageSchema, 'images')
+    Image: mongoose.model('Image', imageSchema, 'images'),
+    Poll: mongoose.model('Poll', pollSchema, 'polls')
   };
 
   for (const [key, value] of Object.entries(models)) {

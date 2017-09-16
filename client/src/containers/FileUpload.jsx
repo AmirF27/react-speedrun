@@ -25,8 +25,8 @@ export default class FileUpload extends Component {
   handleSubmit(event) {
     event.preventDefault();
 
-    let url = event.target.getAttribute('action');
-    let options = {
+    const url = event.target.getAttribute('action');
+    const options = {
       headers: [
         { 'Content-type': 'application/x-www-form-urlencoded' }
       ],
