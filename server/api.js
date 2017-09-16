@@ -2,6 +2,7 @@ const express = require('express');
 const status = require('http-status');
 const Timestamp = require('./timestamp');
 const HeaderParser = require('./header-parser');
+const upload = require('multer')();
 
 module.exports = function(wagner) {
   const ImageSearch = require('./image-search')(wagner);
@@ -72,6 +73,10 @@ module.exports = function(wagner) {
       });
     };
   }));
+
+  api.post('/file-upload', upload.single('file'), function(req, res) {
+    res.json({ size: req.file.size });
+  });
 
   return api;
 };
