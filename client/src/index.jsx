@@ -6,6 +6,9 @@ import Header from './containers/Header.jsx';
 import Timestamp from './containers/Timestamp.jsx';
 import HeaderParser from './containers/HeaderParser.jsx';
 import FileUpload from './containers/FileUpload.jsx';
+import VotingApp from './containers/VotingApp.jsx';
+import NewPoll from './containers/NewPoll.jsx';
+import ViewPolls from './containers/ViewPolls.jsx';
 
 ReactDOM.render((
   <BrowserRouter>
@@ -14,6 +17,8 @@ ReactDOM.render((
       <Route path='/timestamp' component={Timestamp}></Route>
       <Route path='/header-parser' component={HeaderParser}></Route>
       <Route path='/file-upload' component={FileUpload}></Route>
+      <Route path='/voting-app/new-poll' component={NewPoll}></Route>
+      <Route path='/voting-app/view-polls' component={ViewPolls}></Route>
     </div>
   </BrowserRouter>
   ),

@@ -5,7 +5,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "export NODE_ENV=development && npm run build && opn http://localhost:3000 && supervisor -e js,jsx,html,css,scss server/index.js",
-    "build": "webpack -d"
+    "build": "webpack -d",
+    "watch": "webpack -d --watch"
   },
   "dependencies": {
     "dotenv": "^4.0.0",
