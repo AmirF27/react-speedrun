@@ -102,5 +102,25 @@ module.exports = function(wagner) {
     };
   }));
 
+  api.post('/register', upload.any(), wagner.invoke(function(User) {
+    return function(req, res) {
+      if (req.body.password !== req.body.confirm) {
+        res.json({ error: 'Passwords don\'t match' });
+      }
+
+      User.encryptPassword(req.body.password, function(err, encrypted) {
+        const user = new User({
+          name: req.body.name,
+          email: req.body.email,
+          password: encrypted
+        });
+
+        user.save();
+
+        res.json(user);
+      });
+    };
+  }));
+
   return api;
 };

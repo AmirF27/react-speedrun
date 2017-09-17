@@ -9,6 +9,7 @@ import FileUpload from './containers/FileUpload.jsx';
 import VotingApp from './containers/VotingApp.jsx';
 import NewPoll from './containers/NewPoll.jsx';
 import Polls from './containers/Polls.jsx';
+import Register from './containers/Register.jsx';
 
 ReactDOM.render((
   <BrowserRouter>
@@ -19,6 +20,7 @@ ReactDOM.render((
       <Route path='/file-upload' component={FileUpload}></Route>
       <Route path='/voting-app/new-poll' component={NewPoll}></Route>
       <Route path='/voting-app/polls' component={Polls}></Route>
+      <Route path='/register' component={Register}></Route>
     </div>
   </BrowserRouter>
   ),

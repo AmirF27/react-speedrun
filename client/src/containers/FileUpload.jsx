@@ -4,7 +4,14 @@ import Ajax from '../js/ajax';
 export default class FileUpload extends Component {
   constructor() {
     super();
-    this.handleSubmit = this.handleSubmit.bind(this);
+
+    this.uploadFile = this.uploadFile.bind(this);
+
+    this.state = {
+      uploaded: false,
+      size: 0,
+      error: null
+    };
   }
 
   render() {
@@ -14,33 +21,42 @@ export default class FileUpload extends Component {
         <p>
           Allows you to upload a file to the server and returns the file's size.
         </p>
-        <form method='post' action='/api/file-upload' onSubmit={this.handleSubmit}>
+        <form method='post' action='/api/file-upload' onSubmit={this.uploadFile}>
           <input type='file' name='file' />
           <input type='submit' value='Upload' />
         </form>
+        {this.state.uploaded &&
+          <div>
+            <p>File uploaded successfully!</p>
+            <p>Size: {this.state.size} bytes</p>
+          </div>
+        }
+        {this.state.error &&
+          <div>
+            <p>this.state.error</p>
+          </div>
+        }
       </section>
     );
   }
 
-  handleSubmit(event) {
+  uploadFile(event) {
     event.preventDefault();
 
-    const url = event.target.getAttribute('action');
-    const options = {
-      headers: [
-        { 'Content-type': 'application/x-www-form-urlencoded' }
-      ],
-      form: new FormData(event.target)
-    };
-
-    Ajax.
-      post(url, options).
-      then(
-        function fulfilled(response) {
-          console.log(response);
-        },
-        function rejected(reason) {
-          console.error('rejected');
+    Ajax.submitForm(event.target, function(err, data) {
+      if (!err) {
+        this.setState({
+          uploaded: true,
+          size: JSON.parse(data).size,
+          error: null
         });
+      } else {
+        this.setState({
+          uploaded: false,
+          size: 0,
+          error: 'An error occured while uploading the file.'
+        });
+      }
+    }.bind(this));
   }
 };

@@ -61,4 +61,24 @@ export default class Ajax {
           xhr.send(options.form || null);
       }.bind(this));
     }
+
+    static submitForm(form, cb) {
+      const url = form.getAttribute('action');
+      const options = {
+        headers: [
+          { 'Content-type': 'application/x-www-form-urlencoded' }
+        ],
+        form: new FormData(form)
+      };
+
+      this.
+        post(url, options).
+        then(
+          function fulfilled(response) {
+            cb(null, response);
+          },
+          function rejected(reason) {
+            cb(reason);
+          });
+    }
 };

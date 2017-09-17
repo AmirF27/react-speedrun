@@ -16,7 +16,7 @@ export default class NewPoll extends Component {
     const polls = [];
 
     for (let i = 0; i < this.state.nPolls; i++) {
-      polls.push(<input id={`poll-option${i + 1}`} type='text' name={`options[${i}]`} key={i} required></input>);
+      polls.push(<input id={`poll-option${i + 1}`} type='text' name={`options[${i}]`} key={i} required />);
     }
 
     return (
@@ -24,10 +24,10 @@ export default class NewPoll extends Component {
         <h3>Create a new poll</h3>
         <form action='/api/voting-app/new-poll' method='post' onSubmit={this.addPoll}>
           <label htmlFor='poll-title'>Poll title</label>
-          <input id='poll-title' type='text' name='title' required></input>
+          <input id='poll-title' type='text' name='title' required />
           <label htmlFor='poll-option1'>Options</label>
           {polls}
-          <input type='submit' value='Add Poll'></input>
+          <input type='submit' value='Add Poll' />
         </form>
       </main>
     );
@@ -36,22 +36,12 @@ export default class NewPoll extends Component {
   addPoll(event) {
     event.preventDefault();
 
-    const url = event.target.getAttribute('action');
-    const options = {
-      headers: [
-        { 'Content-type': 'x-www-form-urlencoded' }
-      ],
-      form: new FormData(event.target)
-    };
-
-    Ajax.
-      post(url, options).
-      then(
-        function fulfilled(response) {
-          console.log(response);
-        },
-        function rejected(reason) {
-          constole.error('rejected');
-        });
+    Ajax.submitForm(event.target, function(err, data) {
+      if (!err) {
+        console.log(data);
+      } else {
+        console.error(err);
+      }
+    });
   }
 };

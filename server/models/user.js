@@ -10,11 +10,14 @@ const userSchema = new Schema({
   },
   password: {
     type: String,
-    required: true
+    required: true,
+    bcrypt: true
   },
   polls: [pollSchema]
 });
 
 userSchema.index({ email: 1 });
+
+userSchema.plugin(require('mongoose-bcrypt'));
 
 module.exports = userSchema;
