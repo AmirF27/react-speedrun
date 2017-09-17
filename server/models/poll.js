@@ -13,4 +13,13 @@ const pollSchema = new mongoose.Schema({
 
 pollSchema.index({ title: 1 });
 
+pollSchema.statics.allPolls = function allPolls(cb) {
+  this.find({}).
+       sort({ title: 1 }).
+       select({ _id: 0, title: 1, options: 1 }).
+       exec(function(err, polls) {
+         cb(err, polls)
+       });
+};
+
 module.exports = pollSchema;

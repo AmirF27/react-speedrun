@@ -89,5 +89,18 @@ module.exports = function(wagner) {
     };
   }));
 
+  api.get('/voting-app/polls', wagner.invoke(function(Poll) {
+    return function(req, res) {
+      Poll.allPolls(function(err, polls) {
+        if (err) {
+          res.status(status.INTERNAL_SERVER_ERROR).
+              json({ error: 'Could not retrieve poll data' });
+        } else {
+          res.json(polls);
+        }
+      });
+    };
+  }));
+
   return api;
 };

@@ -52,7 +52,6 @@ export default class NewPoll extends Component {
         },
         function rejected(reason) {
           constole.error('rejected');
-        }
-      );
+        });
   }
 };
