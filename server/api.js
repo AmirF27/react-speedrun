@@ -1,10 +1,10 @@
 const express = require('express');
 const status = require('http-status');
+const upload = require('multer')();
 const Timestamp = require('./timestamp');
 const HeaderParser = require('./header-parser');
-const upload = require('multer')();
 
-module.exports = function(wagner) {
+module.exports = function(wagner, passport) {
   const ImageSearch = require('./image-search')(wagner);
 
   const api = express.Router();
@@ -102,25 +102,21 @@ module.exports = function(wagner) {
     };
   }));
 
-  api.post('/register', upload.any(), wagner.invoke(function(User) {
-    return function(req, res) {
-      if (req.body.password !== req.body.confirm) {
-        res.json({ error: 'Passwords don\'t match' });
+  api.post('/register', upload.any(), function(req, res) {
+    passport.authenticate('local-signup', function(err, user, info) {
+      if (err) {
+        res.json({ error: err });
+      } else if (info) {
+        res.json({ error: info });
+      } else {
+        res.json({ user: user });
       }
+    })(req, res);
+  });
 
-      User.encryptPassword(req.body.password, function(err, encrypted) {
-        const user = new User({
-          name: req.body.name,
-          email: req.body.email,
-          password: encrypted
-        });
-
-        user.save();
-
-        res.json(user);
-      });
-    };
-  }));
+  api.post('/login', passport.authenticate('local'), function(req, res) {
+    res.redirect('/');
+  });
 
   return api;
 };

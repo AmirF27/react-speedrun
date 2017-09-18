@@ -24,7 +24,7 @@ export default class Register extends Component {
     event.preventDefault();
 
     Ajax.submitForm(event.target, function(err, data) {
-      console.dir(JSON.parse(data));
+      console.dir(data);
     });
   }
 };

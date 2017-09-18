@@ -19,5 +19,6 @@ const userSchema = new Schema({
 userSchema.index({ email: 1 });
 
 userSchema.plugin(require('mongoose-bcrypt'));
+userSchema.plugin(require('passport-local-mongoose'));
 
 module.exports = userSchema;
