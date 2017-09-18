@@ -1,6 +1,6 @@
-const mongoose = require('mongoose');
+const Schema = require('mongoose').Schema;
 
-const imageSchema = new mongoose.Schema({
+const imageSchema = new Schema({
   search_term: {
     type: String,
     required: true

@@ -10,6 +10,7 @@ import VotingApp from './containers/VotingApp.jsx';
 import NewPoll from './containers/NewPoll.jsx';
 import Polls from './containers/Polls.jsx';
 import Register from './containers/Register.jsx';
+import Login from './containers/Login.jsx';
 
 ReactDOM.render((
   <BrowserRouter>
@@ -21,6 +22,7 @@ ReactDOM.render((
       <Route path='/voting-app/new-poll' component={NewPoll}></Route>
       <Route path='/voting-app/polls' component={Polls}></Route>
       <Route path='/register' component={Register}></Route>
+      <Route path='/login' component={Login}></Route>
     </div>
   </BrowserRouter>
   ),

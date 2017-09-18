@@ -1,6 +1,6 @@
-const mongoose = require('mongoose');
+const Schema = require('mongoose').Schema;
 
-const pollSchema = new mongoose.Schema({
+const pollSchema = new Schema({
   title: {
     type: String,
     required: true

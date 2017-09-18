@@ -43,7 +43,7 @@ export default class FileUpload extends Component {
   uploadFile(event) {
     event.preventDefault();
 
-    Ajax.submitForm(event.target, function(err, data) {
+    Ajax.submitForm(event.target, (err, data) => {
       if (!err) {
         this.setState({
           uploaded: true,
@@ -57,6 +57,6 @@ export default class FileUpload extends Component {
           error: 'An error occured while uploading the file.'
         });
       }
-    }.bind(this));
+    });
   }
 };

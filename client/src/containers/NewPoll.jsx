@@ -36,7 +36,7 @@ export default class NewPoll extends Component {
   addPoll(event) {
     event.preventDefault();
 
-    Ajax.submitForm(event.target, function(err, data) {
+    Ajax.submitForm(event.target, (err, data) => {
       if (!err) {
         console.log(data);
       } else {

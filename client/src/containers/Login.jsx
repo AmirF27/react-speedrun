@@ -2,11 +2,11 @@ import React, { Component } from 'react';
 import { Redirect } from 'react-router';
 import Ajax from '../js/ajax';
 
-export default class Register extends Component {
+export default class extends Component {
   constructor() {
     super();
 
-    this.register = this.register.bind(this);
+    this.login = this.login.bind(this);
 
     this.state = {
       error: null,
@@ -17,16 +17,12 @@ export default class Register extends Component {
   render() {
     return (
       <main>
-        <form action="/api/register" method="post" onSubmit={this.register}>
-          <label htmlFor="name">Name</label>
-          <input id="name" type="text" name="name" />
+        <form action="/api/login" method="post" onSubmit={this.login}>
           <label htmlFor="email">Email</label>
           <input id="email" type="email" name="email" required />
           <label htmlFor="password">Password</label>
-          <input id="password" type="password" name="password" required />
-          <label htmlFor="confirm">Confirm Password</label>
-          <input id="confirm" type="password" name="confirm" required />
-          <input type="submit" value="Register" />
+          <input id="password" type="password" name="password" required></input>
+          <input type="submit" value="Login" />
         </form>
         {this.state.error &&
           <p>{this.state.error}</p>
@@ -38,7 +34,7 @@ export default class Register extends Component {
     );
   }
 
-  register(event) {
+  login(event) {
     event.preventDefault();
 
     Ajax.submitForm(event.target, (err, data) => {
