@@ -33,7 +33,7 @@ export default class FileUpload extends Component {
         }
         {this.state.error &&
           <div>
-            <p>this.state.error</p>
+            <p>{this.state.error}</p>
           </div>
         }
       </section>

@@ -20,7 +20,11 @@ const app = express();
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
-app.use(require('express-session')({ secret: process.env.SESSION_SECRET }));
+app.use(require('express-session')({
+  secret: process.env.SESSION_SECRET,
+  resave: false,
+  saveUninitialized: false
+}));
 app.use(express.static(STATIC_PATH));
 
 app.use(passport.initialize());

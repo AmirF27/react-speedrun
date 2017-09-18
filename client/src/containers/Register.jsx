@@ -1,7 +1,19 @@
 import React, { Component } from 'react';
+import { Redirect } from 'react-router';
 import Ajax from '../js/ajax';
 
 export default class Register extends Component {
+  constructor() {
+    super();
+
+    this.register = this.register.bind(this);
+
+    this.state = {
+      error: null,
+      success: false
+    };
+  }
+
   render() {
     return (
       <main>
@@ -16,6 +28,12 @@ export default class Register extends Component {
           <input id="confirm" type="password" name="confirm" required />
           <input type="submit" value="Register" />
         </form>
+        {this.state.error &&
+          <p>{this.state.error}</p>
+        }
+        {this.state.success &&
+          <Redirect to='/' />
+        }
       </main>
     );
   }
@@ -24,7 +42,20 @@ export default class Register extends Component {
     event.preventDefault();
 
     Ajax.submitForm(event.target, function(err, data) {
-      console.dir(data);
-    });
+      data = JSON.parse(data);
+
+      if (data.error) {
+        this.setState({
+          error: data.error || null,
+          success: false
+        });
+      } else {
+        this.setState({
+          error: null,
+          success: true
+        });
+      }
+
+    }.bind(this));
   }
 };
