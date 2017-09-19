@@ -18,6 +18,7 @@ require('./db')(wagner);
 
 const app = express();
 
+app.use(express.static(STATIC_PATH));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(require('express-session')({
@@ -25,8 +26,6 @@ app.use(require('express-session')({
   resave: false,
   saveUninitialized: false
 }));
-app.use(express.static(STATIC_PATH));
-
 app.use(passport.initialize());
 app.use(passport.session());
 

@@ -11,7 +11,7 @@ module.exports = function(User, passport) {
     });
   });
 
-  passport.use('local-register', new LocalStrategy({
+  passport.use('local-signup', new LocalStrategy({
     usernameField: 'email',
     passwordField: 'password',
     passReqToCallback: true

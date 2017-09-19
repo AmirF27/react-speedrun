@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Redirect } from 'react-router';
 import Ajax from '../js/ajax';
 
 export default class NewPoll extends Component {
@@ -8,7 +9,9 @@ export default class NewPoll extends Component {
     this.addPoll = this.addPoll.bind(this);
 
     this.state = {
-      nPolls: 2
+      nPolls: 2,
+      checkedAuth: false,
+      authed: false
     };
   }
 
@@ -17,6 +20,10 @@ export default class NewPoll extends Component {
 
     for (let i = 0; i < this.state.nPolls; i++) {
       polls.push(<input id={`poll-option${i + 1}`} type='text' name={`options[${i}]`} key={i} required />);
+    }
+
+    if (this.state.checkedAuth && !this.state.authed) {
+      return (<Redirect to='/login' />);
     }
 
     return (
@@ -31,6 +38,16 @@ export default class NewPoll extends Component {
         </form>
       </main>
     );
+  }
+
+  componentDidMount() {
+    Ajax.get('/api/user').then(data => {
+      const user = JSON.parse(data).user;
+      this.setState({
+        checkedAuth: true,
+        authed: user ? true : false
+      });
+    });
   }
 
   addPoll(event) {

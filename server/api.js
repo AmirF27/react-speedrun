@@ -103,15 +103,21 @@ module.exports = function(wagner, passport) {
   }));
 
   api.post('/register', upload.any(), function(req, res) {
-    passport.authenticate('local-register', function(err, user, info) {
+    passport.authenticate('local-signup', function(err, user, info) {
       handleAuthResponse(res, err || info, user);
     })(req, res);
   });
 
   api.post('/login', upload.any(), function(req, res) {
     passport.authenticate('local-login', function(err, user, info) {
-      handleAuthResponse(res, err || info, user);
+      req.login(user, {}, function() {
+        handleAuthResponse(res, err || info, user);
+      });
     })(req, res);
+  });
+
+  api.get('/user', function(req, res) {
+    res.json({ user: req.user });
   });
 
   return api;

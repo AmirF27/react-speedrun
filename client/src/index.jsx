@@ -1,6 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter, Route } from 'react-router-dom';
+import { Redirect } from 'react-router';
+
+import Ajax from './js/ajax';
 
 import Header from './containers/Header.jsx';
 import Timestamp from './containers/Timestamp.jsx';
@@ -16,13 +19,13 @@ ReactDOM.render((
   <BrowserRouter>
     <div>
       <Header></Header>
-      <Route path='/timestamp' component={Timestamp}></Route>
-      <Route path='/header-parser' component={HeaderParser}></Route>
-      <Route path='/file-upload' component={FileUpload}></Route>
-      <Route path='/voting-app/new-poll' component={NewPoll}></Route>
-      <Route path='/voting-app/polls' component={Polls}></Route>
-      <Route path='/register' component={Register}></Route>
-      <Route path='/login' component={Login}></Route>
+      <Route path='/timestamp' component={Timestamp} />
+      <Route path='/header-parser' component={HeaderParser} />
+      <Route path='/file-upload' component={FileUpload} />
+      <Route path='/voting-app/new-poll' component={NewPoll} />
+      <Route path='/voting-app/polls' component={Polls} />
+      <Route path='/register' component={Register} />
+      <Route path='/login' component={Login} />
     </div>
   </BrowserRouter>
   ),
