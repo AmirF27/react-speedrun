@@ -1,6 +1,5 @@
 const Schema = require('mongoose').Schema;
 const bcrypt = require('bcrypt');
-const pollSchema = require('./poll');
 
 const SALT_ROUNDS = 10;
 
@@ -15,8 +14,7 @@ const userSchema = new Schema({
     type: String,
     required: true,
     bcrypt: true
-  },
-  polls: [pollSchema]
+  }
 });
 
 userSchema.index({ email: 1 });

@@ -87,10 +87,11 @@ module.exports = function(wagner, passport) {
 
       const poll = new Poll({
         title: req.body.title,
-        options: req.body.options
+        options: req.body.options,
+        author: req.user._id
       });
 
-      req.user.addPoll(poll, function(err) {
+      poll.save(function(err) {
         if (err) {
           res.status(status.INTERNAL_SERVER_ERROR).
               json({ error: 'An error occured while attempting to add poll.' });
