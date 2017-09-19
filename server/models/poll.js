@@ -21,9 +21,7 @@ pollSchema.index({ title: 1 });
 pollSchema.statics.allPolls = function allPolls(cb) {
   this.find({}).
        sort({ title: 1 }).
-       exec(function(err, polls) {
-         cb(err, polls)
-       });
+       exec(cb);
 };
 
 module.exports = pollSchema;

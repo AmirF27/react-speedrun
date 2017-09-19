@@ -11,7 +11,7 @@ import HeaderParser from './containers/HeaderParser.jsx';
 import FileUpload from './containers/FileUpload.jsx';
 import VotingApp from './containers/VotingApp.jsx';
 import NewPoll from './containers/NewPoll.jsx';
-import Polls from './containers/Polls.jsx';
+import AllPolls from './containers/AllPolls.jsx';
 import Register from './containers/Register.jsx';
 import Login from './containers/Login.jsx';
 
@@ -23,7 +23,7 @@ ReactDOM.render((
       <Route path='/header-parser' component={HeaderParser} />
       <Route path='/file-upload' component={FileUpload} />
       <Route path='/voting-app/new-poll' component={NewPoll} />
-      <Route path='/voting-app/polls' component={Polls} />
+      <Route path='/voting-app/all-polls' component={AllPolls} />
       <Route path='/register' component={Register} />
       <Route path='/login' component={Login} />
     </div>

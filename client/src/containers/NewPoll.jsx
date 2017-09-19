@@ -43,11 +43,11 @@ export default class NewPoll extends Component {
   }
 
   componentDidMount() {
-    Ajax.get('/api/user').then(data => {
-      const user = JSON.parse(data).user;
+    Ajax.get('/api/check-auth').then(data => {
+      data = JSON.parse(data);
       this.setState({
         checkedAuth: true,
-        authed: user ? true : false
+        authed: data.authed
       });
     });
   }

@@ -101,15 +101,43 @@ module.exports = function(wagner, passport) {
     };
   }));
 
-  api.get('/voting-app/polls', wagner.invoke(function(Poll) {
+  api.get('/voting-app/all-polls', wagner.invoke(function(Poll) {
     return function(req, res) {
       Poll.allPolls(function(err, polls) {
         if (err) {
           res.status(status.INTERNAL_SERVER_ERROR).
-              json({ error: 'Could not retrieve poll data' });
+              json({ error: 'Could not retrieve poll data.' });
         } else {
           res.json(polls);
         }
+      });
+    };
+  }));
+
+  api.get('/profile/:email/polls', wagner.invoke(function(User, Poll) {
+    return function(req, res) {
+      User.findOne({ email: req.params.email }, function(err, user) {
+        if (err) {
+          res.status(status.INTERNAL_SERVER_ERROR).
+              json({ error: 'An error occured.' });
+        }
+
+        if (!user) {
+          res.status(status.NOT_FOUND).
+              json({ error: 'User not found.' });
+        }
+
+        const query = { author: user._id };
+        const proj = { _id: 0, title: 1, options: 1 };
+
+        Poll.find(query, proj, function(err, polls) {
+          if (err) {
+            res.status(status.INTERNAL_SERVER_ERROR).
+                json({ error: 'An error occured.' });
+          }
+
+          res.json(polls);
+        });
       });
     };
   }));
@@ -128,8 +156,8 @@ module.exports = function(wagner, passport) {
     })(req, res);
   });
 
-  api.get('/user', function(req, res) {
-    res.json({ user: req.user });
+  api.get('/check-auth', function(req, res) {
+    res.json({ authed: !!req.user });
   });
 
   return api;

@@ -27,9 +27,4 @@ userSchema.methods.verifyPassword = function verifyPassword(password) {
   return bcrypt.compareSync(password, this.password);
 };
 
-userSchema.methods.addPoll = function addPoll(poll, cb) {
-  this.polls.push(poll);
-  this.save(cb);
-};
-
 module.exports = userSchema;

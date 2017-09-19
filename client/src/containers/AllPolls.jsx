@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Ajax from '../js/ajax';
 
-export default class Polls extends Component {
+export default class AllPolls extends Component {
   constructor() {
     super();
 
