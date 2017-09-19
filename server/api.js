@@ -78,14 +78,25 @@ module.exports = function(wagner, passport) {
     res.json({ size: req.file.size });
   });
 
-  api.post('/voting-app/new-poll', upload.any(), wagner.invoke(function(Poll) {
+  api.post('/voting-app/new-poll', upload.any(), wagner.invoke(function(User, Poll) {
     return function(req, res) {
+      if (!req.user) {
+        res.status(status.UNAUTHORIZED).
+            json({ error: 'Not logged in!' });
+      }
+
       const poll = new Poll({
         title: req.body.title,
         options: req.body.options
       });
 
-      poll.save();
+      req.user.addPoll(poll, function(err) {
+        if (err) {
+          res.status(status.INTERNAL_SERVER_ERROR).
+              json({ error: 'An error occured while attempting to add poll.' });
+        }
+        res.json({ success: 'Poll added successfully!' });
+      });
     };
   }));
 

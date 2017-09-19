@@ -15,6 +15,10 @@ export default class extends Component {
   }
 
   render() {
+    if (this.state.success) {
+      return (<Redirect to='/' />);
+    }
+
     return (
       <main>
         <form action="/api/login" method="post" onSubmit={this.login}>
@@ -26,9 +30,6 @@ export default class extends Component {
         </form>
         {this.state.error &&
           <p>{this.state.error}</p>
-        }
-        {this.state.success &&
-          <Redirect to='/' />
         }
       </main>
     );

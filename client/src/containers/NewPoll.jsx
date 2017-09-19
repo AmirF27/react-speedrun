@@ -11,7 +11,8 @@ export default class NewPoll extends Component {
     this.state = {
       nPolls: 2,
       checkedAuth: false,
-      authed: false
+      authed: false,
+      message: ''
     };
   }
 
@@ -36,6 +37,7 @@ export default class NewPoll extends Component {
           {polls}
           <input type='submit' value='Add Poll' />
         </form>
+        <p>{this.state.message}</p>
       </main>
     );
   }
@@ -55,7 +57,10 @@ export default class NewPoll extends Component {
 
     Ajax.submitForm(event.target, (err, data) => {
       if (!err) {
-        console.log(data);
+        data = JSON.parse(data);
+        this.setState({
+          message: data.error || data.success
+        });
       } else {
         console.error(err);
       }
