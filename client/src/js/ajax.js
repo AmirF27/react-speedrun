@@ -49,7 +49,7 @@ export default class Ajax {
                       resolve(xhr.responseText);
                   }
                   else {
-                      reject(xhr.status);
+                      reject(xhr.responseText);
                   }
               }
           };

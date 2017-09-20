@@ -59,9 +59,10 @@ export default class NewPoll extends Component {
       if (!err) {
         data = JSON.parse(data);
         this.setState({
-          message: data.error || data.success
+          message: data.error || data.message
         });
       } else {
+        err = JSON.parse(err);
         console.error(err);
       }
     });

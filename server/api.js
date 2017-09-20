@@ -81,8 +81,8 @@ module.exports = function(wagner, passport) {
   api.post('/voting-app/new-poll', upload.any(), wagner.invoke(function(User, Poll) {
     return function(req, res) {
       if (!req.user) {
-        res.status(status.UNAUTHORIZED).
-            json({ error: 'Not logged in!' });
+        return res.status(status.UNAUTHORIZED).
+                   json({ error: 'Not logged in!' });
       }
 
       const poll = new Poll({
@@ -93,10 +93,18 @@ module.exports = function(wagner, passport) {
 
       poll.save(function(err) {
         if (err) {
-          res.status(status.INTERNAL_SERVER_ERROR).
-              json({ error: 'An error occured while attempting to add poll.' });
+          // check for duplicate key error
+          if (err.name === 'MongoError' && err.code === 11000) {
+            return res.json({ error: 'Poll title already exists.' });
+          } else {
+            return res.status((status.INTERNAL_SERVER_ERROR)).
+                       json({
+                         error: 'An error occured while attempting to add poll.'
+                       });
+          }
         }
-        res.json({ success: 'Poll added successfully!' });
+
+        res.json({ message: 'Poll added successfully!' });
       });
     };
   }));
@@ -109,6 +117,24 @@ module.exports = function(wagner, passport) {
               json({ error: 'Could not retrieve poll data.' });
         } else {
           res.json(polls);
+        }
+      });
+    };
+  }));
+
+  api.get('/voting-app/poll/:title', wagner.invoke(function(Poll) {
+    return function(req, res) {
+      Poll.findByTitle(req.params.title, function(err, poll) {
+        if (err) {
+          return res.status(status.INTERNAL_SERVER_ERROR).
+                     json({ error: 'Could not retrieve poll data.' });
+        }
+
+        if (!poll) {
+          res.status(status.NOT_FOUND).
+              json({ error: 'Poll not found.' });
+        } else {
+          res.json(poll);
         }
       });
     };
@@ -127,10 +153,7 @@ module.exports = function(wagner, passport) {
               json({ error: 'User not found.' });
         }
 
-        const query = { author: user._id };
-        const proj = { _id: 0, title: 1, options: 1 };
-
-        Poll.find(query, proj, function(err, polls) {
+        Poll.findByAuthorId(user._id, function(err, polls) {
           if (err) {
             res.status(status.INTERNAL_SERVER_ERROR).
                 json({ error: 'An error occured.' });
