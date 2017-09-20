@@ -1,4 +1,5 @@
 const Schema = require('mongoose').Schema;
+const status = require('http-status');
 
 const pollSchema = new Schema({
   title: {
@@ -26,6 +27,7 @@ pollSchema.index({ author: 1 });
 
 pollSchema.statics.allPolls = function allPolls(cb) {
   this.find({}).
+       select({ _id: 0, title: 1, options: 1 }).
        sort({ title: 1 }).
        exec(cb);
 };
@@ -50,6 +52,10 @@ pollSchema.statics.vote = function vote(title, option, cb) {
     const index = poll.options.findIndex(op => op.name === option);
     this.update({ title }, { $inc: { [`options.${index}.votes`]: 1 } }, cb);
   }.bind(this));
+};
+
+pollSchema.methods.verifyAuthor = function verifyAuthor(user) {
+  return this.author.equals(user._id);
 };
 
 module.exports = pollSchema;

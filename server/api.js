@@ -145,13 +145,59 @@ module.exports = function(wagner, passport) {
       Poll.vote(req.body.pollTitle, req.body.vote, function(err) {
         if (err) {
           res.status(status.INTERNAL_SERVER_ERROR).
-              json({ error: 'An error occured while attempting to submit vote.' });
+              json({
+                error: 'An error occured while attempting to submit vote.'
+              });
         } else {
           res.json({ message: 'Vote submitted successfully!' });
         }
       });
     };
   }));
+
+  api.get('/voting-app/delete/:pollTitle',
+    upload.any(),
+    wagner.invoke(function(Poll) {
+      return function(req, res) {
+        if (req.user) {
+          Poll.findOne({ title: req.params.pollTitle }, function(err, poll) {
+            if (err) {
+              return res.
+                status(status.INTERNAL_SERVER_ERROR).
+                json({
+                  error: 'An error occured while attempting to delete poll.'
+                });
+            }
+
+            if (!poll) {
+              return res.
+                status(status.NOT_FOUND).
+                json({ error: 'Poll not found.' });
+            }
+
+            if (poll.verifyAuthor(req.user)) {
+              poll.remove(function(err) {
+                if (err) {
+                  return res.
+                    status(status.INTERNAL_SERVER_ERROR).
+                    json({
+                      error: 'An error occured while attempting to delete poll.'
+                    });
+                }
+
+                return res.json({ message: 'Poll deleted successfully!' });
+              });
+            } else {
+              res.status(status.UNAUTHORIZED).
+                  json({ error: 'This poll belongs to someone else.' });
+            }
+          });
+        } else {
+          res.status(status.UNAUTHORIZED).
+              json({ error: 'Not logged in!' });
+        }
+      };
+    }));
 
   api.get('/profile/:email/polls', wagner.invoke(function(User, Poll) {
     return function(req, res) {
