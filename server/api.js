@@ -87,7 +87,7 @@ module.exports = function(wagner, passport) {
 
       const poll = new Poll({
         title: req.body.title,
-        options: req.body.options,
+        options: req.body.options.map(option => ({ name: option })),
         author: req.user._id
       });
 
@@ -140,27 +140,33 @@ module.exports = function(wagner, passport) {
     };
   }));
 
-  api.get('/profile/:email/polls', wagner.invoke(function(User, Poll) {
+  api.post('/voting-app/vote/', upload.any(), wagner.invoke(function(Poll) {
     return function(req, res) {
-      User.findOne({ email: req.params.email }, function(err, user) {
+      Poll.vote(req.body.pollTitle, req.body.vote, function(err) {
         if (err) {
           res.status(status.INTERNAL_SERVER_ERROR).
-              json({ error: 'An error occured.' });
+              json({ error: 'An error occured while attempting to submit vote.' });
+        } else {
+          res.json({ message: 'Vote submitted successfully!' });
+        }
+      });
+    };
+  }));
+
+  api.get('/profile/:email/polls', wagner.invoke(function(User, Poll) {
+    return function(req, res) {
+      User.getPolls(req.params.email, Poll, function(err, data) {
+        if (err) {
+          return res.status(status.INTERNAL_SERVER_ERROR).
+                     json({ error: 'An error occured.' });
         }
 
-        if (!user) {
-          res.status(status.NOT_FOUND).
-              json({ error: 'User not found.' });
+        if (!data) {
+          return res.status(status.NOT_FOUND).
+                     json({ error: 'User not found.' });
         }
 
-        Poll.findByAuthorId(user._id, function(err, polls) {
-          if (err) {
-            res.status(status.INTERNAL_SERVER_ERROR).
-                json({ error: 'An error occured.' });
-          }
-
-          res.json(polls);
-        });
+        res.json(data);
       });
     };
   }));

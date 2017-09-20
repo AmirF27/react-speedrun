@@ -27,4 +27,14 @@ userSchema.methods.verifyPassword = function verifyPassword(password) {
   return bcrypt.compareSync(password, this.password);
 };
 
+userSchema.statics.getPolls = function getPolls(email, Poll, cb) {
+  this.findOne({ email }, function(err, user) {
+    if (err) cb(err);
+
+    if (!user) cb(null, null);
+
+    Poll.findByAuthorId(user._id, cb);
+  });
+};
+
 module.exports = userSchema;

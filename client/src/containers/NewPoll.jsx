@@ -6,10 +6,11 @@ export default class NewPoll extends Component {
   constructor() {
     super();
 
-    this.addPoll = this.addPoll.bind(this);
+    this.addOption = this.addOption.bind(this);
+    this.submitPoll = this.submitPoll.bind(this);
 
     this.state = {
-      nPolls: 2,
+      nOptions: 2,
       checkedAuth: false,
       authed: false,
       message: ''
@@ -19,7 +20,7 @@ export default class NewPoll extends Component {
   render() {
     const polls = [];
 
-    for (let i = 0; i < this.state.nPolls; i++) {
+    for (let i = 0; i < this.state.nOptions; i++) {
       polls.push(<input id={`poll-option${i + 1}`} type='text' name={`options[${i}]`} key={i} required />);
     }
 
@@ -30,13 +31,14 @@ export default class NewPoll extends Component {
     return (
       <main>
         <h3>Create a new poll</h3>
-        <form action='/api/voting-app/new-poll' method='post' onSubmit={this.addPoll}>
+        <form action='/api/voting-app/new-poll' method='post' onSubmit={this.submitPoll}>
           <label htmlFor='poll-title'>Poll title</label>
           <input id='poll-title' type='text' name='title' required />
           <label htmlFor='poll-option1'>Options</label>
           {polls}
           <input type='submit' value='Add Poll' />
         </form>
+        <button onClick={this.addOption}>+</button>
         <p>{this.state.message}</p>
       </main>
     );
@@ -52,7 +54,13 @@ export default class NewPoll extends Component {
     });
   }
 
-  addPoll(event) {
+  addOption() {
+    this.setState({
+      nOptions: this.state.nOptions + 1
+    });
+  }
+
+  submitPoll(event) {
     event.preventDefault();
 
     Ajax.submitForm(event.target, (err, data) => {
