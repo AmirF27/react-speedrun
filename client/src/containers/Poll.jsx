@@ -22,7 +22,7 @@ export default class Poll extends Component {
         return (
           <div>
             <input id={`option.name${i}`} type="radio" value={option.name} name="vote" key={i} required />
-            <label htmlFor={`option.name${i}`}>{option.name}</label>
+            <label htmlFor={`option.name${i}`}>{option.name} ({option.votes} votes)</label>
           </div>
         );
       });
