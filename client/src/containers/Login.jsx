@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router';
+import { connect } from 'react-redux';
 import Ajax from '../js/ajax';
 
-export default class extends Component {
+import { authenticate } from '../actions';
+
+class Login extends Component {
   constructor() {
     super();
 
@@ -47,6 +50,7 @@ export default class extends Component {
           success: false
         });
       } else {
+        this.props.authenticate(data.user);
         this.setState({
           error: null,
           success: true
@@ -55,3 +59,15 @@ export default class extends Component {
     });
   }
 };
+
+const mapStateToProps = (state) => {
+  return {
+    authed: state.auth.authed,
+    user: state.auth.user
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  { authenticate },
+)(Login);

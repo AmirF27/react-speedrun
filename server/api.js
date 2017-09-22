@@ -251,6 +251,11 @@ function handleAuthResponse(res, err, user) {
   if (err) {
     res.json({ error: err });
   } else {
-    res.json({ user });
+    res.json({
+      user: {
+        name: user.name,
+        email: user.email
+      }
+    });
   }
 }

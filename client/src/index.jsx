@@ -2,7 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter, Route } from 'react-router-dom';
 import { Redirect } from 'react-router';
-
+import { Provider } from 'react-redux';
+import store from './store';
 import Ajax from './js/ajax';
 
 import Header from './containers/Header.jsx';
@@ -18,20 +19,22 @@ import Register from './containers/Register.jsx';
 import Login from './containers/Login.jsx';
 
 ReactDOM.render((
-  <BrowserRouter>
-    <div>
-      <Header></Header>
-      <Sidebar></Sidebar>
-      <Route path="/timestamp" component={Timestamp} />
-      <Route path="/header-parser" component={HeaderParser} />
-      <Route path="/file-upload" component={FileUpload} />
-      <Route path="/voting-app/new-poll" component={NewPoll} />
-      <Route path="/voting-app/all-polls" component={AllPolls} />
-      <Route path="/voting-app/poll/:title" component={Poll} />
-      <Route path="/register" component={Register} />
-      <Route path="/login" component={Login} />
-    </div>
-  </BrowserRouter>
+  <Provider store={store}>
+    <BrowserRouter>
+      <div>
+        <Header></Header>
+        <Sidebar></Sidebar>
+        <Route path="/timestamp" component={Timestamp} />
+        <Route path="/header-parser" component={HeaderParser} />
+        <Route path="/file-upload" component={FileUpload} />
+        <Route path="/voting-app/new-poll" component={NewPoll} />
+        <Route path="/voting-app/all-polls" component={AllPolls} />
+        <Route path="/voting-app/poll/:title" component={Poll} />
+        <Route path="/register" component={Register} />
+        <Route path="/login" component={Login} />
+      </div>
+    </BrowserRouter>
+  </Provider>
   ),
   document.getElementById('root')
 );
