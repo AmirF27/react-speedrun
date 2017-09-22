@@ -6,6 +6,7 @@ import { Redirect } from 'react-router';
 import Ajax from './js/ajax';
 
 import Header from './containers/Header.jsx';
+import Sidebar from './containers/Sidebar.jsx';
 import Timestamp from './containers/Timestamp.jsx';
 import HeaderParser from './containers/HeaderParser.jsx';
 import FileUpload from './containers/FileUpload.jsx';
@@ -20,6 +21,7 @@ ReactDOM.render((
   <BrowserRouter>
     <div>
       <Header></Header>
+      <Sidebar></Sidebar>
       <Route path="/timestamp" component={Timestamp} />
       <Route path="/header-parser" component={HeaderParser} />
       <Route path="/file-upload" component={FileUpload} />

@@ -231,8 +231,17 @@ module.exports = function(wagner, passport) {
     })(req, res);
   });
 
-  api.get('/check-auth', function(req, res) {
-    res.json({ authed: !!req.user });
+  api.get('/user', function(req, res) {
+    if (req.user) {
+      res.json({
+        user: {
+          name: req.user.name,
+          email: req.user.email
+        }
+      });
+    } else {
+      res.json({ user: null });
+    }
   });
 
   return api;
