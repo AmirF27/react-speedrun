@@ -44,3 +44,5 @@ ReactDOM.render((
   ),
   document.getElementById('root')
 );
+
+require('./style.scss');
