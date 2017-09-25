@@ -39,6 +39,10 @@ export default class Ajax {
       return this.processRequest('POST', url, options);
     }
 
+    static delete(url, options = {}) {
+      return this.processRequest('DELETE', url, options);
+    }
+
     static processRequest(type, url, options) {
       return new Promise(function(resolve, reject) {
           let xhr = new XMLHttpRequest();

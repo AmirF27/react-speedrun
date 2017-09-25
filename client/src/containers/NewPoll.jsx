@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Redirect } from 'react-router';
 import { connect } from 'react-redux';
 import Ajax from '../js/ajax';
-import { checkAuth } from '../js/util';
+import { checkAuth, mapStateToProps } from '../js/util';
 
 import {
   authenticate,
@@ -74,13 +74,6 @@ class NewPoll extends Component {
       }
     });
   }
-};
-
-const mapStateToProps = state => {
-  return {
-    authed: state.auth.authed,
-    user: state.auth.user
-  };
 };
 
 export default connect(

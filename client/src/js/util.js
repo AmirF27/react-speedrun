@@ -10,9 +10,17 @@ export function checkAuth(authenticate, unauthenticate, callback) {
         } else {
           unauthenticate();
         }
+        if (callback) callback();
       },
       function rejected(err) {
         console.error(err);
       }
     );
+};
+
+export function mapStateToProps(state) {
+  return {
+    authed: state.auth.authed,
+    user: state.auth.user
+  };
 };

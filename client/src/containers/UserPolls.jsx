@@ -1,16 +1,26 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 import Ajax from '../js/ajax';
+import { checkAuth, mapStateToProps } from '../js/util';
 
-export default class UserPolls extends Component {
+import {
+  authenticate,
+  unauthenticate
+} from '../actions';
+
+class UserPolls extends Component {
   constructor(props) {
     super(props);
 
     this.getUserPolls = this.getUserPolls.bind(this);
+    this.deletePoll = this.deletePoll.bind(this);
 
     this.state = {
       ready: false,
-      polls: []
+      polls: [],
+      error: null,
+      message: null
     };
   }
 
@@ -19,38 +29,53 @@ export default class UserPolls extends Component {
       return (<main></main>);
     }
 
-    if (this.state.polls.length == 0) {
-      return (
-        <main>
-          <p>Looks like this user has no polls yet.</p>
-        </main>
-      );
-    }
-
     const polls = this.state.polls.map(poll => {
       return (
-        <li><Link to={`/voting-app/poll/${poll.title}`}>{poll.title}</Link></li>
+        <li>
+          <Link to={`/voting-app/poll/${poll.title}`}>{poll.title}</Link>
+          {this.state.isProfileOwner &&
+            <button onClick={() => this.deletePoll(poll.title)}>DELETE</button>
+          }
+        </li>
       );
     });
 
     return (
       <main>
-        <ul>{polls}</ul>
+        {this.state.polls.length == 0
+          ? <p>Looks like this user has no polls yet.</p>
+          : <ul>{polls}</ul>
+        }
+        {this.state.error &&
+          <p>{this.state.error}</p>
+        }
+        {this.state.message &&
+          <p>{this.state.message}</p>
+        }
       </main>
     );
   }
 
   componentDidMount() {
-    this.getUserPolls();
+    checkAuth(
+      this.props.authenticate,
+      this.props.unauthenticate,
+      this.getUserPolls
+    );
   }
 
   getUserPolls() {
-    Ajax.get(`/api/profile/${this.props.match.params.email}/polls`).
+    const email = this.props.match.params.email;
+
+    Ajax.get(`/api/profile/${email}/polls`).
       then(
         function fulfilled(res) {
           this.setState({
             ready: true,
-            polls: res
+            polls: res,
+            isProfileOwner: this.props.user
+              ? this.props.user.email == email
+              : false
           });
         }.bind(this),
         function rejected(err) {
@@ -58,4 +83,36 @@ export default class UserPolls extends Component {
         }
       );
   }
-};
+
+  deletePoll(pollTitle) {
+    Ajax.delete(`/api/voting-app/delete/${pollTitle}`).
+      then(
+        function fulfilled(res) {
+          let updatedPolls = this.state.polls;
+          if (!res.error) {
+            updatedPolls.splice(
+              updatedPolls.findIndex(poll => poll.title == pollTitle),
+              1
+            );
+          }
+          this.setState({
+            polls: updatedPolls,
+            error: res.error || null,
+            message: res.message || null
+          });
+          console.dir(this.state);
+        }.bind(this),
+        function rejected(err) {
+          console.log(err)
+        }
+      );
+  }
+}
+
+export default connect(
+  mapStateToProps,
+  {
+    authenticate,
+    unauthenticate
+  }
+)(UserPolls);

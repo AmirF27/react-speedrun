@@ -155,7 +155,7 @@ module.exports = function(wagner, passport) {
     };
   }));
 
-  api.get('/voting-app/delete/:pollTitle',
+  api.delete('/voting-app/delete/:pollTitle',
     upload.any(),
     wagner.invoke(function(Poll) {
       return function(req, res) {

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Redirect } from 'react-router';
 import { connect } from 'react-redux';
 import Ajax from '../js/ajax';
+import { mapStateToProps } from '../js/util';
 
 import {
   authenticate,
@@ -53,12 +54,6 @@ class Login extends Component {
       }
     });
   }
-};
-
-const mapStateToProps = state => {
-  return {
-    authed: state.auth.authed
-  };
 };
 
 export default connect(
