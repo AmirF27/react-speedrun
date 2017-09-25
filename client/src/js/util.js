@@ -20,6 +20,7 @@ export function checkAuth(authenticate, unauthenticate, callback) {
 
 export function mapStateToProps(state) {
   return {
+    checkedAuth: state.auth.checkedAuth,
     authed: state.auth.authed,
     user: state.auth.user
   };

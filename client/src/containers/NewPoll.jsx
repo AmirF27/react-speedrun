@@ -25,13 +25,13 @@ class NewPoll extends Component {
   }
 
   render() {
-    const polls = [];
+    const options = [];
 
     for (let i = 0; i < this.state.nOptions; i++) {
-      polls.push(<input id={`poll-option${i + 1}`} type='text' name={`options[${i}]`} key={i} required />);
+      options.push(<input id={`poll-option${i + 1}`} type='text' name={`options[${i}]`} key={i} required />);
     }
 
-    if (this.props.checkedAuth && !this.props.authed) {
+    if (this.state.checkedAuth && !this.props.authed) {
       return (<Redirect to='/login' />);
     }
 
@@ -42,7 +42,7 @@ class NewPoll extends Component {
           <label htmlFor='poll-title'>Poll title</label>
           <input id='poll-title' type='text' name='title' required />
           <label htmlFor='poll-option1'>Options</label>
-          {polls}
+          {options}
           <input type='submit' value='Add Poll' />
         </form>
         <button onClick={this.addOption}>+</button>
@@ -52,7 +52,11 @@ class NewPoll extends Component {
   }
 
   componentDidMount() {
-    checkAuth(this.props.authenticate, this.props.unauthenticate);
+    checkAuth(
+      this.props.authenticate,
+      this.props.unauthenticate,
+      () => this.setState({ checkedAuth: true })
+    );
   }
 
   addOption() {

@@ -4,6 +4,8 @@ import { connect } from 'react-redux';
 import Ajax from '../js/ajax';
 import { checkAuth, mapStateToProps } from '../js/util';
 
+import PollList from './PollList.jsx';
+
 import {
   authenticate,
   unauthenticate
@@ -19,6 +21,7 @@ class UserPolls extends Component {
     this.state = {
       ready: false,
       polls: [],
+      isProfileOwner: false,
       error: null,
       message: null
     };
@@ -29,23 +32,13 @@ class UserPolls extends Component {
       return (<main></main>);
     }
 
-    const polls = this.state.polls.map(poll => {
-      return (
-        <li>
-          <Link to={`/voting-app/poll/${poll.title}`}>{poll.title}</Link>
-          {this.state.isProfileOwner &&
-            <button onClick={() => this.deletePoll(poll.title)}>DELETE</button>
-          }
-        </li>
-      );
-    });
-
     return (
       <main>
-        {this.state.polls.length == 0
-          ? <p>Looks like this user has no polls yet.</p>
-          : <ul>{polls}</ul>
-        }
+        <PollList
+          polls={this.state.polls}
+          type="user"
+          isProfileOwner={this.state.isProfileOwner}>
+        </PollList>
         {this.state.error &&
           <p>{this.state.error}</p>
         }
@@ -100,10 +93,9 @@ class UserPolls extends Component {
             error: res.error || null,
             message: res.message || null
           });
-          console.dir(this.state);
         }.bind(this),
         function rejected(err) {
-          console.log(err)
+          console.log(err);
         }
       );
   }

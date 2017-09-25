@@ -8,7 +8,7 @@ import Ajax from './js/ajax';
 import { checkAuth } from './js/util';
 
 import Header from './containers/Header.jsx';
-import Sidebar from './containers/Sidebar.jsx';
+import Home from './containers/Home.jsx';
 import Timestamp from './containers/Timestamp.jsx';
 import HeaderParser from './containers/HeaderParser.jsx';
 import FileUpload from './containers/FileUpload.jsx';
@@ -26,10 +26,11 @@ ReactDOM.render((
     <BrowserRouter>
       <div>
         <Header></Header>
-        <Sidebar></Sidebar>
+        <Route exact path="/" component={Home}></Route>
         <Route path="/timestamp" component={Timestamp} />
         <Route path="/header-parser" component={HeaderParser} />
         <Route path="/file-upload" component={FileUpload} />
+        <Route exact path="/voting-app" component={VotingApp} />
         <Route path="/voting-app/new-poll" component={NewPoll} />
         <Route path="/voting-app/all-polls" component={AllPolls} />
         <Route path="/voting-app/poll/:title" component={Poll} />

@@ -13,7 +13,6 @@ const auth = (state = initialState, action) => {
     case AUTHENTICATE:
       return {
         ...state,
-        checkedAuth: true,
         authed: true,
         user: action.user
       };
