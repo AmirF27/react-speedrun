@@ -66,12 +66,10 @@ class NewPoll extends Component {
 
     Ajax.submitForm(event.target, (err, data) => {
       if (!err) {
-        data = JSON.parse(data);
         this.setState({
           message: data.error || data.message
         });
       } else {
-        err = JSON.parse(err);
         console.error(err);
       }
     });

@@ -28,10 +28,12 @@ export default class AllPolls extends Component {
     Ajax.
       get(`/api${window.location.pathname}`).
       then(
-        function fulfilled(response) {
-          this.displayPolls(JSON.parse(response));
+        function fulfilled(res) {
+          this.displayPolls(res);
         }.bind(this),
-        function rejected(reason) {});
+        function rejected(err) {
+          console.error(err);
+        });
   }
 
   displayPolls(polls) {

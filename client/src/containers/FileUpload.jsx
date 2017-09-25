@@ -47,7 +47,7 @@ export default class FileUpload extends Component {
       if (!err) {
         this.setState({
           uploaded: true,
-          size: JSON.parse(data).size,
+          size: data.size,
           error: null
         });
       } else {

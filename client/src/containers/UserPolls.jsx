@@ -50,7 +50,7 @@ export default class UserPolls extends Component {
         function fulfilled(res) {
           this.setState({
             ready: true,
-            polls: JSON.parse(res)
+            polls: res
           });
         }.bind(this),
         function rejected(err) {

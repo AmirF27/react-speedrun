@@ -42,8 +42,6 @@ export default class Register extends Component {
     event.preventDefault();
 
     Ajax.submitForm(event.target, (err, data) => {
-      data = JSON.parse(data);
-
       if (data.error) {
         this.setState({
           error: data.error || null,

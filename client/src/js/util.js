@@ -5,9 +5,8 @@ export function checkAuth(authenticate, unauthenticate, callback) {
     get('/api/user').
     then(
       function fulfilled(res) {
-        const user = JSON.parse(res).user;
-        if (user) {
-          authenticate(user);
+        if (res.user) {
+          authenticate(res.user);
         } else {
           unauthenticate();
         }

@@ -51,13 +51,14 @@ export default class Poll extends Component {
     Ajax.
       get(url).
       then(
-        function fulfilled(response) {
-          response = JSON.parse(response);
+        function fulfilled(res) {
           this.setState({
-            poll: response
+            poll: res
           });
         }.bind(this),
-        function rejected(reason) {}
+        function rejected(err) {
+          console.log(err);
+        }
       );
   }
 };
