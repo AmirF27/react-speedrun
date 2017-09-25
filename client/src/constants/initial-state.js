@@ -1,4 +1,5 @@
 const initialState = {
+  checkedAuth: false,
   authed: false,
   user: null
 };

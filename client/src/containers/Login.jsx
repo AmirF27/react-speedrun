@@ -3,7 +3,10 @@ import { Redirect } from 'react-router';
 import { connect } from 'react-redux';
 import Ajax from '../js/ajax';
 
-import { authenticate } from '../actions';
+import {
+  authenticate,
+  unauthenticate
+} from '../actions';
 
 class Login extends Component {
   constructor() {
@@ -12,13 +15,12 @@ class Login extends Component {
     this.login = this.login.bind(this);
 
     this.state = {
-      error: null,
-      success: false
+      error: null
     };
   }
 
   render() {
-    if (this.state.success) {
+    if (this.props.authed) {
       return (<Redirect to='/' />);
     }
 
@@ -46,24 +48,18 @@ class Login extends Component {
 
       if (data.error) {
         this.setState({
-          error: data.error || null,
-          success: false
+          error: data.error
         });
       } else {
         this.props.authenticate(data.user);
-        this.setState({
-          error: null,
-          success: true
-        });
       }
     });
   }
 };
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   return {
-    authed: state.auth.authed,
-    user: state.auth.user
+    authed: state.auth.authed
   };
 };
 

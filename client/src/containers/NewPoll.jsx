@@ -1,8 +1,15 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router';
+import { connect } from 'react-redux';
 import Ajax from '../js/ajax';
+import { checkAuth } from '../js/util';
 
-export default class NewPoll extends Component {
+import {
+  authenticate,
+  unauthenticate
+} from '../actions';
+
+class NewPoll extends Component {
   constructor() {
     super();
 
@@ -24,7 +31,7 @@ export default class NewPoll extends Component {
       polls.push(<input id={`poll-option${i + 1}`} type='text' name={`options[${i}]`} key={i} required />);
     }
 
-    if (this.state.checkedAuth && !this.state.authed) {
+    if (this.props.checkedAuth && !this.props.authed) {
       return (<Redirect to='/login' />);
     }
 
@@ -45,13 +52,7 @@ export default class NewPoll extends Component {
   }
 
   componentDidMount() {
-    Ajax.get('/api/user').then(data => {
-      data = JSON.parse(data);
-      this.setState({
-        checkedAuth: true,
-        authed: data.user ? true : false
-      });
-    });
+    checkAuth(this.props.authenticate, this.props.unauthenticate);
   }
 
   addOption() {
@@ -76,3 +77,18 @@ export default class NewPoll extends Component {
     });
   }
 };
+
+const mapStateToProps = state => {
+  return {
+    authed: state.auth.authed,
+    user: state.auth.user
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  {
+    authenticate,
+    unauthenticate
+  }
+)(NewPoll);

@@ -5,6 +5,7 @@ import { Redirect } from 'react-router';
 import { Provider } from 'react-redux';
 import store from './store';
 import Ajax from './js/ajax';
+import { checkAuth } from './js/util';
 
 import Header from './containers/Header.jsx';
 import Sidebar from './containers/Sidebar.jsx';
@@ -15,6 +16,8 @@ import VotingApp from './containers/VotingApp.jsx';
 import NewPoll from './containers/NewPoll.jsx';
 import AllPolls from './containers/AllPolls.jsx';
 import Poll from './containers/Poll.jsx';
+import UserProfile from './containers/UserProfile.jsx';
+import UserPolls from './containers/UserPolls.jsx';
 import Register from './containers/Register.jsx';
 import Login from './containers/Login.jsx';
 
@@ -30,6 +33,8 @@ ReactDOM.render((
         <Route path="/voting-app/new-poll" component={NewPoll} />
         <Route path="/voting-app/all-polls" component={AllPolls} />
         <Route path="/voting-app/poll/:title" component={Poll} />
+        <Route exact path="/profile/:email" component={UserProfile} />
+        <Route path="/profile/:email/polls" component={UserPolls} />
         <Route path="/register" component={Register} />
         <Route path="/login" component={Login} />
       </div>

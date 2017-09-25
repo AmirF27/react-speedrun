@@ -1,21 +1,17 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-
+import { connect } from 'react-redux';
 import Ajax from '../js/ajax';
+import { checkAuth } from '../js/util';
 
-export default class Navbar extends Component {
-  constructor() {
-    super();
+import {
+  authenticate,
+  unauthenticate
+} from '../actions';
 
-    this.checkAuth = this.checkAuth.bind(this);
-
-    this.state = {
-      user: null
-    };
-  }
-
+class Navbar extends Component {
   render() {
-    if (!this.state.user) {
+    if (!this.props.authed) {
       return (
         <nav>
           <Link to="/login">Login</Link>
@@ -26,28 +22,28 @@ export default class Navbar extends Component {
 
     return (
       <nav>
-        <Link to={`/profile/${this.state.user.email}`}>Profile</Link>
+        <Link to={`/profile/${this.props.user.email}`}>Profile</Link>
         <Link to="/logout">Logout</Link>
       </nav>
     );
   }
 
   componentDidMount() {
-    this.checkAuth();
+    checkAuth(this.props.authenticate, this.props.unauthenticate);
   }
+}
 
-  checkAuth() {
-    Ajax.
-      get('/api/user').
-      then(
-        function fulfilled(response) {
-          this.setState({
-            user: JSON.parse(response).user
-          });
-        }.bind(this),
-        function rejected(reason) {
-          console.error(reason);
-        }
-      );
-  }
+const mapStateToProps = state => {
+  return {
+    authed: state.auth.authed,
+    user: state.auth.user
+  };
 };
+
+export default connect(
+  mapStateToProps,
+  {
+    authenticate,
+    unauthenticate
+  }
+)(Navbar);
