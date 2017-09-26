@@ -19,7 +19,9 @@ class PollList extends Component {
         <li>
           <Link to={`/voting-app/poll/${poll.title}`}>{poll.title}</Link>
           {this.props.type == 'user' && this.props.isProfileOwner &&
-            <button onClick={() => this.props.onDeletePoll(poll.title)}>
+            <button
+              className="button button--negative button--small"
+              onClick={() => this.props.onDeletePoll(poll.title)}>
               DELETE
             </button>
           }

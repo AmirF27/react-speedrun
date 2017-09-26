@@ -13,6 +13,7 @@
   .navbar__logo {
     @extend .left;
 
+    font-size: $logo-font-size;
     letter-spacing: $logo-letter-spacing;
     margin: 0;
   }
@@ -20,22 +21,23 @@
   .navbar__link,
   .navbar__logo {
     line-height: $navbar-height;
-    transition: $navbar-link-transition;
+    text-transform: uppercase;
+    transition: $default-transition;
 
     a {
-      color: $color-primary;
+      color: $color-text-primary;
       display: inline-block;
       height: 100%;
       padding-left: $navbar-link-padding;
       padding-right: $navbar-link-padding;
-      transition: $navbar-link-transition;
+      transition: $default-transition;
     }
 
     &:hover {
-      background: $color-primary;
+      background: $color-text-primary;
 
       & a {
-        color: $color-text-primary;
+        color: $color-primary;
       }
     }
   }

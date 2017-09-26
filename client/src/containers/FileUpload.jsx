@@ -16,14 +16,14 @@ class FileUpload extends Component {
 
   render() {
     return (
-      <section>
+      <main className="container">
         <h2>File Metadata Microservice</h2>
         <p>
           Allows you to upload a file to the server and returns the file's size.
         </p>
         <form method="post" action="/api/file-upload" onSubmit={this.uploadFile}>
           <input type="file" name="file" />
-          <input type="submit" value="Upload" />
+          <input type="submit" value="Upload" className="button button--primary" />
         </form>
         {this.state.uploaded &&
           <div>
@@ -36,7 +36,7 @@ class FileUpload extends Component {
             <p>{this.state.error}</p>
           </div>
         }
-      </section>
+      </main>
     );
   }
 

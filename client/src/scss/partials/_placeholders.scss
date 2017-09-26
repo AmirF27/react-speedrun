@@ -1,0 +1,29 @@
+%button-primary-colors {
+  background: $button-primary-bg;
+  color: $button-primary-color;
+
+  &:hover {
+    @include button-box-shadow($button-primary-bg);
+    @include button-text-shadow($button-primary-color);
+  }
+}
+
+%button-secondary-colors {
+  background: $button-secondary-bg;
+  color: $button-secondary-color;
+
+  &:hover {
+    @include button-box-shadow($button-secondary-bg);
+    @include button-text-shadow($button-secondary-color);
+  }
+}
+
+%button-negative-colors {
+  background: $button-negative-bg;
+  color: $button-negative-color;
+
+  &:hover {
+    @include button-box-shadow($button-negative-bg);
+    @include button-text-shadow($button-negative-color);
+  }
+}

@@ -12,7 +12,7 @@ class AllPolls extends Component {
 
   render() {
     return (
-      <main>
+      <main className="container">
         <ul>
           {this.state.polls}
         </ul>

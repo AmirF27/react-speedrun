@@ -31,11 +31,11 @@ class Poll extends Component {
       });
 
       return (
-        <main>
+        <main className="container">
           <form action="/api/voting-app/vote/" method="post" onSubmit={this.submitVote}>
             <input type="hidden" value={this.state.poll.title} name="pollTitle" />
             {options}
-            <input type="submit" value="vote" />
+            <input type="submit" value="Vote" className="button button--primary" />
           </form>
           {this.state.error &&
             <p>{this.state.error}</p>

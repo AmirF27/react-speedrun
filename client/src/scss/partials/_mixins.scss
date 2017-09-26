@@ -9,3 +9,11 @@
     display: block;
   }
 }
+
+@mixin button-box-shadow($color) {
+  box-shadow: 0 2px 2px lighten($color, 10%);
+}
+
+@mixin button-text-shadow($color) {
+  text-shadow: 0 0 5px lighten($color, 5%);
+}

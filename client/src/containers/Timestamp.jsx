@@ -8,7 +8,7 @@ class Timestamp extends Component {
     url.formatForApi();
 
     return (
-      <section>
+      <main className="container">
         <h2>Timestamp Microservice</h2>
         <p>
           This microservice converts between Unix timestamps and natural language
@@ -35,7 +35,7 @@ class Timestamp extends Component {
             <p>Output: <code>&#123;"unix":null,"natural":null&#125;</code></p>
           </li>
         </ol>
-      </section>
+      </main>
     );
   }
 }

@@ -18,7 +18,7 @@ class VotingApp extends Component {
 
   render() {
     return (
-      <main>
+      <main className="container">
         <Link to="/voting-app/new-poll">Make a New Poll</Link>
         {this.state.ready
           ? <PollList polls={this.state.polls} type="all"></PollList>

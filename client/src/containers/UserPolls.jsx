@@ -30,14 +30,14 @@ class UserPolls extends Component {
   render() {
     if (!this.state.ready) {
       return (
-        <main>
+        <main className="container">
           <p>Loading polls...</p>
         </main>
       );
     }
 
     return (
-      <main>
+      <main className="container">
         <PollList
           polls={this.state.polls}
           type="user"

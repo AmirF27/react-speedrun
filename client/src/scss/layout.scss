@@ -1,3 +1,7 @@
+main {
+  padding-top: $page-top-spacing;
+}
+
 .container {
   @include center-block;
   @include clearfix;

@@ -1,0 +1,31 @@
+.button {
+  border: none;
+  border-radius: $control-border-radius;
+  cursor: pointer;
+  font-size: $button-font-size;
+  font-weight: $button-font-weight;
+  height: $button-height;
+  outline: none;
+  padding-left: $button-padding;
+  padding-right: $button-padding;
+  transition: $default-transition;
+
+  &:focus {
+    box-shadow: none !important;
+    transform: translateY(2px);
+    transition: none;
+  }
+
+  &.button--small {
+    font-size: $button-small-font-size;
+    height: $button-small-height;
+    padding-left: $button-small-padding;
+    padding-right: $button-small-padding;
+  }
+}
+
+@each $type in $button-types {
+  .button--#{$type} {
+    @extend %button-#{$type}-colors;
+  }
+}

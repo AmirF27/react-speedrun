@@ -36,14 +36,14 @@ class NewPoll extends Component {
     }
 
     return (
-      <main>
+      <main className="container">
         <h3>Create a new poll</h3>
         <form action="/api/voting-app/new-poll" method="post" onSubmit={this.submitPoll}>
           <label htmlFor="poll-title">Poll title</label>
           <input id="poll-title" type="text" name="title" required />
           <label htmlFor="poll-option1">Options</label>
           {options}
-          <input type="submit" value="Add Poll" />
+          <input type="submit" value="Add Poll" className="button button--primary" />
         </form>
         <button onClick={this.addOption}>+</button>
         <p>{this.state.message}</p>

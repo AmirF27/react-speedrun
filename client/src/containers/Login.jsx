@@ -26,13 +26,13 @@ class Login extends Component {
     }
 
     return (
-      <main>
+      <main className="container">
         <form action="/api/login" method="post" onSubmit={this.login}>
           <label htmlFor="email">Email</label>
           <input id="email" type="email" name="email" required />
           <label htmlFor="password">Password</label>
           <input id="password" type="password" name="password" required></input>
-          <input type="submit" value="Login" />
+          <input type="submit" value="Login" className="button button--primary" />
         </form>
         {this.state.error &&
           <p>{this.state.error}</p>

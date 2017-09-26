@@ -1,12 +1,9 @@
 body {
+  background: lighten($color-secondary, 15%);
   font-family: $default-font-family;
   margin: 0;
 }
 
 header {
-  background: $color-text-primary;
-}
-
-a {
-  text-decoration: none;
+  background: $color-primary;
 }

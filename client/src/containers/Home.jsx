@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 class Home extends Component {
   render() {
     return (
-      <main>
+      <main className="container">
         <ul>
           <li><Link to="/timestamp">Timestamp Microservice</Link></li>
           <li><Link to="/header-parser">Header Parser Microservice</Link></li>

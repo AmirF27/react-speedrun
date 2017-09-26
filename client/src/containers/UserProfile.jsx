@@ -6,7 +6,7 @@ import { mapStateToProps } from '../js/util';
 class UserProfile extends Component {
   render() {
     return (
-      <main>
+      <main className="container">
         <Link to={`/profile/${this.props.match.params.email}/polls`}>Polls</Link>
       </main>
     );

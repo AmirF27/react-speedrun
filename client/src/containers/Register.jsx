@@ -16,7 +16,7 @@ class Register extends Component {
 
   render() {
     return (
-      <main>
+      <main className="container">
         <form action="/api/register" method="post" onSubmit={this.register}>
           <label htmlFor="name">Name</label>
           <input id="name" type="text" name="name" />
@@ -26,7 +26,7 @@ class Register extends Component {
           <input id="password" type="password" name="password" required />
           <label htmlFor="confirm">Confirm Password</label>
           <input id="confirm" type="password" name="confirm" required />
-          <input type="submit" value="Register" />
+          <input type="submit" value="Register" className="button button--primary" />
         </form>
         {this.state.error &&
           <p>{this.state.error}</p>
