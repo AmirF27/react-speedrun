@@ -7,10 +7,13 @@ export default class Poll extends Component {
     super(props);
 
     this.getPoll = this.getPoll.bind(this);
+    this.submitVote = this.submitVote.bind(this);
 
     this.state = {
       title: props.match.params.title,
-      poll: null
+      poll: null,
+      error: null,
+      message: null
     };
   }
 
@@ -29,11 +32,17 @@ export default class Poll extends Component {
 
       return (
         <main>
-          <form action="/api/voting-app/vote/" method="post">
+          <form action="/api/voting-app/vote/" method="post" onSubmit={this.submitVote}>
             <input type="hidden" value={this.state.poll.title} name="pollTitle" />
             {options}
             <input type="submit" value="vote" />
           </form>
+          {this.state.error &&
+            <p>{this.state.error}</p>
+          }
+          {this.state.message &&
+            <p>{this.state.message}</p>
+          }
         </main>
       );
     }
@@ -60,5 +69,23 @@ export default class Poll extends Component {
           console.log(err);
         }
       );
+  }
+
+  submitVote(event) {
+    event.preventDefault();
+
+    Ajax.submitForm(event.target, (err, data) => {
+      if (!err) {
+        this.setState({
+          error: data.error || null,
+          message: data.message || null
+        });
+      } else {
+        this.setState({
+          error: err.error,
+          message: null
+        });
+      }
+    });
   }
 };

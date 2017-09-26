@@ -142,6 +142,11 @@ module.exports = function(wagner, passport) {
 
   api.post('/voting-app/vote/', upload.any(), wagner.invoke(function(Poll) {
     return function(req, res) {
+      if (!req.body.vote) {
+        return res.status(status.BAD_REQUEST).
+                   json({ error: 'No option was specified.' });
+      }
+
       Poll.vote(req.body.pollTitle, req.body.vote, function(err) {
         if (err) {
           res.status(status.INTERNAL_SERVER_ERROR).

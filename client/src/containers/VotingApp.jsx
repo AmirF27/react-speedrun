@@ -17,16 +17,13 @@ export default class VotingApp extends Component {
   }
 
   render() {
-    if (!this.state.ready) {
-      return (
-        <main></main>
-      );
-    }
-
     return (
       <main>
         <Link to="/voting-app/new-poll">Make a New Poll</Link>
-        <PollList polls={this.state.polls} type="all"></PollList>
+        {this.state.ready
+          ? <PollList polls={this.state.polls} type="all"></PollList>
+          : <p>Loading polls...</p>
+        }
       </main>
     );
   }
