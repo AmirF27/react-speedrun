@@ -4,6 +4,7 @@ import { Redirect } from 'react-router';
 import { connect } from 'react-redux';
 import { checkAuth, mapStateToProps } from '../js/util';
 
+import Title from './Title.jsx';
 import Logout from './Logout.jsx';
 
 import {
@@ -23,17 +24,23 @@ class Navbar extends Component {
   render() {
     if (!this.props.authed) {
       return (
-        <nav>
-          <Link to="/login">Login</Link>
-          <Link to="/register">Register</Link>
+        <nav className="nav container">
+          <Title></Title>
+          <ul className="navbar navbar--right">
+            <li className="navbar__link"><Link to="/login">Login</Link></li>
+            <li className="navbar__link"><Link to="/register">Register</Link></li>
+          </ul>
         </nav>
       );
     }
 
     return (
-      <nav>
-        <Link to={`/profile/${this.props.user.email}`}>Profile</Link>
-        <Logout onLogout={this.props.logout}></Logout>
+      <nav className="nav container">
+        <Title></Title>
+        <ul className="navbar navbar--right">
+          <li className="navbar__link"><Link to={`/profile/${this.props.user.email}`}>Profile</Link></li>
+          <li className="navbar__link"><Logout onLogout={this.props.logout}></Logout></li>
+        </ul>
       </nav>
     );
   }

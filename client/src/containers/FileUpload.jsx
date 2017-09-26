@@ -21,9 +21,9 @@ class FileUpload extends Component {
         <p>
           Allows you to upload a file to the server and returns the file's size.
         </p>
-        <form method='post' action='/api/file-upload' onSubmit={this.uploadFile}>
-          <input type='file' name='file' />
-          <input type='submit' value='Upload' />
+        <form method="post" action="/api/file-upload" onSubmit={this.uploadFile}>
+          <input type="file" name="file" />
+          <input type="submit" value="Upload" />
         </form>
         {this.state.uploaded &&
           <div>

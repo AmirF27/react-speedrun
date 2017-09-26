@@ -28,22 +28,22 @@ class NewPoll extends Component {
     const options = [];
 
     for (let i = 0; i < this.state.nOptions; i++) {
-      options.push(<input id={`poll-option${i + 1}`} type='text' name={`options[${i}]`} key={i} required />);
+      options.push(<input id={`poll-option${i + 1}`} type="text" name={`options[${i}]`} key={i} required />);
     }
 
     if (this.state.checkedAuth && !this.props.authed) {
-      return (<Redirect to='/login' />);
+      return (<Redirect to="/login" />);
     }
 
     return (
       <main>
         <h3>Create a new poll</h3>
-        <form action='/api/voting-app/new-poll' method='post' onSubmit={this.submitPoll}>
-          <label htmlFor='poll-title'>Poll title</label>
-          <input id='poll-title' type='text' name='title' required />
-          <label htmlFor='poll-option1'>Options</label>
+        <form action="/api/voting-app/new-poll" method="post" onSubmit={this.submitPoll}>
+          <label htmlFor="poll-title">Poll title</label>
+          <input id="poll-title" type="text" name="title" required />
+          <label htmlFor="poll-option1">Options</label>
           {options}
-          <input type='submit' value='Add Poll' />
+          <input type="submit" value="Add Poll" />
         </form>
         <button onClick={this.addOption}>+</button>
         <p>{this.state.message}</p>

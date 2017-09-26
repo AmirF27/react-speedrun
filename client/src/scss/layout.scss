@@ -1,0 +1,14 @@
+.container {
+  @include center-block;
+  @include clearfix;
+
+  width: $container-width;
+}
+
+.left {
+  float: left;
+}
+
+.right {
+  float: right;
+}

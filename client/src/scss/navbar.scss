@@ -1,0 +1,46 @@
+.nav {
+  height: $navbar-height;
+}
+
+.navbar {
+  list-style-type: none;
+  margin: 0;
+
+  .navbar__link {
+    display: inline-block;
+  }
+
+  .navbar__logo {
+    @extend .left;
+
+    letter-spacing: $logo-letter-spacing;
+    margin: 0;
+  }
+
+  .navbar__link,
+  .navbar__logo {
+    line-height: $navbar-height;
+    transition: $navbar-link-transition;
+
+    a {
+      color: $color-primary;
+      display: inline-block;
+      height: 100%;
+      padding-left: $navbar-link-padding;
+      padding-right: $navbar-link-padding;
+      transition: $navbar-link-transition;
+    }
+
+    &:hover {
+      background: $color-primary;
+
+      & a {
+        color: $color-text-primary;
+      }
+    }
+  }
+}
+
+.navbar--right {
+  @extend .right;
+}
