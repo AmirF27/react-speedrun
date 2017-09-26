@@ -1,22 +1,22 @@
 import initialState from '../constants/initial-state';
 import {
-  AUTHENTICATE,
-  UNAUTHENTICATE
+  LOGIN,
+  LOGOUT
 } from '../constants/action-types';
 import {
-  authenticate,
-  unauthenticate
+  login,
+  logout
 } from '../actions';
 
 const auth = (state = initialState, action) => {
   switch (action.type) {
-    case AUTHENTICATE:
+    case LOGIN:
       return {
         ...state,
         authed: true,
         user: action.user
       };
-    case UNAUTHENTICATE:
+    case LOGOUT:
       return {
         ...state,
         authed: false,

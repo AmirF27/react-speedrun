@@ -4,7 +4,7 @@ import Ajax from '../js/ajax';
 
 import PollList from './PollList.jsx';
 
-export default class VotingApp extends Component {
+class VotingApp extends Component {
   constructor() {
     super();
 
@@ -43,4 +43,6 @@ export default class VotingApp extends Component {
         }
       );
   }
-};
+}
+
+export default VotingApp;

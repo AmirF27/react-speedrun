@@ -236,6 +236,11 @@ module.exports = function(wagner, passport) {
     })(req, res);
   });
 
+  api.post('/logout', function(req, res) {
+    req.logout();
+    res.json({ done: true });
+  });
+
   api.get('/user', function(req, res) {
     if (req.user) {
       res.json({

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Url from '../js/url'
 
-export default class HeaderParser extends Component {
+class HeaderParser extends Component {
   render() {
     const url = new Url(window.location.href);
 
@@ -21,4 +21,6 @@ export default class HeaderParser extends Component {
       </section>
     );
   }
-};
+}
+
+export default HeaderParser;

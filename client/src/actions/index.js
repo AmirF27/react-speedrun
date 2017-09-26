@@ -1,7 +1,7 @@
-import authenticate from './authenticate';
-import unauthenticate from './unauthenticate';
+import login from './login';
+import logout from './logout';
 
 export {
-  authenticate,
-  unauthenticate
+  login,
+  logout
 };

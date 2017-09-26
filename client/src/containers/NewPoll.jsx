@@ -5,8 +5,8 @@ import Ajax from '../js/ajax';
 import { checkAuth, mapStateToProps } from '../js/util';
 
 import {
-  authenticate,
-  unauthenticate
+  login,
+  logout
 } from '../actions';
 
 class NewPoll extends Component {
@@ -53,8 +53,8 @@ class NewPoll extends Component {
 
   componentDidMount() {
     checkAuth(
-      this.props.authenticate,
-      this.props.unauthenticate,
+      this.props.login,
+      this.props.logout,
       () => this.setState({ checkedAuth: true })
     );
   }
@@ -83,7 +83,7 @@ class NewPoll extends Component {
 export default connect(
   mapStateToProps,
   {
-    authenticate,
-    unauthenticate
+    login,
+    logout
   }
 )(NewPoll);

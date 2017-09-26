@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import Ajax from '../js/ajax';
 
-export default class Poll extends Component {
+class Poll extends Component {
   constructor(props) {
     super(props);
 
@@ -88,4 +88,6 @@ export default class Poll extends Component {
       }
     });
   }
-};
+}
+
+export default Poll;

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Redirect } from 'react-router';
 import Ajax from '../js/ajax';
 
-export default class Register extends Component {
+class Register extends Component {
   constructor() {
     super();
 
@@ -55,4 +55,6 @@ export default class Register extends Component {
       }
     });
   }
-};
+}
+
+export default Register;

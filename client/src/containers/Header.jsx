@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 import Navbar from './Navbar.jsx';
 
-export default class Header extends Component {
+class Header extends Component {
   render() {
     return (
       <header>
@@ -12,4 +12,6 @@ export default class Header extends Component {
       </header>
     );
   }
-};
+}
+
+export default Header;

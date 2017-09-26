@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Ajax from '../js/ajax';
 
-export default class FileUpload extends Component {
+class FileUpload extends Component {
   constructor() {
     super();
 
@@ -59,4 +59,6 @@ export default class FileUpload extends Component {
       }
     });
   }
-};
+}
+
+export default FileUpload;

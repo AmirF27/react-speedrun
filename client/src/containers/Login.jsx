@@ -5,8 +5,8 @@ import Ajax from '../js/ajax';
 import { mapStateToProps } from '../js/util';
 
 import {
-  authenticate,
-  unauthenticate
+  login,
+  logout
 } from '../actions';
 
 class Login extends Component {
@@ -50,7 +50,7 @@ class Login extends Component {
           error: data.error
         });
       } else {
-        this.props.authenticate(data.user);
+        this.props.login(data.user);
       }
     });
   }
@@ -58,5 +58,5 @@ class Login extends Component {
 
 export default connect(
   mapStateToProps,
-  { authenticate },
+  { login },
 )(Login);

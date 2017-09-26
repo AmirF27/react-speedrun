@@ -1,14 +1,14 @@
 import Ajax from './ajax';
 
-export function checkAuth(authenticate, unauthenticate, callback) {
+export function checkAuth(login, logout, callback) {
   Ajax.
     get('/api/user').
     then(
       function fulfilled(res) {
         if (res.user) {
-          authenticate(res.user);
+          login(res.user);
         } else {
-          unauthenticate();
+          logout();
         }
         if (callback) callback();
       },

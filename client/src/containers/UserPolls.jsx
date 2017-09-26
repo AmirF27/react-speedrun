@@ -7,8 +7,8 @@ import { checkAuth, mapStateToProps } from '../js/util';
 import PollList from './PollList.jsx';
 
 import {
-  authenticate,
-  unauthenticate
+  login,
+  logout
 } from '../actions';
 
 class UserPolls extends Component {
@@ -29,7 +29,11 @@ class UserPolls extends Component {
 
   render() {
     if (!this.state.ready) {
-      return (<main></main>);
+      return (
+        <main>
+          <p>Loading polls...</p>
+        </main>
+      );
     }
 
     return (
@@ -37,7 +41,8 @@ class UserPolls extends Component {
         <PollList
           polls={this.state.polls}
           type="user"
-          isProfileOwner={this.state.isProfileOwner}>
+          isProfileOwner={this.state.isProfileOwner}
+          onDeletePoll={this.deletePoll}>
         </PollList>
         {this.state.error &&
           <p>{this.state.error}</p>
@@ -51,8 +56,8 @@ class UserPolls extends Component {
 
   componentDidMount() {
     checkAuth(
-      this.props.authenticate,
-      this.props.unauthenticate,
+      this.props.login,
+      this.props.logout,
       this.getUserPolls
     );
   }
@@ -104,7 +109,7 @@ class UserPolls extends Component {
 export default connect(
   mapStateToProps,
   {
-    authenticate,
-    unauthenticate
+    login,
+    logout
   }
 )(UserPolls);

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Url from '../js/url';
 
-export default class Timestamp extends Component {
+class Timestamp extends Component {
   render() {
     const url = new Url(window.location.href);
 
@@ -38,4 +38,6 @@ export default class Timestamp extends Component {
       </section>
     );
   }
-};
+}
+
+export default Timestamp;
