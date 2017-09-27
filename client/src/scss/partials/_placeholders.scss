@@ -3,7 +3,7 @@
   color: $button-primary-color;
 
   &:hover {
-    @include button-box-shadow($button-primary-bg);
+    @include button-box-shadow($color-primary);
     @include button-text-shadow($button-primary-color);
   }
 }
@@ -13,7 +13,7 @@
   color: $button-secondary-color;
 
   &:hover {
-    @include button-box-shadow($button-secondary-bg);
+    @include button-box-shadow($color-primary);
     @include button-text-shadow($button-secondary-color);
   }
 }
@@ -23,7 +23,7 @@
   color: $button-negative-color;
 
   &:hover {
-    @include button-box-shadow($button-negative-bg);
+    @include button-box-shadow($color-primary);
     @include button-text-shadow($button-negative-color);
   }
 }

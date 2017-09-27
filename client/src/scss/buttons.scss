@@ -16,6 +16,10 @@
     transition: none;
   }
 
+  &.button--block {
+    width: 100%;
+  }
+
   &.button--small {
     font-size: $button-small-font-size;
     height: $button-small-height;

@@ -27,12 +27,25 @@ class Login extends Component {
 
     return (
       <main className="container">
-        <form action="/api/login" method="post" onSubmit={this.login}>
+        <form action="/api/login"
+              method="post"
+              onSubmit={this.login}
+              className="form">
           <label htmlFor="email">Email</label>
-          <input id="email" type="email" name="email" required />
+          <input id="email"
+                 type="email"
+                 name="email"
+                 className="form__input"
+                 required />
           <label htmlFor="password">Password</label>
-          <input id="password" type="password" name="password" required></input>
-          <input type="submit" value="Login" className="button button--primary" />
+          <input id="password"
+                 type="password"
+                 name="password"
+                 className="form__input"
+                 required></input>
+          <input type="submit"
+                 value="Login"
+                 className="button button--primary button--block" />
         </form>
         {this.state.error &&
           <p>{this.state.error}</p>

@@ -16,10 +16,13 @@ $color-negative: $red;
 
 $button-primary-bg: $color-primary;
 $button-primary-color: $color-text-primary;
-$button-secondary-bg: $color-secondary;
-$button-secondary-color: $color-text-secondary;
+$button-secondary-bg: $color-text-primary;
+$button-secondary-color: $color-primary;
 $button-negative-bg: $color-negative;
 $button-negative-color: lighten($red, 50%);
+
+$input-border-color: lighten($color-primary, 10%);
+$input-border-active-color: darken($color-primary, 10%);
 
 
 // LAYOUT
@@ -27,6 +30,8 @@ $button-negative-color: lighten($red, 50%);
 $page-top-spacing: 40px;
 
 $container-width: 960px;
+
+$default-border-width: 1px;
 
 
 // TYPOGRAPHY
@@ -44,13 +49,19 @@ $navbar-link-padding: 15px;
 
 // CONTROLS
 
+$form-default-width: $container-width / 2;
+$input-height: 30px;
+$input-margin-bottom: 15px;
+$input-margin-top: $input-margin-bottom / 3;
+$input-padding: 10px;
+
+$control-border-radius: 3px;
+
 $button-types: (
   primary,
   secondary,
   negative,
 );
-
-$control-border-radius: 3px;
 
 $button-height: 40px;
 $button-padding: 15px;

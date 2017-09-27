@@ -28,7 +28,14 @@ class NewPoll extends Component {
     const options = [];
 
     for (let i = 0; i < this.state.nOptions; i++) {
-      options.push(<input id={`poll-option${i + 1}`} type="text" name={`options[${i}]`} key={i} required />);
+      options.push(
+        <input id={`poll-option${i + 1}`}
+               type="text"
+               name={`options[${i}]`}
+               key={i}
+               className="form__input"
+               required />
+      );
     }
 
     if (this.state.checkedAuth && !this.props.authed) {
@@ -38,14 +45,28 @@ class NewPoll extends Component {
     return (
       <main className="container">
         <h3>Create a new poll</h3>
-        <form action="/api/voting-app/new-poll" method="post" onSubmit={this.submitPoll}>
+        <form action="/api/voting-app/new-poll"
+              method="post"
+              onSubmit={this.submitPoll}
+              className="form">
           <label htmlFor="poll-title">Poll title</label>
-          <input id="poll-title" type="text" name="title" required />
+          <input id="poll-title"
+                 type="text"
+                 name="title"
+                 className="form__input"
+                 required />
           <label htmlFor="poll-option1">Options</label>
           {options}
-          <input type="submit" value="Add Poll" className="button button--primary" />
+          <button
+            onClick={this.addOption}
+            type="button"
+            className="button button--secondary">
+            <i className="fa fa-plus" aria-hidden="true"></i> Add Option
+          </button>
+          <input type="submit"
+                 value="Add Poll"
+                 className="button button--primary button--block" />
         </form>
-        <button onClick={this.addOption}>+</button>
         <p>{this.state.message}</p>
       </main>
     );
