@@ -45,4 +45,31 @@
       width: $form-inline-input-width;
     }
   }
+
+  .form__radio {
+    display: none;
+
+    + label {
+      display: inline-block;
+      margin-bottom: $checkbox-margin-bottom;
+      vertical-align: middle;
+
+      &:before {
+        @include rounded($radio-size);
+
+        background: $color-primary;
+        border: $checkbox-border;
+        box-shadow: $checkbox-shadow;
+        content: '';
+        display: inline-block;
+        margin-right: $checkbox-margin-right;
+        vertical-align: middle;
+      }
+    }
+
+    &:checked + label:before {
+      background: $blue;
+      box-shadow: $checkbox-checked-shadow;
+    }
+  }
 }

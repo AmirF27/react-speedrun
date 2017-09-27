@@ -27,7 +27,6 @@ class ChartView extends Component {
 
   componentDidMount() {
     this.displayChart();
-    console.dir(palette.slice(0, this.props.data.length));
   }
 
   componentDidUpdate() {

@@ -35,35 +35,33 @@ class Poll extends Component {
     const options = this.state.poll.options.map(function(option, i) {
       return (
         <div>
-          <input id={`option.name${i}`} type="radio" value={option.name} name="vote" key={i} required />
-          <label htmlFor={`option.name${i}`}>{option.name} ({option.votes} votes)</label>
+          <input
+            id={`option.name${i}`} className="form__radio" key={i} name="vote"
+            type="radio" value={option.name} required />
+          <label htmlFor={`option.name${i}`}>{option.name}</label>
         </div>
       );
     });
 
     return (
       <main className="container">
-        <form action={`/api/voting-app/vote/${this.state.poll.title}`} method="post" onSubmit={this.submitVote}>
+        <form
+          action={`/api/voting-app/vote/${this.state.poll.title}`}
+          method="post" onSubmit={this.submitVote} className="form">
           {options}
           <input type="submit" value="Vote" className="button button--primary" />
         </form>
         {this.props.authed &&
           <form
             action={`/api/voting-app/add-option/${this.state.poll.title}`}
-            method="post"
-            onSubmit={this.addOption}
-            className="form form--inline">
+            method="post" onSubmit={this.addOption} className="form form--inline">
             <input
-              type="text"
-              name="option"
-              placeholder="Add a custom option..."
-              className="form__input"
-              required
+              className="form__input" name="option" type="text"
+              placeholder="Add a custom option..." required
             />
             <input
-              type="submit"
+              className="button button--default" type="submit"
               value="Add Option"
-              className="button button--default"
             />
           </form>
         }

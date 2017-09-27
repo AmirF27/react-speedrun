@@ -1,5 +1,6 @@
 body {
   background: lighten($color-secondary, 15%);
+  color: $color-text-primary;
   font-family: $default-font-family;
   margin: 0;
 }
