@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import Ajax from '../js/ajax';
 import { checkAuth, mapStateToProps } from '../js/util';
@@ -16,8 +17,9 @@ class NewPoll extends Component {
     this.state = {
       nOptions: 2,
       checkedAuth: false,
-      authed: false,
-      message: ''
+      error: null,
+      message: null,
+      pollLink: null
     };
   }
 
@@ -64,7 +66,12 @@ class NewPoll extends Component {
                  value="Add Poll"
                  className="button button--primary button--block" />
         </form>
-        <p>{this.state.message}</p>
+        {this.state.message && this.state.pollLink &&
+          <p>
+            {this.state.message}
+            <Link to={this.state.pollLink}> View poll.</Link>
+          </p>
+        }
       </main>
     );
   }
@@ -85,11 +92,14 @@ class NewPoll extends Component {
 
   submitPoll(event) {
     event.preventDefault();
+    event.persist();
 
     Ajax.submitForm(event.target, (err, data) => {
       if (!err) {
         this.setState({
-          message: data.error || data.message
+          error: data.error || null,
+          message: data.message || null,
+          pollLink: `/voting-app/poll/${event.target.elements['title'].value}`
         });
       } else {
         console.error(err);
