@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
-
+import { connect } from 'react-redux';
 import Ajax from '../js/ajax';
+import { checkAuth, mapStateToProps } from '../js/util';
+
+import { login, logout } from '../actions';
+import ChartView from './ChartView.jsx';
 
 class Poll extends Component {
   constructor(props) {
@@ -20,25 +24,30 @@ class Poll extends Component {
   }
 
   render() {
-    let options;
-
-    if (this.state.poll) {
-      options = this.state.poll.options.map(function(option, i) {
-        return (
-          <div>
-            <input id={`option.name${i}`} type="radio" value={option.name} name="vote" key={i} required />
-            <label htmlFor={`option.name${i}`}>{option.name} ({option.votes} votes)</label>
-          </div>
-        );
-      });
-
+    if (!this.state.poll) {
       return (
-        <main className="container">
-          <form action="/api/voting-app/vote/" method="post" onSubmit={this.submitVote}>
-            <input type="hidden" value={this.state.poll.title} name="pollTitle" />
-            {options}
-            <input type="submit" value="Vote" className="button button--primary" />
-          </form>
+        <main>
+          <p>Loading poll...</p>
+        </main>
+      );
+    }
+
+    const options = this.state.poll.options.map(function(option, i) {
+      return (
+        <div>
+          <input id={`option.name${i}`} type="radio" value={option.name} name="vote" key={i} required />
+          <label htmlFor={`option.name${i}`}>{option.name} ({option.votes} votes)</label>
+        </div>
+      );
+    });
+
+    return (
+      <main className="container">
+        <form action={`/api/voting-app/vote/${this.state.poll.title}`} method="post" onSubmit={this.submitVote}>
+          {options}
+          <input type="submit" value="Vote" className="button button--primary" />
+        </form>
+        {this.props.authed &&
           <form
             action={`/api/voting-app/add-option/${this.state.poll.title}`}
             method="post"
@@ -54,23 +63,27 @@ class Poll extends Component {
             <input
               type="submit"
               value="Add Option"
-              className="button button--primary"
+              className="button button--default"
             />
           </form>
-          {this.state.error &&
-            <p>{this.state.error}</p>
-          }
-          {this.state.message &&
-            <p>{this.state.message}</p>
-          }
-        </main>
-      );
-    }
-
-    return null;
+        }
+        <ChartView
+          title="Votes"
+          labels={this.state.poll.options.map(option => option.name)}
+          data={this.state.poll.options.map(option => option.votes)}>
+        </ChartView>
+        {this.state.error &&
+          <p>{this.state.error}</p>
+        }
+        {this.state.message &&
+          <p>{this.state.message}</p>
+        }
+      </main>
+    );
   }
 
   componentDidMount() {
+    checkAuth(this.props.login, this.props.logout);
     this.getPoll();
   }
 
@@ -93,9 +106,11 @@ class Poll extends Component {
 
   submitVote(event) {
     event.preventDefault();
+    event.persist();
 
     Ajax.submitForm(event.target, (err, data) => {
       this.handleResponse(err, data);
+      this.getPoll();
     });
   }
 
@@ -104,20 +119,16 @@ class Poll extends Component {
     event.persist();
 
     Ajax.submitForm(event.target, (err, data) => {
-      this.handleResponse(err, data, event.target.elements['option'].value);
+      this.handleResponse(err, data);
+      this.getPoll();
     });
   }
 
-  handleResponse(err, data, option) {
+  handleResponse(err, data) {
     if (!err) {
       this.setState({
         error: data.error || null,
-        message: data.message || null,
-        poll: {
-          options: option
-            ? this.state.poll.options.concat({ name: option, votes: 0 })
-            : this.state.poll.options
-        }
+        message: data.message || null
       });
     } else {
       this.setState({
@@ -128,4 +139,7 @@ class Poll extends Component {
   }
 }
 
-export default Poll;
+export default connect(
+  mapStateToProps,
+  { login, logout }
+)(Poll);

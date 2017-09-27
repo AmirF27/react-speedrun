@@ -25,7 +25,7 @@
     transition: $default-transition;
 
     a {
-      color: $color-text-primary;
+      color: $color-accent;
       display: inline-block;
       height: 100%;
       padding-left: $navbar-link-padding;
@@ -34,7 +34,7 @@
     }
 
     &:hover {
-      background: $color-text-primary;
+      background: $color-accent;
 
       & a {
         color: $color-primary;

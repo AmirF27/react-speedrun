@@ -4,10 +4,7 @@ import { connect } from 'react-redux';
 import Ajax from '../js/ajax';
 import { checkAuth, mapStateToProps } from '../js/util';
 
-import {
-  login,
-  logout
-} from '../actions';
+import { login, logout } from '../actions';
 
 class NewPoll extends Component {
   constructor() {
@@ -60,7 +57,7 @@ class NewPoll extends Component {
           <button
             onClick={this.addOption}
             type="button"
-            className="button button--secondary">
+            className="button button--default">
             <i className="fa fa-plus" aria-hidden="true"></i> Add Option
           </button>
           <input type="submit"
@@ -103,8 +100,5 @@ class NewPoll extends Component {
 
 export default connect(
   mapStateToProps,
-  {
-    login,
-    logout
-  }
+  { login, logout }
 )(NewPoll);

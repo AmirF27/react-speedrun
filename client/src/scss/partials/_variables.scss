@@ -6,17 +6,22 @@ $lime: #acc18a;
 $light-lime: #adfeb7;
 $light-gray: #f2fbe0;
 $red: #7c0902;
+$blue: #748CAB;
+$dark-blue: #2a2b2e;
 
 $color-primary: $dark-gray;
 $color-secondary: $gray;
-$color-text-primary: $lime;
+$color-text-primary: $dark-blue;
 $color-text-secondary: $light-lime;
+$color-accent: $lime;
 $color-divider: $light-gray;
 $color-negative: $red;
 
-$button-primary-bg: $color-primary;
+$button-default-bg: $color-primary;
+$button-default-color: $color-accent;
+$button-primary-bg: $blue;
 $button-primary-color: $color-text-primary;
-$button-secondary-bg: $color-text-primary;
+$button-secondary-bg: $color-accent;
 $button-secondary-color: $color-primary;
 $button-negative-bg: $color-negative;
 $button-negative-color: lighten($red, 50%);
@@ -59,6 +64,7 @@ $control-height: 40px;
 $control-border-radius: 3px;
 
 $button-types: (
+  default,
   primary,
   secondary,
   negative,

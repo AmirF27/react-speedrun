@@ -1,10 +1,18 @@
+%button-default-colors {
+  background: $button-default-bg;
+  color: $button-default-color;
+
+  &:hover {
+    @include button-box-shadow($color-primary);
+  }
+}
+
 %button-primary-colors {
   background: $button-primary-bg;
   color: $button-primary-color;
 
   &:hover {
     @include button-box-shadow($color-primary);
-    @include button-text-shadow($button-primary-color);
   }
 }
 
@@ -14,7 +22,6 @@
 
   &:hover {
     @include button-box-shadow($color-primary);
-    @include button-text-shadow($button-secondary-color);
   }
 }
 
@@ -24,6 +31,5 @@
 
   &:hover {
     @include button-box-shadow($color-primary);
-    @include button-text-shadow($button-negative-color);
   }
 }

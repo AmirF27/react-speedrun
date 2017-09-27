@@ -1,6 +1,9 @@
 import Ajax from './ajax';
+import distinctColors from 'distinct-colors';
 
-export function checkAuth(login, logout, callback) {
+const COLOR_COUNT = 100;
+
+function checkAuth(login, logout, callback) {
   Ajax.
     get('/api/user').
     then(
@@ -16,12 +19,31 @@ export function checkAuth(login, logout, callback) {
         console.error(err);
       }
     );
-};
+}
 
-export function mapStateToProps(state) {
+function mapStateToProps(state) {
   return {
     checkedAuth: state.auth.checkedAuth,
     authed: state.auth.authed,
     user: state.auth.user
   };
+}
+
+const palette = (function(count) {
+  const colors = distinctColors({
+    count,
+    lightMin: 10,
+    hueMin: 15
+  });
+
+  return colors.map(color => {
+    const [r, g, b] = color._rgb;
+    return `rgb(${r}, ${g}, ${b})`;
+  });
+})(COLOR_COUNT);
+
+export {
+  checkAuth,
+  mapStateToProps,
+  palette
 };

@@ -140,25 +140,27 @@ module.exports = function(wagner, passport) {
     };
   }));
 
-  api.post('/voting-app/vote/', upload.any(), wagner.invoke(function(Poll) {
-    return function(req, res) {
-      if (!req.body.vote) {
-        return res.status(status.BAD_REQUEST).
-                   json({ error: 'No option was specified.' });
-      }
-
-      Poll.vote(req.body.pollTitle, req.body.vote, function(err) {
-        if (err) {
-          res.status(status.INTERNAL_SERVER_ERROR).
-              json({
-                error: 'An error occured while attempting to submit vote.'
-              });
-        } else {
-          res.json({ message: 'Vote submitted successfully!' });
+  api.post('/voting-app/vote/:pollTitle',
+    upload.any(),
+    wagner.invoke(function(Poll) {
+      return function(req, res) {
+        if (!req.body.vote) {
+          return res.status(status.BAD_REQUEST).
+                     json({ error: 'No option was specified.' });
         }
-      });
-    };
-  }));
+
+        Poll.vote(req.params.pollTitle, req.body.vote, function(err) {
+          if (err) {
+            res.status(status.INTERNAL_SERVER_ERROR).
+                json({
+                  error: 'An error occured while attempting to submit vote.'
+                });
+          } else {
+            res.json({ message: 'Vote submitted successfully!' });
+          }
+        });
+      };
+    }));
 
   api.post('/voting-app/add-option/:pollTitle',
     upload.any(),
