@@ -50,11 +50,12 @@ $navbar-link-padding: 15px;
 // CONTROLS
 
 $form-default-width: $container-width / 2;
-$input-height: 30px;
 $input-margin-bottom: 15px;
 $input-margin-top: $input-margin-bottom / 3;
 $input-padding: 10px;
+$form-inline-input-width: 300px;
 
+$control-height: 40px;
 $control-border-radius: 3px;
 
 $button-types: (
@@ -63,7 +64,6 @@ $button-types: (
   negative,
 );
 
-$button-height: 40px;
 $button-padding: 15px;
 $button-font-size: .9rem;
 $button-font-weight: 600;

@@ -8,6 +8,8 @@ class Poll extends Component {
 
     this.getPoll = this.getPoll.bind(this);
     this.submitVote = this.submitVote.bind(this);
+    this.addOption = this.addOption.bind(this);
+    this.handleResponse = this.handleResponse.bind(this);
 
     this.state = {
       title: props.match.params.title,
@@ -36,6 +38,24 @@ class Poll extends Component {
             <input type="hidden" value={this.state.poll.title} name="pollTitle" />
             {options}
             <input type="submit" value="Vote" className="button button--primary" />
+          </form>
+          <form
+            action={`/api/voting-app/add-option/${this.state.poll.title}`}
+            method="post"
+            onSubmit={this.addOption}
+            className="form form--inline">
+            <input
+              type="text"
+              name="option"
+              placeholder="Add a custom option..."
+              className="form__input"
+              required
+            />
+            <input
+              type="submit"
+              value="Add Option"
+              className="button button--primary"
+            />
           </form>
           {this.state.error &&
             <p>{this.state.error}</p>
@@ -75,18 +95,36 @@ class Poll extends Component {
     event.preventDefault();
 
     Ajax.submitForm(event.target, (err, data) => {
-      if (!err) {
-        this.setState({
-          error: data.error || null,
-          message: data.message || null
-        });
-      } else {
-        this.setState({
-          error: err.error,
-          message: null
-        });
-      }
+      this.handleResponse(err, data);
     });
+  }
+
+  addOption(event) {
+    event.preventDefault();
+    event.persist();
+
+    Ajax.submitForm(event.target, (err, data) => {
+      this.handleResponse(err, data, event.target.elements['option'].value);
+    });
+  }
+
+  handleResponse(err, data, option) {
+    if (!err) {
+      this.setState({
+        error: data.error || null,
+        message: data.message || null,
+        poll: {
+          options: option
+            ? this.state.poll.options.concat({ name: option, votes: 0 })
+            : this.state.poll.options
+        }
+      });
+    } else {
+      this.setState({
+        error: err.error,
+        message: null
+      });
+    }
   }
 }
 

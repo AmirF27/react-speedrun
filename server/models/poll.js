@@ -54,6 +54,10 @@ pollSchema.statics.vote = function vote(title, option, cb) {
   }.bind(this));
 };
 
+pollSchema.statics.addOption = function addOption(title, option, cb) {
+  this.update({ title }, { $push: { options: { name: option } } }, cb);
+};
+
 pollSchema.methods.verifyAuthor = function verifyAuthor(user) {
   return this.author.equals(user._id);
 };

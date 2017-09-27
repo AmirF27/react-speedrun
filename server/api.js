@@ -160,6 +160,40 @@ module.exports = function(wagner, passport) {
     };
   }));
 
+  api.post('/voting-app/add-option/:pollTitle',
+    upload.any(),
+    wagner.invoke(function(Poll) {
+      return function(req, res) {
+        if (!req.user) {
+          return res.
+            status(status.UNAUTHORIZED).
+            json({
+              error: 'You need to be logged in to add custom options to polls'
+            });
+        }
+
+        if (!req.body.option) {
+          return res.
+            status(status.BAD_REQUEST).
+            json({
+              error: 'Option not specified.'
+            });
+        }
+
+        Poll.addOption(req.params.pollTitle, req.body.option, function(err) {
+          if (err) {
+            res.
+              status(status.INTERNAL_SERVER_ERROR).
+              json({
+                error: 'An error occured while attempting to add option.'
+              });
+          } else {
+            res.json({ message: 'Option added successfully!' });
+          }
+        });
+      };
+    }));
+
   api.delete('/voting-app/delete/:pollTitle',
     upload.any(),
     wagner.invoke(function(Poll) {
