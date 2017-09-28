@@ -18,28 +18,28 @@ module.exports = function(User, passport) {
   },
   function(req, email, password, done) {
     process.nextTick(function() {
-      if (req.body.password !== req.body.confirm) {
-        done(null, null, 'Passwords don\'t match.');
-      }
-
       User.findOne({ email }, function(err, user) {
         if (err) return done(err);
 
         if (user) {
           return done(null, null, 'Email already exists.');
-        } else {
-          const newUser = new User({
-            name: req.body.name,
-            email: email,
-            password: User.encryptPassword(password)
-          });
-
-          newUser.save(function(err) {
-            if (err) throw err;
-
-            return done(null, newUser);
-          });
         }
+
+        if (req.body.password !== req.body.confirm) {
+          return done(null, null, 'Passwords don\'t match.');
+        }
+
+        const newUser = new User({
+          name: req.body.name,
+          email: email,
+          password: User.encryptPassword(password)
+        });
+
+        newUser.save(function(err) {
+          if (err) throw err;
+
+          return done(null, newUser);
+        });
       });
     });
   }));

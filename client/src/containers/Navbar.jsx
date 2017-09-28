@@ -6,11 +6,7 @@ import { checkAuth, mapStateToProps } from '../js/util';
 
 import Title from './Title.jsx';
 import Logout from './Logout.jsx';
-
-import {
-  login,
-  logout
-} from '../actions';
+import { login, logout } from '../actions';
 
 class Navbar extends Component {
   constructor(props) {
@@ -52,8 +48,5 @@ class Navbar extends Component {
 
 export default connect(
   mapStateToProps,
-  {
-    login,
-    logout
-  }
+  { login, logout }
 )(Navbar);

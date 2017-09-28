@@ -5,7 +5,8 @@ $gray: #837a75;
 $lime: #acc18a;
 $light-lime: #adfeb7;
 $light-gray: #f2fbe0;
-$red: #7c0902;
+$red: #9b1d20;
+$light-red: lighten($red, 30%);
 $blue: #748CAB;
 $dark-blue: #2a2b2e;
 
@@ -16,6 +17,7 @@ $color-text-secondary: $light-lime;
 $color-accent: $lime;
 $color-divider: $light-gray;
 $color-negative: $red;
+$color-negative-light: $light-red;
 
 $button-default-bg: $color-primary;
 $button-default-color: $color-accent;
@@ -24,7 +26,7 @@ $button-primary-color: $color-text-primary;
 $button-secondary-bg: $color-accent;
 $button-secondary-color: $color-primary;
 $button-negative-bg: $color-negative;
-$button-negative-color: lighten($red, 50%);
+$button-negative-color: $color-negative-light;
 
 $input-border-color: lighten($color-primary, 10%);
 $input-border-active-color: darken($color-primary, 10%);
@@ -35,9 +37,7 @@ $shadow-color: darken($color-primary, 30%);
 // LAYOUT
 
 $page-top-spacing: 40px;
-
 $container-width: 960px;
-
 $default-border-width: 1px;
 
 
@@ -89,3 +89,14 @@ $checkbox-shadow: inset 0 0 10px $shadow-color;
 $checkbox-checked-shadow: inset 0 0 5px $shadow-color;
 $checkbox-margin-bottom: 10px;
 $checkbox-margin-right: $checkbox-margin-bottom / 2;
+
+
+// ALERT
+
+$alert-padding: 20px;
+$alert-width: 600px;
+$alert-margin-bottom: 30px;
+$alert-close-margin: 15px;
+
+$alert-success-color: $color-accent;
+$alert-error-color: $color-negative-light;

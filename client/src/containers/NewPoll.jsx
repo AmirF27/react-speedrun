@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import Ajax from '../js/ajax';
 import { checkAuth, mapStateToProps } from '../js/util';
 
+import makeAlertable from './Alertable.jsx';
 import { login, logout } from '../actions';
 
 class NewPoll extends Component {
@@ -16,10 +17,7 @@ class NewPoll extends Component {
 
     this.state = {
       nOptions: 2,
-      checkedAuth: false,
-      error: null,
-      message: null,
-      pollLink: null
+      checkedAuth: false
     };
   }
 
@@ -44,6 +42,7 @@ class NewPoll extends Component {
     return (
       <main className="container">
         <h3>Create a new poll</h3>
+        {this.props.children}
         <form action="/api/voting-app/new-poll"
               method="post"
               onSubmit={this.submitPoll}
@@ -66,12 +65,6 @@ class NewPoll extends Component {
                  value="Add Poll"
                  className="button button--primary button--block" />
         </form>
-        {this.state.message && this.state.pollLink &&
-          <p>
-            {this.state.message}
-            <Link to={this.state.pollLink}> View poll.</Link>
-          </p>
-        }
       </main>
     );
   }
@@ -95,18 +88,20 @@ class NewPoll extends Component {
     event.persist();
 
     Ajax.submitForm(event.target, (err, data) => {
-      if (!err) {
-        this.setState({
-          error: data.error || null,
-          message: data.message || null,
-          pollLink: `/voting-app/poll/${event.target.elements['title'].value}`
-        });
-      } else {
-        console.error(err);
-      }
+      this.props.alert(err || {
+        ...data,
+        link: data.type == 'success'
+          ? {
+              text: 'View poll.',
+              to: `/voting-app/poll/${event.target.elements['title'].value}`
+            }
+          : null
+      });
     });
   }
 };
+
+NewPoll = makeAlertable(NewPoll);
 
 export default connect(
   mapStateToProps,

@@ -1,25 +1,19 @@
 import React, { Component } from 'react';
-import { Redirect } from 'react-router';
-import Ajax from '../js/ajax';
+
+import makeAuthable from './Authable.jsx';
 
 class Register extends Component {
   constructor() {
     super();
-
-    this.register = this.register.bind(this);
-
-    this.state = {
-      error: null,
-      success: false
-    };
   }
 
   render() {
     return (
       <main className="container">
+        {this.props.children}
         <form action="/api/register"
               method="post"
-              onSubmit={this.register}
+              onSubmit={this.props.authenticate}
               className="form">
           <label htmlFor="name">Name</label>
           <input id="name"
@@ -48,33 +42,11 @@ class Register extends Component {
                  value="Register"
                  className="button button--primary button--block" />
         </form>
-        {this.state.error &&
-          <p>{this.state.error}</p>
-        }
-        {this.state.success &&
-          <Redirect to='/' />
-        }
       </main>
     );
   }
-
-  register(event) {
-    event.preventDefault();
-
-    Ajax.submitForm(event.target, (err, data) => {
-      if (data.error) {
-        this.setState({
-          error: data.error || null,
-          success: false
-        });
-      } else {
-        this.setState({
-          error: null,
-          success: true
-        });
-      }
-    });
-  }
 }
+
+Register = makeAuthable(Register);
 
 export default Register;

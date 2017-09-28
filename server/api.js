@@ -3,6 +3,9 @@ const status = require('http-status');
 const upload = require('multer')();
 const Timestamp = require('./timestamp');
 const HeaderParser = require('./header-parser');
+const message = require('./message.js');
+const ErrorMessage = message.ErrorMessage;
+const SuccessMessage = message.SuccessMessage;
 
 module.exports = function(wagner, passport) {
   const ImageSearch = require('./image-search')(wagner);
@@ -82,7 +85,7 @@ module.exports = function(wagner, passport) {
     return function(req, res) {
       if (!req.user) {
         return res.status(status.UNAUTHORIZED).
-                   json({ error: 'Not logged in!' });
+                   json(new ErrorMessage('Not logged in!'));
       }
 
       const poll = new Poll({
@@ -95,16 +98,14 @@ module.exports = function(wagner, passport) {
         if (err) {
           // check for duplicate key error
           if (err.name === 'MongoError' && err.code === 11000) {
-            return res.json({ error: 'Poll title already exists.' });
+            return res.json(new ErrorMessage('Poll title already exists.'));
           } else {
             return res.status((status.INTERNAL_SERVER_ERROR)).
-                       json({
-                         error: 'An error occured while attempting to add poll.'
-                       });
+                       json(new ErrorMessage('An error occured while attempting to add poll.'));
           }
         }
 
-        res.json({ message: 'Poll added successfully!' });
+        res.json(new SuccessMessage('Poll added successfully!'));
       });
     };
   }));
@@ -127,12 +128,12 @@ module.exports = function(wagner, passport) {
       Poll.findByTitle(req.params.title, function(err, poll) {
         if (err) {
           return res.status(status.INTERNAL_SERVER_ERROR).
-                     json({ error: 'Could not retrieve poll data.' });
+                     json(new ErrorMessage('Could not retrieve poll data.'));
         }
 
         if (!poll) {
           res.status(status.NOT_FOUND).
-              json({ error: 'Poll not found.' });
+              json(new ErrorMessage('Poll not found.'));
         } else {
           res.json(poll);
         }
@@ -146,17 +147,17 @@ module.exports = function(wagner, passport) {
       return function(req, res) {
         if (!req.body.vote) {
           return res.status(status.BAD_REQUEST).
-                     json({ error: 'No option was specified.' });
+                     json(new ErrorMessage('No option was specified.'));
         }
 
         Poll.vote(req.params.pollTitle, req.body.vote, function(err) {
           if (err) {
             res.status(status.INTERNAL_SERVER_ERROR).
-                json({
-                  error: 'An error occured while attempting to submit vote.'
-                });
+                json(new ErrorMessage(
+                  'An error occured while attempting to submit vote.'
+                ));
           } else {
-            res.json({ message: 'Vote submitted successfully!' });
+            res.json(new SuccessMessage('Vote submitted successfully!'));
           }
         });
       };
@@ -169,28 +170,24 @@ module.exports = function(wagner, passport) {
         if (!req.user) {
           return res.
             status(status.UNAUTHORIZED).
-            json({
-              error: 'You need to be logged in to add custom options to polls'
-            });
+            json(new ErrorMessage(
+              'You need to be logged in to add custom options to polls'
+            ));
         }
 
         if (!req.body.option) {
           return res.
             status(status.BAD_REQUEST).
-            json({
-              error: 'Option not specified.'
-            });
+            json(new ErrorMessage('Option not specified.'));
         }
 
         Poll.addOption(req.params.pollTitle, req.body.option, function(err) {
           if (err) {
             res.
               status(status.INTERNAL_SERVER_ERROR).
-              json({
-                error: 'An error occured while attempting to add option.'
-              });
+              json(new ErrorMessage('An error occured while attempting to add option.'));
           } else {
-            res.json({ message: 'Option added successfully!' });
+            res.json(new SuccessMessage('Option added successfully!'));
           }
         });
       };
@@ -260,7 +257,9 @@ module.exports = function(wagner, passport) {
 
   api.post('/register', upload.any(), function(req, res) {
     passport.authenticate('local-signup', function(err, user, info) {
-      handleAuthResponse(res, err || info, user);
+      req.login(user, {}, function() {
+        handleAuthResponse(res, err || info, user);
+      });
     })(req, res);
   });
 

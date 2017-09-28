@@ -1,35 +1,19 @@
 import React, { Component } from 'react';
-import { Redirect } from 'react-router';
-import { connect } from 'react-redux';
-import Ajax from '../js/ajax';
-import { mapStateToProps } from '../js/util';
 
-import {
-  login,
-  logout
-} from '../actions';
+import makeAuthable from './Authable.jsx';
 
 class Login extends Component {
   constructor() {
     super();
-
-    this.login = this.login.bind(this);
-
-    this.state = {
-      error: null
-    };
   }
 
   render() {
-    if (this.props.authed) {
-      return (<Redirect to='/' />);
-    }
-
     return (
       <main className="container">
+        {this.props.children}
         <form action="/api/login"
               method="post"
-              onSubmit={this.login}
+              onSubmit={this.props.authenticate}
               className="form">
           <label htmlFor="email">Email</label>
           <input id="email"
@@ -47,29 +31,11 @@ class Login extends Component {
                  value="Login"
                  className="button button--primary button--block" />
         </form>
-        {this.state.error &&
-          <p>{this.state.error}</p>
-        }
       </main>
     );
   }
+}
 
-  login(event) {
-    event.preventDefault();
+Login = makeAuthable(Login);
 
-    Ajax.submitForm(event.target, (err, data) => {
-      if (data.error) {
-        this.setState({
-          error: data.error
-        });
-      } else {
-        this.props.login(data.user);
-      }
-    });
-  }
-};
-
-export default connect(
-  mapStateToProps,
-  { login },
-)(Login);
+export default Login;

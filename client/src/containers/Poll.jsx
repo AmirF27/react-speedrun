@@ -4,6 +4,7 @@ import Ajax from '../js/ajax';
 import { checkAuth, mapStateToProps } from '../js/util';
 
 import { login, logout } from '../actions';
+import makeAlertable from './Alertable.jsx';
 import ChartView from './ChartView.jsx';
 
 class Poll extends Component {
@@ -17,9 +18,7 @@ class Poll extends Component {
 
     this.state = {
       title: props.match.params.title,
-      poll: null,
-      error: null,
-      message: null
+      poll: null
     };
   }
 
@@ -45,6 +44,7 @@ class Poll extends Component {
 
     return (
       <main className="container">
+        {this.props.children}
         <form
           action={`/api/voting-app/vote/${this.state.poll.title}`}
           method="post" onSubmit={this.submitVote} className="form">
@@ -70,12 +70,6 @@ class Poll extends Component {
           labels={this.state.poll.options.map(option => option.name)}
           data={this.state.poll.options.map(option => option.votes)}>
         </ChartView>
-        {this.state.error &&
-          <p>{this.state.error}</p>
-        }
-        {this.state.message &&
-          <p>{this.state.message}</p>
-        }
       </main>
     );
   }
@@ -108,7 +102,6 @@ class Poll extends Component {
 
     Ajax.submitForm(event.target, (err, data) => {
       this.handleResponse(err, data);
-      this.getPoll();
     });
   }
 
@@ -118,24 +111,16 @@ class Poll extends Component {
 
     Ajax.submitForm(event.target, (err, data) => {
       this.handleResponse(err, data);
-      this.getPoll();
     });
   }
 
   handleResponse(err, data) {
-    if (!err) {
-      this.setState({
-        error: data.error || null,
-        message: data.message || null
-      });
-    } else {
-      this.setState({
-        error: err.error,
-        message: null
-      });
-    }
+    this.props.alert(err || data);
+    this.getPoll();
   }
 }
+
+Poll = makeAlertable(Poll);
 
 export default connect(
   mapStateToProps,

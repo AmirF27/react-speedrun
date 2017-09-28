@@ -1,0 +1,22 @@
+.alert {
+  @include center-block;
+
+  border-radius: $control-border-radius;
+  margin-bottom: $alert-margin-bottom;
+  padding: $alert-padding;
+  width: $alert-width;
+
+  .alert__close {
+    cursor: pointer;
+    float: right;
+    margin-left: $alert-close-margin;
+  }
+}
+
+.alert--error {
+  background: $alert-error-color;
+}
+
+.alert--success {
+  background: $alert-success-color;
+}
