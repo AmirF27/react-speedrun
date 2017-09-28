@@ -5,6 +5,15 @@ body {
   margin: 0;
 }
 
+a {
+  color: $color-text-secondary;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
 header {
   background: $color-primary;
 }

@@ -1,6 +1,7 @@
 .button {
   border: none;
   border-radius: $control-border-radius;
+  box-shadow: $default-shadow;
   cursor: pointer;
   font-size: $button-font-size;
   font-weight: $button-font-weight;
@@ -10,8 +11,12 @@
   padding-right: $button-padding;
   transition: $default-transition;
 
-  &:focus {
-    box-shadow: none !important;
+  &:hover {
+    box-shadow: $button-hover-shadow;
+  }
+
+  &:active {
+    box-shadow: $default-shadow !important;
     transform: translateY(2px);
     transition: none;
   }

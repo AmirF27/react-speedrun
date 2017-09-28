@@ -5,11 +5,9 @@ import Ajax from '../js/ajax';
 import { checkAuth, mapStateToProps } from '../js/util';
 
 import PollList from './PollList.jsx';
+import makeAlertable from './Alertable.jsx';
 
-import {
-  login,
-  logout
-} from '../actions';
+import { login, logout } from '../actions';
 
 class UserPolls extends Component {
   constructor(props) {
@@ -21,9 +19,7 @@ class UserPolls extends Component {
     this.state = {
       ready: false,
       polls: [],
-      isProfileOwner: false,
-      error: null,
-      message: null
+      isProfileOwner: false
     };
   }
 
@@ -38,18 +34,13 @@ class UserPolls extends Component {
 
     return (
       <main className="container">
+        {this.props.children}
         <PollList
           polls={this.state.polls}
           type="user"
           isProfileOwner={this.state.isProfileOwner}
           onDeletePoll={this.deletePoll}>
         </PollList>
-        {this.state.error &&
-          <p>{this.state.error}</p>
-        }
-        {this.state.message &&
-          <p>{this.state.message}</p>
-        }
       </main>
     );
   }
@@ -86,25 +77,26 @@ class UserPolls extends Component {
     Ajax.delete(`/api/voting-app/delete/${pollTitle}`).
       then(
         function fulfilled(res) {
-          let updatedPolls = this.state.polls;
-          if (!res.error) {
+          this.props.alert(res);
+          if (res.type == 'success') {
+            const updatedPolls = this.state.polls;
             updatedPolls.splice(
               updatedPolls.findIndex(poll => poll.title == pollTitle),
               1
             );
+            this.setState({
+              polls: updatedPolls
+            });
           }
-          this.setState({
-            polls: updatedPolls,
-            error: res.error || null,
-            message: res.message || null
-          });
         }.bind(this),
         function rejected(err) {
-          console.log(err);
+          this.props.alert(err);
         }
       );
   }
 }
+
+UserPolls = makeAlertable(UserPolls);
 
 export default connect(
   mapStateToProps,

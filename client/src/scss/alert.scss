@@ -2,6 +2,7 @@
   @include center-block;
 
   border-radius: $control-border-radius;
+  box-shadow: $default-shadow;
   margin-bottom: $alert-margin-bottom;
   padding: $alert-padding;
   width: $alert-width;

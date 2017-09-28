@@ -37,9 +37,9 @@ const makeAlertable = WrappedComponent => {
           alert={this.alert}>
           {this.state.active &&
             <div className={`alert alert--${this.state.type}`}>
-              {this.state.message}
+              {this.state.message + ' '}
               {this.state.link &&
-                <Link to={this.state.link.to}> {this.state.link.text}</Link>
+                <Link to={this.state.link.to}>{this.state.link.text}</Link>
               }
               <span className="alert__close" onClick={this.resetState}>
                 <i className="fa fa-times" aria-hidden="true"></i>

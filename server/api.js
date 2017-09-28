@@ -202,15 +202,15 @@ module.exports = function(wagner, passport) {
             if (err) {
               return res.
                 status(status.INTERNAL_SERVER_ERROR).
-                json({
-                  error: 'An error occured while attempting to delete poll.'
-                });
+                json(new ErrorMessage(
+                  'An error occured while attempting to delete poll.'
+                ));
             }
 
             if (!poll) {
               return res.
                 status(status.NOT_FOUND).
-                json({ error: 'Poll not found.' });
+                json(new ErrorMessage('Poll not found.'));
             }
 
             if (poll.verifyAuthor(req.user)) {
@@ -218,21 +218,21 @@ module.exports = function(wagner, passport) {
                 if (err) {
                   return res.
                     status(status.INTERNAL_SERVER_ERROR).
-                    json({
-                      error: 'An error occured while attempting to delete poll.'
-                    });
+                    json(new ErrorMessage(
+                      'An error occured while attempting to delete poll.'
+                    ));
                 }
 
-                return res.json({ message: 'Poll deleted successfully!' });
+                return res.json(new SuccessMessage('Poll deleted successfully!'));
               });
             } else {
               res.status(status.UNAUTHORIZED).
-                  json({ error: 'This poll belongs to someone else.' });
+                  json(new ErrorMessage('This poll belongs to someone else.'));
             }
           });
         } else {
           res.status(status.UNAUTHORIZED).
-              json({ error: 'Not logged in!' });
+              json(new ErrorMessage('Not logged in!'));
         }
       };
     }));

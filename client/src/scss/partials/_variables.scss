@@ -3,17 +3,16 @@
 $dark-gray: #605b56;
 $gray: #837a75;
 $lime: #acc18a;
-$light-lime: #adfeb7;
 $light-gray: #f2fbe0;
 $red: #9b1d20;
 $light-red: lighten($red, 30%);
-$blue: #748CAB;
+$blue: #748cab;
 $dark-blue: #2a2b2e;
 
 $color-primary: $dark-gray;
 $color-secondary: $gray;
 $color-text-primary: $dark-blue;
-$color-text-secondary: $light-lime;
+$color-text-secondary: darken($blue, 20%);
 $color-accent: $lime;
 $color-divider: $light-gray;
 $color-negative: $red;
@@ -29,9 +28,12 @@ $button-negative-bg: $color-negative;
 $button-negative-color: $color-negative-light;
 
 $input-border-color: lighten($color-primary, 10%);
-$input-border-active-color: darken($color-primary, 10%);
+$input-border-focus-color: darken($blue, 15%);
+$input-shadow: inset 0 0 2px $input-border-color;
+$input-focus-shadow: inset 0 0 4px $input-border-focus-color;
 
-$shadow-color: darken($color-primary, 30%);
+$shadow-color: lighten($color-primary, 10%);
+$checkbox-shadow-color: darken($color-primary, 30%);
 
 
 // LAYOUT
@@ -80,13 +82,15 @@ $button-small-height: 25px;
 $button-small-padding: 8px;
 $button-small-font-size: .8rem;
 
+$default-shadow: 0 1px 2px $shadow-color;
+$button-hover-shadow: 0 3px 2px $shadow-color;
+
 $default-transition: all .15s linear;
 
 $radio-size: 15px;
-
 $checkbox-border: 2px solid $color-primary;
-$checkbox-shadow: inset 0 0 10px $shadow-color;
-$checkbox-checked-shadow: inset 0 0 5px $shadow-color;
+$checkbox-shadow: inset 0 0 10px $checkbox-shadow-color;
+$checkbox-checked-shadow: inset 0 0 5px $checkbox-shadow-color;
 $checkbox-margin-bottom: 10px;
 $checkbox-margin-right: $checkbox-margin-bottom / 2;
 
