@@ -34,6 +34,10 @@
     margin: 0;
     width: 100%;
 
+    label {
+      margin-right: $input-margin-top;
+    }
+
     .form__input,
     .button {
       display: inline-block;

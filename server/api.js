@@ -3,6 +3,7 @@ const status = require('http-status');
 const upload = require('multer')();
 const Timestamp = require('./timestamp');
 const HeaderParser = require('./header-parser');
+const Nightlife = require('./nightlife');
 const message = require('./message.js');
 const ErrorMessage = message.ErrorMessage;
 const SuccessMessage = message.SuccessMessage;
@@ -236,6 +237,14 @@ module.exports = function(wagner, passport) {
         }
       };
     }));
+
+  api.get('/nightlife/search', function(req, res) {
+    const nightlife = new Nightlife(req.query.location);
+
+    nightlife.search(function(err, bars) {
+      res.json(err || bars);
+    });
+  });
 
   api.get('/profile/:email/polls', wagner.invoke(function(User, Poll) {
     return function(req, res) {

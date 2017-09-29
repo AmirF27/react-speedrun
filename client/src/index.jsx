@@ -15,6 +15,7 @@ import FileUpload from './containers/FileUpload.jsx';
 import VotingApp from './containers/VotingApp.jsx';
 import NewPoll from './containers/NewPoll.jsx';
 import AllPolls from './containers/AllPolls.jsx';
+import Nightlife from './containers/Nightlife.jsx';
 import Poll from './containers/Poll.jsx';
 import UserProfile from './containers/UserProfile.jsx';
 import UserPolls from './containers/UserPolls.jsx';
@@ -34,6 +35,7 @@ ReactDOM.render((
         <Route path="/voting-app/new-poll" component={NewPoll} />
         <Route path="/voting-app/all-polls" component={AllPolls} />
         <Route path="/voting-app/poll/:title" component={Poll} />
+        <Route path="/nightlife" component={Nightlife} />
         <Route exact path="/profile/:email" component={UserProfile} />
         <Route path="/profile/:email/polls" component={UserPolls} />
         <Route path="/register" component={Register} />
