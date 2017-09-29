@@ -11,7 +11,7 @@ class Login extends Component {
     return (
       <main className="container">
         {this.props.children}
-        <form action="/api/login"
+        <form action="/auth/login"
               method="post"
               onSubmit={this.props.authenticate}
               className="form">

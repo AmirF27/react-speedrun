@@ -18,8 +18,7 @@ class UserPolls extends Component {
 
     this.state = {
       ready: false,
-      polls: [],
-      isProfileOwner: false
+      polls: []
     };
   }
 
@@ -38,7 +37,6 @@ class UserPolls extends Component {
         <PollList
           polls={this.state.polls}
           type="user"
-          isProfileOwner={this.state.isProfileOwner}
           onDeletePoll={this.deletePoll}>
         </PollList>
       </main>
@@ -54,17 +52,12 @@ class UserPolls extends Component {
   }
 
   getUserPolls() {
-    const email = this.props.match.params.email;
-
-    Ajax.get(`/api/profile/${email}/polls`).
+    Ajax.get(`/api/profile/polls`).
       then(
         function fulfilled(res) {
           this.setState({
             ready: true,
-            polls: res,
-            isProfileOwner: this.props.user
-              ? this.props.user.email == email
-              : false
+            polls: res
           });
         }.bind(this),
         function rejected(err) {
@@ -100,8 +93,5 @@ UserPolls = makeAlertable(UserPolls);
 
 export default connect(
   mapStateToProps,
-  {
-    login,
-    logout
-  }
+  { login, logout }
 )(UserPolls);

@@ -15,7 +15,7 @@ class Logout extends Component {
 
   render() {
     return (
-      <a href="/api/logout" onClick={this.logout}>
+      <a href="/auth/logout" onClick={this.logout}>
         Logout
         {this.state.loggedOut &&
           <Redirect to="/" />

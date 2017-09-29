@@ -4,16 +4,31 @@ const bcrypt = require('bcrypt');
 const SALT_ROUNDS = 10;
 
 const userSchema = new Schema({
-  name: String,
-  email: {
-    type: String,
-    required: true,
-    unique: true
+  local: {
+    name: String,
+    email: {
+      type: String,
+      unique: true
+    },
+    password: {
+      type: String,
+      bcrypt: true
+    }
   },
-  password: {
-    type: String,
-    required: true,
-    bcrypt: true
+  twitter: {
+    id: {
+      type: String,
+      required: true
+    },
+    token: {
+      type: String,
+      required: true
+    },
+    username: {
+      type: String,
+      required: true
+    },
+    displayName: String
   }
 });
 
@@ -25,16 +40,6 @@ userSchema.statics.encryptPassword = function encryptPassword(password) {
 
 userSchema.methods.verifyPassword = function verifyPassword(password) {
   return bcrypt.compareSync(password, this.password);
-};
-
-userSchema.statics.getPolls = function getPolls(email, Poll, cb) {
-  this.findOne({ email }, function(err, user) {
-    if (err) cb(err);
-
-    if (!user) cb(null, null);
-
-    Poll.findByAuthorId(user._id, cb);
-  });
 };
 
 module.exports = userSchema;

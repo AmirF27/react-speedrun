@@ -11,7 +11,7 @@ class Register extends Component {
     return (
       <main className="container">
         {this.props.children}
-        <form action="/api/register"
+        <form action="/auth/register"
               method="post"
               onSubmit={this.props.authenticate}
               className="form">

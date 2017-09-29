@@ -1,6 +1,8 @@
 const LocalStrategy = require('passport-local').Strategy;
+const TwitterStrategy = require('passport-twitter').Strategy;
+const upload = require('multer')();
 
-module.exports = function(User, passport) {
+module.exports = function(User, passport, app) {
   passport.serializeUser(function(user, done) {
     done(null, user.id);
   });
@@ -11,35 +13,37 @@ module.exports = function(User, passport) {
     });
   });
 
+  // Auth strategies
+
   passport.use('local-signup', new LocalStrategy({
     usernameField: 'email',
     passwordField: 'password',
     passReqToCallback: true
   },
   function(req, email, password, done) {
-    process.nextTick(function() {
-      User.findOne({ email }, function(err, user) {
-        if (err) return done(err);
+    User.findOne({ 'local.email': email }, function(err, user) {
+      if (err) return done(err);
 
-        if (user) {
-          return done(null, null, 'Email already exists.');
-        }
+      if (user) {
+        return done(null, null, 'Email already exists.');
+      }
 
-        if (req.body.password !== req.body.confirm) {
-          return done(null, null, 'Passwords don\'t match.');
-        }
+      if (req.body.password !== req.body.confirm) {
+        return done(null, null, 'Passwords don\'t match.');
+      }
 
-        const newUser = new User({
+      const newUser = new User({
+        local: {
           name: req.body.name,
           email: email,
           password: User.encryptPassword(password)
-        });
+        }
+      });
 
-        newUser.save(function(err) {
-          if (err) throw err;
+      newUser.save(function(err) {
+        if (err) throw err;
 
-          return done(null, newUser);
-        });
+        return done(null, newUser);
       });
     });
   }));
@@ -50,7 +54,7 @@ module.exports = function(User, passport) {
     passReqToCallback: true
   },
   function(req, email, password, done) {
-    User.findOne({ email }, function(err, user) {
+    User.findOne({ 'local.email': email }, function(err, user) {
       if (err) return done(err);
 
       if (!user) {
@@ -64,4 +68,61 @@ module.exports = function(User, passport) {
       return done(null, user);
     });
   }));
+
+  passport.use(new TwitterStrategy({
+    consumerKey: process.env.TWITTER_CONSUMER_KEY,
+    consumerSecret: process.env.TWITTER_CONSUMER_SECRET,
+    callbackURL: process.env.TWITTER_CALLBACK_URL
+  }, function(token, tokenSecret, profile, done) {
+    User.findOne({ 'twitter.id': profile.id }, function(err, user) {
+      if (err) return done(err);
+
+      if (user) return done(null, user);
+
+      const newUser = new User({
+        twitter: {
+          id: profile.id,
+          token: token,
+          username: profile.username,
+          displayName: profile.displayName
+        }
+      });
+
+      newUser.save(function(err) {
+        if (err) throw err;
+
+        return done(null, newUser);
+      });
+    });
+  }));
+
+  // Auth API routes
+
+  app.post('/auth/register', upload.any(), function(req, res) {
+    passport.authenticate('local-signup', function(err, user, info) {
+      req.login(user, {}, function() {
+        handleAuthResponse(res, err || info, user);
+      });
+    })(req, res);
+  });
+
+  app.post('/auth/login', upload.any(), function(req, res) {
+    passport.authenticate('local-login', function(err, user, info) {
+      req.login(user, {}, function() {
+        handleAuthResponse(res, err || info, user);
+      });
+    })(req, res);
+  });
+
+  app.get('/auth/twitter', passport.authenticate('twitter'));
+
+  app.get('/auth/twitter/callback', passport.authenticate('twitter', {
+    successRedirect: '/nightlife',
+    failureRedirect: '/'
+  }));
+
+  app.post('/auth/logout', function(req, res) {
+    req.logout();
+    res.json({ done: true });
+  });
 };

@@ -246,44 +246,25 @@ module.exports = function(wagner, passport) {
     });
   });
 
-  api.get('/profile/:email/polls', wagner.invoke(function(User, Poll) {
+  api.get('/profile/polls', wagner.invoke(function(Poll) {
     return function(req, res) {
-      User.getPolls(req.params.email, Poll, function(err, data) {
+      if (!req.user) {
+        return res.
+          status(status.UNAUTHORIZED).
+          json(new ErrorMessage('Not logged in!'));
+      }
+
+      Poll.findByAuthorId(req.user._id, function(err, polls) {
         if (err) {
-          return res.status(status.INTERNAL_SERVER_ERROR).
-                     json({ error: 'An error occured.' });
+          return res.
+            status(status.INTERNAL_SERVER_ERROR).
+            json({ error: 'An error occured.' });
         }
 
-        if (!data) {
-          return res.status(status.NOT_FOUND).
-                     json({ error: 'User not found.' });
-        }
-
-        res.json(data);
+        res.json(polls);
       });
     };
   }));
-
-  api.post('/register', upload.any(), function(req, res) {
-    passport.authenticate('local-signup', function(err, user, info) {
-      req.login(user, {}, function() {
-        handleAuthResponse(res, err || info, user);
-      });
-    })(req, res);
-  });
-
-  api.post('/login', upload.any(), function(req, res) {
-    passport.authenticate('local-login', function(err, user, info) {
-      req.login(user, {}, function() {
-        handleAuthResponse(res, err || info, user);
-      });
-    })(req, res);
-  });
-
-  api.post('/logout', function(req, res) {
-    req.logout();
-    res.json({ done: true });
-  });
 
   api.get('/user', function(req, res) {
     if (req.user) {

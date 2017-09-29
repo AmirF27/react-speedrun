@@ -34,7 +34,7 @@ class Navbar extends Component {
       <nav className="nav container">
         <Title></Title>
         <ul className="navbar navbar--right">
-          <li className="navbar__link"><Link to={`/profile/${this.props.user.email}`}>Profile</Link></li>
+          <li className="navbar__link"><Link to={`/profile`}>Profile</Link></li>
           <li className="navbar__link"><Logout onLogout={this.props.logout}></Logout></li>
         </ul>
       </nav>

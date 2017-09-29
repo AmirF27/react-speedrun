@@ -36,8 +36,8 @@ ReactDOM.render((
         <Route path="/voting-app/all-polls" component={AllPolls} />
         <Route path="/voting-app/poll/:title" component={Poll} />
         <Route path="/nightlife" component={Nightlife} />
-        <Route exact path="/profile/:email" component={UserProfile} />
-        <Route path="/profile/:email/polls" component={UserPolls} />
+        <Route exact path="/profile" component={UserProfile} />
+        <Route path="/profile/polls" component={UserPolls} />
         <Route path="/register" component={Register} />
         <Route path="/login" component={Login} />
       </div>

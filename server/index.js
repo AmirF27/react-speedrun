@@ -29,7 +29,7 @@ app.use(require('express-session')({
 app.use(passport.initialize());
 app.use(passport.session());
 
-wagner.invoke(require('./auth'), { passport });
+wagner.invoke(require('./auth'), { passport, app });
 
 app.use('/api', require('./api')(wagner, passport));
 
