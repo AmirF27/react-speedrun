@@ -19,6 +19,7 @@ Nightlife.prototype.search = function search(callback) {
     then(function fulfilled(res) {
       const bars = res.businesses.map(function(bar) {
         return {
+          id: bar.id,
           name: bar.name,
           image_url: bar.image_url,
           url: bar.url,

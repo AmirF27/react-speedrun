@@ -10,6 +10,7 @@ class Home extends Component {
           <li><Link to="/header-parser">Header Parser Microservice</Link></li>
           <li><Link to="/file-upload">File Metadata Microservice</Link></li>
           <li><Link to="/voting-app">Voting App</Link></li>
+          <li><Link to="/nightlife">Nightlife Coordination App</Link></li>
         </ul>
       </main>
     );

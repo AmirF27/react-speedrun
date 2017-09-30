@@ -246,6 +246,29 @@ module.exports = function(wagner, passport) {
     });
   });
 
+  api.post('/nightlife/add-bar/:barId', wagner.invoke(function(User) {
+    return function(req, res) {
+      if (!req.user) {
+        return res.
+          status(status.UNAUTHORIZED).
+          json(new ErrorMessage('Not logged in!'));
+      }
+
+      if (!req.user.twitter.id) {
+        return res.json(new ErrorMessage('You need to be logged in with Twitter.'));
+      }
+
+      req.user.addBar(req.params.barId, function(err) {
+        if (err) {
+          return res.
+            status(status.INTERNAL_SERVER_ERROR).
+            json(new ErrorMessage('An error occured.'));
+        }
+        res.json(new SuccessMessage('Bar added successfully!'));
+      });
+    }
+  }));
+
   api.get('/profile/polls', wagner.invoke(function(Poll) {
     return function(req, res) {
       if (!req.user) {
@@ -268,12 +291,19 @@ module.exports = function(wagner, passport) {
 
   api.get('/user', function(req, res) {
     if (req.user) {
-      res.json({
-        user: {
-          name: req.user.name,
-          email: req.user.email
-        }
-      });
+      const user = {};
+      if (req.user.local.email) {
+        user.local = {
+          name: req.user.local.name,
+          email: req.user.local.email
+        };
+      } else {
+        user.twitter = {
+          displayName: req.user.twitter.displayName,
+          username: req.user.twitter.username
+        };
+      }
+      res.json({ user });
     } else {
       res.json({ user: null });
     }
@@ -281,16 +311,3 @@ module.exports = function(wagner, passport) {
 
   return api;
 };
-
-function handleAuthResponse(res, err, user) {
-  if (err) {
-    res.json({ error: err });
-  } else {
-    res.json({
-      user: {
-        name: user.name,
-        email: user.email
-      }
-    });
-  }
-}

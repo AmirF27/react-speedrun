@@ -114,7 +114,13 @@ module.exports = function(User, passport, app) {
     })(req, res);
   });
 
-  app.get('/auth/twitter', passport.authenticate('twitter'));
+  app.get('/auth/twitter', function(req, res) {
+    passport.authenticate('twitter', function(err, user, info) {
+      req.login(user, {}, function() {
+        handleAuthResponse(res, err || info, user);
+      });
+    })(req, res);
+  });
 
   app.get('/auth/twitter/callback', passport.authenticate('twitter', {
     successRedirect: '/nightlife',
@@ -126,3 +132,16 @@ module.exports = function(User, passport, app) {
     res.json({ done: true });
   });
 };
+
+function handleAuthResponse(res, err, user) {
+  if (err) {
+    res.json({ error: err });
+  } else {
+    res.json({
+      user: {
+        name: user.name,
+        email: user.email
+      }
+    });
+  }
+}
