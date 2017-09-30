@@ -52,8 +52,11 @@ class Nightlife extends Component {
           window.location.pathname = '/auth/twitter';
         } else {
           Ajax.post(`/api/nightlife/add-bar/${id}`).
-            then(function fulfilled(bar) {
-              this.props.addBar(bar);
+            then(function fulfilled(res) {
+              const barIndex = this.state.bars.findIndex(bar => bar.id == id);
+              const bars = this.state.bars.slice();
+              bars[barIndex].userAttending = true;
+              this.setState({ bars });
             }.bind(this)).
             catch(function rejected(err) {});
         }
@@ -64,7 +67,10 @@ class Nightlife extends Component {
   removeBar(id) {
     Ajax.delete(`/api/nightlife/remove-bar/${id}`).
       then(function fulfilled(res) {
-        this.props.removeBar(id);
+        const barIndex = this.state.bars.findIndex(bar => bar.id == id);
+        const bars = this.state.bars.slice();
+        delete bars[barIndex].userAttending;
+        this.setState({ bars });
       }.bind(this)).
       catch(function rejected(err) {
         console.error(err);
@@ -102,14 +108,14 @@ class Nightlife extends Component {
         return (
           <li>
             {bar.name}
-            {!this.userIsAttengdingBar(bar.id)
-              ? <button onClick={() => this.addBar(bar.id)}
-                  className="button button--default button--small">
-                  I'm Going Tonight
-                </button>
-              : <button onClick={() => this.removeBar(bar.id)}
+            {bar.userAttending
+              ? <button onClick={() => this.removeBar(bar.id)}
                   className="button button--negative button--small">
                   Cancel
+                </button>
+              : <button onClick={() => this.addBar(bar.id)}
+                  className="button button--default button--small">
+                  I'm Going Tonight
                 </button>
             }
           </li>

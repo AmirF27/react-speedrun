@@ -40,7 +40,7 @@ const user = (state = initialState, action) => {
       };
     case REMOVE_BAR:
       newBars = state.user.bars.slice();
-      newBars.splice(newBars.findIndex(bar => bar.barId == action.id), 1);
+      newBars.splice(newBars.indexOf(action.id), 1);
       return {
         ...state,
         user: {

@@ -2,8 +2,8 @@ const rp = require('request-promise');
 
 const YELP_URL = 'https://api.yelp.com/v3/businesses/search';
 
-function Nightlife(location) {
-  this.location = location;
+function Nightlife(options) {
+  this.location = options.location;
 }
 
 Nightlife.prototype.search = function search(callback) {
@@ -32,6 +32,18 @@ Nightlife.prototype.search = function search(callback) {
       console.dir(err);
       callback(err);
     });
+};
+
+Nightlife.prototype.markUserAttendance = function markUserAttendance(bars) {
+  for (let userBar of this.userBars) {
+    for (let bar of bars) {
+      if (userBar == bar.id) {
+        bar.userAttending = true;
+      }
+    }
+  }
+
+  return bars;
 };
 
 module.exports = Nightlife;

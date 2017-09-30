@@ -238,51 +238,71 @@ module.exports = function(wagner, passport) {
       };
     }));
 
-  api.get('/nightlife/search', function(req, res) {
-    const nightlife = new Nightlife(req.query.location);
+  api.get('/nightlife/search', wagner.invoke(function(Bar) {
+    return function(req, res) {
+      const nightlife = new Nightlife({ location: req.query.location });
 
-    nightlife.search(function(err, bars) {
-      res.json(err || bars);
-    });
-  });
+      nightlife.search(function(err, bars) {
+        if (req.user) {
+          Bar.getUserBars(req.user._id, function(err, userBars) {
+            nightlife.userBars = userBars;
 
-  api.post('/nightlife/add-bar/:barId', function(req, res) {
-    if (!req.user) {
-      return res.
-        status(status.UNAUTHORIZED).
-        json(new ErrorMessage('Not logged in!'));
+            if (err) {
+              return res.
+                status(status.INTERNAL_SERVER_ERROR).
+                json(new ErrorMessage('An error occured.'));
+            }
+
+            res.json(nightlife.markUserAttendance(bars));
+          });
+        } else {
+          res.json(err || bars);
+        }
+      });
     }
+  }));
 
-    if (!req.user.twitter.id) {
-      return res.json(new ErrorMessage('You need to be logged in with Twitter.'));
-    }
-
-    req.user.addBar(req.params.barId, function(err, bar) {
-      if (err) {
+  api.post('/nightlife/add-bar/:yelpId', wagner.invoke(function(Bar) {
+    return function(req, res) {
+      if (!req.user) {
         return res.
-          status(status.INTERNAL_SERVER_ERROR).
-          json(new ErrorMessage('An error occured.'));
+          status(status.UNAUTHORIZED).
+          json(new ErrorMessage('Not logged in!'));
       }
-      res.json(bar);
-    });
-  });
 
-  api.delete('/nightlife/remove-bar/:barId', function(req, res) {
-    if (!req.user) {
-      return res.
-        status(status.UNAUTHORIZED).
-        json(new ErrorMessage('Not logged in!'));
+      if (!req.user.twitter.id) {
+        return res.json(new ErrorMessage('You need to be logged in with Twitter.'));
+      }
+
+      Bar.addAttendee(req.params.yelpId, req.user._id, function(err) {
+        if (err) {
+          return res.
+            status(status.INTERNAL_SERVER_ERROR).
+            json(new ErrorMessage('An error occured.'));
+        }
+        res.json(new SuccessMessage('Bar added successfully!'));
+      });
     }
+  }));
 
-    req.user.removeBar(req.params.barId, function(err) {
-      if (err) {
+  api.delete('/nightlife/remove-bar/:yelpId', wagner.invoke(function(Bar) {
+    return function(req, res) {
+      if (!req.user) {
         return res.
-          status(status.INTERNAL_SERVER_ERROR).
-          json(new ErrorMessage('An error occured.'));
+          status(status.UNAUTHORIZED).
+          json(new ErrorMessage('Not logged in!'));
       }
-      res.json(new SuccessMessage('Event canceled successfully.'));
-    });
-  });
+
+      Bar.removeAttendee(req.params.yelpId, req.user._id, function(err) {
+        if (err) {
+          return res.
+            status(status.INTERNAL_SERVER_ERROR).
+            json(new ErrorMessage('An error occured.'));
+        }
+        res.json(new SuccessMessage('Event canceled successfully.'));
+      });
+    }
+  }));
 
   api.get('/profile/polls', wagner.invoke(function(Poll) {
     return function(req, res) {

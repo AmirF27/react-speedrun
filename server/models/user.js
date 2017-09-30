@@ -22,13 +22,7 @@ const userSchema = new Schema({
     token: String,
     username: String,
     displayName: String
-  },
-  // bars user is going to (for nightlife coordination app)
-  bars: [{
-    barId: String,
-    date: Date,
-    _id: false
-  }]
+  }
 });
 
 userSchema.statics.encryptPassword = function encryptPassword(password) {
@@ -37,33 +31,6 @@ userSchema.statics.encryptPassword = function encryptPassword(password) {
 
 userSchema.methods.verifyPassword = function verifyPassword(password) {
   return bcrypt.compareSync(password, this.local.password);
-};
-
-userSchema.methods.addBar = function addBar(barId, callback) {
-  if (this.barExists(barId)) return callback();
-
-  const bar = { barId, date: Date.now() };
-
-  this.
-    update({
-      $push: { bars: bar }
-    }).
-    exec(function(err) {
-      if (err) callback(err);
-      callback(null, bar);
-    });
-};
-
-userSchema.methods.removeBar = function removeBar(barId, callback) {
-  this.
-    update({
-      $pull: { bars: { barId } }
-    }).
-    exec(callback);
-};
-
-userSchema.methods.barExists = function barExists(barId) {
-  return this.bars.findIndex(bar => bar.barId == barId) >= 0;
 };
 
 module.exports = userSchema;
