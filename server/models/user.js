@@ -42,9 +42,22 @@ userSchema.methods.verifyPassword = function verifyPassword(password) {
 userSchema.methods.addBar = function addBar(barId, callback) {
   if (this.barExists(barId)) return callback();
 
+  const bar = { barId, date: Date.now() };
+
   this.
     update({
-      $push: { bars: { barId, date: Date.now() } }
+      $push: { bars: bar }
+    }).
+    exec(function(err) {
+      if (err) callback(err);
+      callback(null, bar);
+    });
+};
+
+userSchema.methods.removeBar = function removeBar(barId, callback) {
+  this.
+    update({
+      $pull: { bars: { barId } }
     }).
     exec(callback);
 };

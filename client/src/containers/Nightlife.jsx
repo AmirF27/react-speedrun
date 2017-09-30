@@ -3,7 +3,12 @@ import { connect } from 'react-redux';
 import Ajax from '../js/ajax';
 import { checkAuth, mapStateToProps } from '../js/util';
 
-import { login, logout } from '../actions';
+import {
+  login,
+  logout,
+  addBar,
+  removeBar
+} from '../actions';
 
 class Nightlife extends Component {
   constructor(props) {
@@ -11,7 +16,9 @@ class Nightlife extends Component {
 
     this.getBars = this.getBars.bind(this);
     this.addBar = this.addBar.bind(this);
+    this.removeBar = this.removeBar.bind(this);
     this.recallLastSearch = this.recallLastSearch.bind(this);
+    this.userIsAttengdingBar = this.userIsAttengdingBar.bind(this);
 
     this.state = {
       bars: null
@@ -32,10 +39,7 @@ class Nightlife extends Component {
       }.bind(this));
   }
 
-  addBar(event) {
-    event.preventDefault();
-    event.persist();
-
+  addBar(id) {
     checkAuth(
       this.props.login,
       this.props.logout,
@@ -47,12 +51,24 @@ class Nightlife extends Component {
           // redirect to Twitter auth API endpoint
           window.location.pathname = '/auth/twitter';
         } else {
-          Ajax.post(event.target.getAttribute('href')).
-            then(function fulfilled(res) {}).
+          Ajax.post(`/api/nightlife/add-bar/${id}`).
+            then(function fulfilled(bar) {
+              this.props.addBar(bar);
+            }.bind(this)).
             catch(function rejected(err) {});
         }
       }
     );
+  }
+
+  removeBar(id) {
+    Ajax.delete(`/api/nightlife/remove-bar/${id}`).
+      then(function fulfilled(res) {
+        this.props.removeBar(id);
+      }.bind(this)).
+      catch(function rejected(err) {
+        console.error(err);
+      });
   }
 
   recallLastSearch() {
@@ -65,7 +81,16 @@ class Nightlife extends Component {
     }
   }
 
+  userIsAttengdingBar(barId) {
+    if (!this.props.user) {
+      return false;
+    }
+
+    return this.props.user.bars.findIndex(bar => bar.barId == barId) >= 0;
+  }
+
   componentDidMount() {
+    checkAuth(this.props.login, this.props.logout);
     this.recallLastSearch();
   }
 
@@ -77,9 +102,16 @@ class Nightlife extends Component {
         return (
           <li>
             {bar.name}
-            <a href={`/api/nightlife/add-bar/${bar.id}`}
-              onClick={this.addBar}>I'm Going Tonight
-            </a>
+            {!this.userIsAttengdingBar(bar.id)
+              ? <button onClick={() => this.addBar(bar.id)}
+                  className="button button--default button--small">
+                  I'm Going Tonight
+                </button>
+              : <button onClick={() => this.removeBar(bar.id)}
+                  className="button button--negative button--small">
+                  Cancel
+                </button>
+            }
           </li>
         );
       });
@@ -107,5 +139,10 @@ class Nightlife extends Component {
 
 export default connect(
   mapStateToProps,
-  { login, logout }
+  {
+    login,
+    logout,
+    addBar,
+    removeBar
+  }
 )(Nightlife);

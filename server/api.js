@@ -246,28 +246,43 @@ module.exports = function(wagner, passport) {
     });
   });
 
-  api.post('/nightlife/add-bar/:barId', wagner.invoke(function(User) {
-    return function(req, res) {
-      if (!req.user) {
-        return res.
-          status(status.UNAUTHORIZED).
-          json(new ErrorMessage('Not logged in!'));
-      }
-
-      if (!req.user.twitter.id) {
-        return res.json(new ErrorMessage('You need to be logged in with Twitter.'));
-      }
-
-      req.user.addBar(req.params.barId, function(err) {
-        if (err) {
-          return res.
-            status(status.INTERNAL_SERVER_ERROR).
-            json(new ErrorMessage('An error occured.'));
-        }
-        res.json(new SuccessMessage('Bar added successfully!'));
-      });
+  api.post('/nightlife/add-bar/:barId', function(req, res) {
+    if (!req.user) {
+      return res.
+        status(status.UNAUTHORIZED).
+        json(new ErrorMessage('Not logged in!'));
     }
-  }));
+
+    if (!req.user.twitter.id) {
+      return res.json(new ErrorMessage('You need to be logged in with Twitter.'));
+    }
+
+    req.user.addBar(req.params.barId, function(err, bar) {
+      if (err) {
+        return res.
+          status(status.INTERNAL_SERVER_ERROR).
+          json(new ErrorMessage('An error occured.'));
+      }
+      res.json(bar);
+    });
+  });
+
+  api.delete('/nightlife/remove-bar/:barId', function(req, res) {
+    if (!req.user) {
+      return res.
+        status(status.UNAUTHORIZED).
+        json(new ErrorMessage('Not logged in!'));
+    }
+
+    req.user.removeBar(req.params.barId, function(err) {
+      if (err) {
+        return res.
+          status(status.INTERNAL_SERVER_ERROR).
+          json(new ErrorMessage('An error occured.'));
+      }
+      res.json(new SuccessMessage('Event canceled successfully.'));
+    });
+  });
 
   api.get('/profile/polls', wagner.invoke(function(Poll) {
     return function(req, res) {
@@ -303,6 +318,7 @@ module.exports = function(wagner, passport) {
           username: req.user.twitter.username
         };
       }
+      user.bars = req.user.bars;
       res.json({ user });
     } else {
       res.json({ user: null });

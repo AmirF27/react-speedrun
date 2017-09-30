@@ -23,9 +23,9 @@ function checkAuth(login, logout, callback) {
 
 function mapStateToProps(state) {
   return {
-    checkedAuth: state.auth.checkedAuth,
-    authed: state.auth.authed,
-    user: state.auth.user
+    checkedAuth: state.user.checkedAuth,
+    authed: state.user.authed,
+    user: state.user.user
   };
 }
 
