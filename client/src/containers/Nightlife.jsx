@@ -108,6 +108,7 @@ class Nightlife extends Component {
         return (
           <li>
             {bar.name}
+            {bar.attendees}
             {bar.userAttending
               ? <button onClick={() => this.removeBar(bar.id)}
                   className="button button--negative button--small">

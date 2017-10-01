@@ -35,4 +35,20 @@ barSchema.statics.getUserBars = function getUserBars(userId, callback) {
     });
 };
 
+barSchema.statics.countAttendees = function countAttendees(bars, callback) {
+  let barsCounted = 0;
+
+  for (let bar of bars) {
+    this.findOne({ yelpId: bar.id }, function(err, b) {
+      if (b) {
+        bar.attendees = b.attendees.length;
+      } else {
+        bar.attendees = 0;
+      }
+      barsCounted++;
+      if (barsCounted == bars.length) callback(null, bars);
+    });
+  }
+};
+
 module.exports = barSchema;

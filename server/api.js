@@ -243,21 +243,23 @@ module.exports = function(wagner, passport) {
       const nightlife = new Nightlife({ location: req.query.location });
 
       nightlife.search(function(err, bars) {
-        if (req.user) {
-          Bar.getUserBars(req.user._id, function(err, userBars) {
-            nightlife.userBars = userBars;
+        Bar.countAttendees(bars, function(err, countedBars) {
+          if (req.user) {
+            Bar.getUserBars(req.user._id, function(err, userBars) {
+              nightlife.userBars = userBars;
 
-            if (err) {
-              return res.
-                status(status.INTERNAL_SERVER_ERROR).
-                json(new ErrorMessage('An error occured.'));
-            }
+              if (err) {
+                return res.
+                  status(status.INTERNAL_SERVER_ERROR).
+                  json(new ErrorMessage('An error occured.'));
+              }
 
-            res.json(nightlife.markUserAttendance(bars));
-          });
-        } else {
-          res.json(err || bars);
-        }
+              res.json(nightlife.markUserAttendance(countedBars));
+            });
+          } else {
+            res.json(err || countedBars);
+          }
+        });
       });
     }
   }));

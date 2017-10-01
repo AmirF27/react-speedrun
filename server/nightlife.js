@@ -36,10 +36,10 @@ Nightlife.prototype.search = function search(callback) {
 
 Nightlife.prototype.markUserAttendance = function markUserAttendance(bars) {
   for (let userBar of this.userBars) {
-    for (let bar of bars) {
-      if (userBar == bar.id) {
-        bar.userAttending = true;
-      }
+    const barIndex = bars.findIndex(bar => userBar == bar.id);
+
+    if (barIndex >= 0) {
+      bars[barIndex].userAttending = true;
     }
   }
 
