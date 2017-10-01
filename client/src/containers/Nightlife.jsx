@@ -106,19 +106,28 @@ class Nightlife extends Component {
     if (this.state.bars) {
       bars = this.state.bars.map(bar => {
         return (
-          <li>
-            {bar.name}
-            {bar.attendees}
-            {bar.userAttending
-              ? <button onClick={() => this.removeBar(bar.id)}
-                  className="button button--negative button--small">
-                  Cancel
-                </button>
-              : <button onClick={() => this.addBar(bar.id)}
-                  className="button button--default button--small">
-                  I'm Going Tonight
-                </button>
-            }
+          <li className="grid">
+            <div className="col col-d-3">
+              <a href={bar.url}>
+                <img src={bar.image_url} alt={bar.name} className="full-width" />
+                <span>{bar.name}</span>
+              </a>
+            </div>
+            <div className="col col-d-3">
+              <span>{bar.attendees} people going</span>
+            </div>
+            <div className="col col-d-6">
+              {bar.userAttending
+                ? <button onClick={() => this.removeBar(bar.id)}
+                    className="button button--negative button--small">
+                    Cancel
+                  </button>
+                : <button onClick={() => this.addBar(bar.id)}
+                    className="button button--default button--small">
+                    I'm Going Tonight
+                  </button>
+              }
+            </div>
           </li>
         );
       });

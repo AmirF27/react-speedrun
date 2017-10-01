@@ -1,0 +1,19 @@
+.grid {
+  display: flex;
+  padding-left: $grid-spacing;
+  padding-right: $grid-spacing;
+
+  .col {
+    padding-left: $grid-spacing;
+    padding-right: $grid-spacing;
+  }
+
+  // column classes
+  @for $i from $col-min through $col-max {
+    @each $device in map-keys($devices) {
+      .col-#{$device}-#{$i} {
+        flex: 0 0 #{($i * 100%) / 12};
+      }
+    }
+  }
+}

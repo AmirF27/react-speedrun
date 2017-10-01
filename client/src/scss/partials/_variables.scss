@@ -43,6 +43,19 @@ $container-width: 960px;
 $default-border-width: 1px;
 
 
+// GRID
+
+$col-min: 1;
+$col-max: 12;
+$grid-spacing: 7px;
+
+$devices: (
+  m: 480px, // mobile
+  t: 768px, // tablet
+  d: 992px // desktop
+);
+
+
 // TYPOGRAPHY
 
 $default-font-family: 'Raleway', sans-serif;

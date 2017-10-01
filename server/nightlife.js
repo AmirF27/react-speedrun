@@ -21,7 +21,7 @@ Nightlife.prototype.search = function search(callback) {
         return {
           id: bar.id,
           name: bar.name,
-          image_url: bar.image_url,
+          image_url: bar.image_url.replace('o.jpg', 'ls.jpg'),
           url: bar.url,
           rating: bar.rating
         };
