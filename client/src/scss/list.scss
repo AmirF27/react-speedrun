@@ -1,0 +1,30 @@
+.list {
+  list-style-type: none;
+  padding: 0;
+
+  .list__item {
+    background: lighten($color-accent, 10%);
+    background: rgba($color-accent, 0.4);
+    border: $list-item-border;
+    border-radius: $control-border-radius;
+    display: block;
+    margin-bottom: $list-item-spacing;
+    padding: $list-item-spacing;
+
+    &.list__item--link {
+      display: flex;
+      padding: 0;
+
+      a {
+        display: inline-block;
+        flex: 1;
+        padding: $list-item-spacing;
+      }
+
+      .button {
+        flex: 0 0 15%;
+        margin: auto $list-item-spacing auto 0;
+      }
+    }
+  }
+}

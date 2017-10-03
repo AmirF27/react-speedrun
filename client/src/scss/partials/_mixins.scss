@@ -1,7 +1,3 @@
-@mixin center-block() {
-  margin: 0 auto;
-}
-
 @mixin clearfix() {
   &:after {
     clear: both;

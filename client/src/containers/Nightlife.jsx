@@ -18,7 +18,6 @@ class Nightlife extends Component {
     this.addBar = this.addBar.bind(this);
     this.removeBar = this.removeBar.bind(this);
     this.recallLastSearch = this.recallLastSearch.bind(this);
-    this.userIsAttengdingBar = this.userIsAttengdingBar.bind(this);
 
     this.state = {
       bars: null
@@ -56,6 +55,7 @@ class Nightlife extends Component {
               const barIndex = this.state.bars.findIndex(bar => bar.id == id);
               const bars = this.state.bars.slice();
               bars[barIndex].userAttending = true;
+              bars[barIndex].attendees++;
               this.setState({ bars });
             }.bind(this)).
             catch(function rejected(err) {});
@@ -70,6 +70,7 @@ class Nightlife extends Component {
         const barIndex = this.state.bars.findIndex(bar => bar.id == id);
         const bars = this.state.bars.slice();
         delete bars[barIndex].userAttending;
+        bars[barIndex].attendees--;
         this.setState({ bars });
       }.bind(this)).
       catch(function rejected(err) {
@@ -87,14 +88,6 @@ class Nightlife extends Component {
     }
   }
 
-  userIsAttengdingBar(barId) {
-    if (!this.props.user) {
-      return false;
-    }
-
-    return this.props.user.bars.findIndex(bar => bar.barId == barId) >= 0;
-  }
-
   componentDidMount() {
     checkAuth(this.props.login, this.props.logout);
     this.recallLastSearch();
@@ -106,27 +99,29 @@ class Nightlife extends Component {
     if (this.state.bars) {
       bars = this.state.bars.map(bar => {
         return (
-          <li className="grid">
-            <div className="col col-d-3">
-              <a href={bar.url}>
-                <img src={bar.image_url} alt={bar.name} className="full-width" />
-                <span>{bar.name}</span>
-              </a>
-            </div>
-            <div className="col col-d-3">
-              <span>{bar.attendees} people going</span>
-            </div>
-            <div className="col col-d-6">
-              {bar.userAttending
-                ? <button onClick={() => this.removeBar(bar.id)}
-                    className="button button--negative button--small">
-                    Cancel
-                  </button>
-                : <button onClick={() => this.addBar(bar.id)}
-                    className="button button--default button--small">
-                    I'm Going Tonight
-                  </button>
-              }
+          <li className="list__item">
+            <div className="grid">
+              <div className="col col-d-2">
+                <a href={bar.url}>
+                  <img src={bar.image_url} alt={bar.name} className="full-width" />
+                  <span>{bar.name}</span>
+                </a>
+              </div>
+              <div className="col col-d-4">
+                <span>{bar.attendees} going</span>
+              </div>
+              <div className="col col-d-6">
+                {bar.userAttending
+                  ? <button onClick={() => this.removeBar(bar.id)}
+                      className="button button--negative button--small">
+                      Cancel
+                    </button>
+                  : <button onClick={() => this.addBar(bar.id)}
+                      className="button button--default button--small">
+                      I'm Going Tonight
+                    </button>
+                }
+              </div>
             </div>
           </li>
         );
@@ -144,7 +139,7 @@ class Nightlife extends Component {
           <input type="submit" value="Search" className="button button--primary" />
         </form>
         {this.state.bars &&
-          <ul>
+          <ul className="list">
             {bars}
           </ul>
         }

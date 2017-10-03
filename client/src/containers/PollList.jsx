@@ -16,7 +16,7 @@ class PollList extends Component {
 
     const list = this.props.polls.map(poll => {
       return (
-        <li>
+        <li className="list__item list__item--link">
           <Link to={`/voting-app/poll/${poll.title}`}>{poll.title}</Link>
           {this.props.type == 'user' &&
             <button
@@ -30,7 +30,13 @@ class PollList extends Component {
     });
 
     return (
-      <ul>{list}</ul>
+      <div className="grid grid--center">
+        <div className="col col-d-5">
+          <ul className="list">
+            {list}
+          </ul>
+        </div>
+      </div>
     );
   }
 }

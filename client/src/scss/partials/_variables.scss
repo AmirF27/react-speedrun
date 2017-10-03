@@ -47,7 +47,7 @@ $default-border-width: 1px;
 
 $col-min: 1;
 $col-max: 12;
-$grid-spacing: 7px;
+$grid-spacing: 15px;
 
 $devices: (
   m: 480px, // mobile
@@ -111,9 +111,14 @@ $checkbox-margin-right: $checkbox-margin-bottom / 2;
 // ALERT
 
 $alert-padding: 20px;
-$alert-width: 600px;
 $alert-margin-bottom: 30px;
 $alert-close-margin: 15px;
 
 $alert-success-color: $color-accent;
 $alert-error-color: $color-negative-light;
+
+
+// LIST
+
+$list-item-border: 1px solid $color-accent;
+$list-item-spacing: 15px;

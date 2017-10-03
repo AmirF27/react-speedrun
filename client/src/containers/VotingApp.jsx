@@ -19,7 +19,12 @@ class VotingApp extends Component {
   render() {
     return (
       <main className="container">
-        <Link to="/voting-app/new-poll">Make a New Poll</Link>
+        <div className="grid grid--center">
+          <Link to="/voting-app/new-poll"
+            className="button button--primary col col-d-5">
+            Make a New Poll
+          </Link>
+        </div>
         {this.state.ready
           ? <PollList polls={this.state.polls} type="all"></PollList>
           : <p>Loading polls...</p>

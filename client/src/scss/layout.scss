@@ -2,8 +2,13 @@ main {
   padding-top: $page-top-spacing;
 }
 
+.center-block {
+  display: block !important;
+  margin: 0 auto;
+}
+
 .container {
-  @include center-block;
+  @extend .center-block;
   @include clearfix;
 
   width: $container-width;

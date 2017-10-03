@@ -11,37 +11,39 @@ class Register extends Component {
     return (
       <main className="container">
         {this.props.children}
-        <form action="/auth/register"
-              method="post"
-              onSubmit={this.props.authenticate}
-              className="form">
-          <label htmlFor="name">Name</label>
-          <input id="name"
-                 type="text"
-                 name="name"
-                 className="form__input" />
-          <label htmlFor="email">Email</label>
-          <input id="email"
-                 type="email"
-                 name="email"
-                 className="form__input"
-                 required />
-          <label htmlFor="password">Password</label>
-          <input id="password"
-                 type="password"
-                 name="password"
-                 className="form__input"
-                 required />
-          <label htmlFor="confirm">Confirm Password</label>
-          <input id="confirm"
-                 type="password"
-                 name="confirm"
-                 className="form__input"
-                 required />
-          <input type="submit"
-                 value="Register"
-                 className="button button--primary button--block" />
-        </form>
+        <div className="grid grid--center">
+          <form action="/auth/register"
+                method="post"
+                onSubmit={this.props.authenticate}
+                className="form col col-d-5">
+            <label htmlFor="name">Name</label>
+            <input id="name"
+                   type="text"
+                   name="name"
+                   className="form__input" />
+            <label htmlFor="email">Email</label>
+            <input id="email"
+                   type="email"
+                   name="email"
+                   className="form__input"
+                   required />
+            <label htmlFor="password">Password</label>
+            <input id="password"
+                   type="password"
+                   name="password"
+                   className="form__input"
+                   required />
+            <label htmlFor="confirm">Confirm Password</label>
+            <input id="confirm"
+                   type="password"
+                   name="confirm"
+                   className="form__input"
+                   required />
+            <input type="submit"
+                   value="Register"
+                   className="button button--primary button--block" />
+          </form>
+        </div>
       </main>
     );
   }

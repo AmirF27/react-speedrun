@@ -1,5 +1,5 @@
 .form {
-  @include center-block;
+  @extend .center-block;
 
   width: $form-default-width;
 

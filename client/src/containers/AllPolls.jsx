@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import Ajax from '../js/ajax';
 
+import PollList from './PollList.jsx';
+
 class AllPolls extends Component {
   constructor() {
     super();
@@ -13,9 +15,10 @@ class AllPolls extends Component {
   render() {
     return (
       <main className="container">
-        <ul>
-          {this.state.polls}
-        </ul>
+        <PollList
+          polls={this.state.polls}
+          type="all">
+        </PollList>
       </main>
     );
   }
@@ -29,21 +32,13 @@ class AllPolls extends Component {
       get(`/api${window.location.pathname}`).
       then(
         function fulfilled(res) {
-          this.displayPolls(res);
+          this.setState({
+            polls: res
+          });
         }.bind(this),
         function rejected(err) {
           console.error(err);
         });
-  }
-
-  displayPolls(polls) {
-    this.setState({
-      polls: polls.map((poll, i) => {
-        return (
-          <li key={i}>{poll.title}</li>
-        );
-      })
-    });
   }
 }
 
