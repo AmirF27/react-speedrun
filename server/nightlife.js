@@ -29,7 +29,6 @@ Nightlife.prototype.search = function search(callback) {
       callback(null, bars);
     }).
     catch(function rejected(err) {
-      console.dir(err);
       callback(err);
     });
 };

@@ -4,6 +4,7 @@ const upload = require('multer')();
 const Timestamp = require('./timestamp');
 const HeaderParser = require('./header-parser');
 const Nightlife = require('./nightlife');
+const Stock = require('./stock');
 const message = require('./message.js');
 const ErrorMessage = message.ErrorMessage;
 const SuccessMessage = message.SuccessMessage;
@@ -305,6 +306,23 @@ module.exports = function(wagner, passport) {
       });
     }
   }));
+
+  api.get('/stock-market', function(req, res) {
+    const stock = new Stock({
+      symbol: req.query.symbol,
+      duration: req.query.duration || 1
+    });
+
+    stock.getData(function(err, data) {
+      if (err) {
+        res.
+          status(status.INTERNAL_SERVER_ERROR).
+          json(new ErrorMessage('Could not retrieve stock data.'));
+      } else {
+        res.json(data);
+      }
+    });
+  });
 
   api.get('/profile/polls', wagner.invoke(function(Poll) {
     return function(req, res) {
