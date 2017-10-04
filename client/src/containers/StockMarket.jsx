@@ -10,18 +10,21 @@ class StockMarket extends Component {
     this.getStockData = this.getStockData.bind(this);
 
     this.state = {
-      stocks: null
+      stocks: null,
+      datasets: null
     };
   }
 
   getStockData() {
-    const params = {
-      symbol: 'GOOG'
-    };
-
-    Ajax.get('/api/stock-market', { params }).
+    Ajax.get('/api/stock-market').
       then(function fulfilled(res) {
-        this.setState({ stocks: res });
+        const datasets = res.map(stock => {
+          return {
+            label: stock.symbol,
+            data: stock.data
+          };
+        });
+        this.setState({ stocks: res, datasets });
         console.log(res);
       }.bind(this)).
       catch(function rejected(err) {
@@ -39,10 +42,7 @@ class StockMarket extends Component {
         {this.state.stocks
           ? <ChartView title="Stocks" type="line"
               labels={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]}
-              datasets={[{
-                label: this.state.stocks.symbol,
-                data: this.state.stocks.data.map(datum => datum.value)
-              }]} />
+              datasets={this.state.datasets} />
           : <p>Loading...</p>
         }
       </main>

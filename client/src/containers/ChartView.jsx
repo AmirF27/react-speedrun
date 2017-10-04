@@ -35,18 +35,11 @@ class ChartView extends Component {
   }
 
   displayChart() {
-    console.log(this.props.labels);
-
     const chart = new Chart('chart', {
       type: this.props.type || 'bar',
       data: {
         labels: this.props.labels,
         datasets: this.formatDatasets()
-        // datasets: [{
-        //   label: 'Votes',
-        //   data: this.props.data,
-        //   backgroundColor: this.generatePalette()
-        // }]
       }
     });
 
@@ -78,8 +71,6 @@ class ChartView extends Component {
   updateChart() {
     this.state.chart.data.labels = this.props.labels;
     this.state.chart.data.datasets = this.formatDatasets();
-    // this.state.chart.data.datasets[0].data = this.props.datasets[0].data;
-    // this.state.chart.data.datasets[0].backgroundColor = this.generatePalette(this.props.datasets[0].data.length);
     this.state.chart.update();
   }
 }
