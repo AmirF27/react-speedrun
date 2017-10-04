@@ -16,6 +16,7 @@ import VotingApp from './containers/VotingApp.jsx';
 import NewPoll from './containers/NewPoll.jsx';
 import AllPolls from './containers/AllPolls.jsx';
 import Nightlife from './containers/Nightlife.jsx';
+import StockMarket from './containers/StockMarket.jsx';
 import Poll from './containers/Poll.jsx';
 import UserProfile from './containers/UserProfile.jsx';
 import UserPolls from './containers/UserPolls.jsx';
@@ -36,6 +37,7 @@ ReactDOM.render((
         <Route path="/voting-app/all-polls" component={AllPolls} />
         <Route path="/voting-app/poll/:title" component={Poll} />
         <Route path="/nightlife" component={Nightlife} />
+        <Route path="/stock-market" component={StockMarket} />
         <Route exact path="/profile" component={UserProfile} />
         <Route path="/profile/polls" component={UserPolls} />
         <Route path="/register" component={Register} />

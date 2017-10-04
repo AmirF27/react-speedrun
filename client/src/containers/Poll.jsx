@@ -35,9 +35,9 @@ class Poll extends Component {
       return (
         <div>
           <input
-            id={`option.name${i}`} className="form__radio" key={i} name="vote"
+            id={`option${i + 1}`} className="form__radio" key={i} name="vote"
             type="radio" value={option.name} required />
-          <label htmlFor={`option.name${i}`}>{option.name}</label>
+          <label htmlFor={`option${i + 1}`}>{option.name}</label>
         </div>
       );
     });
@@ -65,10 +65,12 @@ class Poll extends Component {
             />
           </form>
         }
-        <ChartView
-          title="Votes"
+        <ChartView title="Votes" type="pie"
           labels={this.state.poll.options.map(option => option.name)}
-          data={this.state.poll.options.map(option => option.votes)}>
+          datasets={[{
+            label: 'Votes',
+            data: this.state.poll.options.map(option => option.votes)
+          }]}>
         </ChartView>
       </main>
     );

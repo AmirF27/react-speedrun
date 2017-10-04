@@ -16,6 +16,7 @@ Stock.prototype.getData = function getData(callback) {
   const params = {
     api_key: process.env.QUANDL_API_KEY,
     order: 'asc',
+    collapse: 'monthly',
     start_date: moment().subtract(this.duration * YEAR, 'd').format(DATE_FORMAT),
     end_date: moment().format(DATE_FORMAT)
   };
