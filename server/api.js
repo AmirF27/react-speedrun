@@ -314,6 +314,35 @@ module.exports = function(wagner, passport) {
     };
   }));
 
+  api.post('/stock-market', upload.any(), wagner.invoke(function(Stock) {
+    return function(req, res) {
+      if (!req.body.symbol) {
+        return res.
+          status(status.BAD_REQUEST).
+          json(new ErrorMessage('Missing symbol.'));
+      }
+
+      Stock.addStock(req.body.symbol, function(err, stock) {
+        if (err) {
+          // check stock symbol validity
+          if (err.quandl_error && err.quandl_error.code == 'QECx02') {
+            return res.
+              staus(status.NOT_FOUND).
+              json(new ErrorMessage('Invalid stock symbol.'));
+          } else if (err.name === 'MongoError' && err.code === 11000) {
+            return res.json(new ErrorMessage('Stock already exists.'));
+          } else {
+            return res.
+              status(status.INTERNAL_SERVER_ERROR).
+              json(new ErrorMessage('An error occured while attempting to save stock.'));
+          }
+        }
+
+        res.json(stock);
+      });
+    };
+  }));
+
   api.get('/profile/polls', wagner.invoke(function(Poll) {
     return function(req, res) {
       if (!req.user) {

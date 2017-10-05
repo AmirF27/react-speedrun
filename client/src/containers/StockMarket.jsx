@@ -8,6 +8,7 @@ class StockMarket extends Component {
     super(props);
 
     this.getStockData = this.getStockData.bind(this);
+    this.addStock = this.addStock.bind(this);
 
     this.state = {
       stocks: null,
@@ -25,11 +26,27 @@ class StockMarket extends Component {
           };
         });
         this.setState({ stocks: res, datasets });
-        console.log(res);
       }.bind(this)).
       catch(function rejected(err) {
         console.error(err);
       });
+  }
+
+  addStock(event) {
+    event.preventDefault();
+
+    Ajax.submitForm(event.target, function(err, res) {
+      if (err) return console.error(err);
+
+      if (res.type != 'error') {
+        const dataset = { label: res.symbol, data: res.data };
+
+        this.setState({
+          stocks: this.state.stocks.concat(res),
+          datasets: this.state.datasets.concat(dataset)
+        });
+      }
+    }.bind(this));
   }
 
   componentDidMount() {
@@ -37,14 +54,25 @@ class StockMarket extends Component {
   }
 
   render() {
+    if (!this.state.stocks) {
+      return (
+        <main className="container">
+          <p>Loading...</p>
+        </main>
+      );
+    }
+
     return (
       <main className="container">
-        {this.state.stocks
-          ? <ChartView title="Stocks" type="line"
-              labels={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]}
-              datasets={this.state.datasets} />
-          : <p>Loading...</p>
-        }
+        <ChartView title="Stocks" type="line"
+          labels={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]}
+          datasets={this.state.datasets} />
+        <form action="/api/stock-market" method="post"
+          className="form form--inline" onSubmit={this.addStock}>
+          <input className="form__input" type="text" name="symbol"
+            placeholder="Enter stock symbol" required />
+          <input className="button button--default" type="submit" value="Add Stock" />
+        </form>
       </main>
     );
   }
