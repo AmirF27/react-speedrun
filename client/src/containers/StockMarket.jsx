@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
+import io from 'socket.io-client';
 import Ajax from '../js/ajax';
 
 import ChartView from './ChartView.jsx';
+
+const socket = io();
 
 class StockMarket extends Component {
   constructor(props) {
@@ -36,21 +39,30 @@ class StockMarket extends Component {
     event.preventDefault();
 
     Ajax.submitForm(event.target, function(err, res) {
-      if (err) return console.error(err);
-
-      if (res.type != 'error') {
-        const dataset = { label: res.symbol, data: res.data };
-
-        this.setState({
-          stocks: this.state.stocks.concat(res),
-          datasets: this.state.datasets.concat(dataset)
-        });
-      }
+      console.log(err || res);
+      // if (err) return console.error(err);
+      //
+      // if (res.type != 'error') {
+      //   const dataset = { label: res.symbol, data: res.data };
+      //
+      //   this.setState({
+      //     stocks: this.state.stocks.concat(res),
+      //     datasets: this.state.datasets.concat(dataset)
+      //   });
+      // }
     }.bind(this));
   }
 
   componentDidMount() {
     this.getStockData();
+
+    socket.on('add stock', stock => {
+      const dataset = { label: stock.symbol, data: stock.data };
+      this.setState({
+        stocks: this.state.stocks.concat(stock),
+        datasets: this.state.datasets.concat(dataset)
+      });
+    });
   }
 
   render() {

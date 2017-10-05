@@ -17,6 +17,9 @@ if (process.env.NODE_ENV != 'production') {
 require('./db')(wagner);
 
 const app = express();
+const server = require('http').createServer(app);
+
+require('./socket')(server, wagner);
 
 app.use(express.static(STATIC_PATH));
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -37,6 +40,6 @@ app.get('*', function(req, res) {
   res.sendFile(INDEX_PAGE);
 });
 
-const server = app.listen(PORT, function() {
-  console.log('Listening on port ' + server.address().port);
+server.listen(PORT, function() {
+  console.log('Listening on port ' + PORT);
 });

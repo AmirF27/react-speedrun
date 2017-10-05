@@ -19,7 +19,7 @@ class ChartView extends Component {
 
   render() {
     return (
-      <section style={{width: '400px'}}>
+      <section>
         <h2>{this.props.title || 'Chart'}</h2>
         <canvas id="chart"></canvas>
       </section>

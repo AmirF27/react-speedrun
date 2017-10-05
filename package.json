@@ -34,6 +34,8 @@
     "redux": "^3.7.2",
     "request-promise": "^4.2.1",
     "shortid": "^2.2.8",
+    "socket.io": "^2.0.3",
+    "socket.io-client": "^2.0.3",
     "useragent": "^2.2.1",
     "wagner-core": "^0.2.0"
   },

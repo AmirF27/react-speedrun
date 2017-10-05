@@ -314,7 +314,7 @@ module.exports = function(wagner, passport) {
     };
   }));
 
-  api.post('/stock-market', upload.any(), wagner.invoke(function(Stock) {
+  api.post('/stock-market', upload.any(), wagner.invoke(function(Stock, socket) {
     return function(req, res) {
       if (!req.body.symbol) {
         return res.
@@ -338,7 +338,8 @@ module.exports = function(wagner, passport) {
           }
         }
 
-        res.json(stock);
+        socket.emit('add stock', stock);
+        res.json(new SuccessMessage('Stock added successfully.'));
       });
     };
   }));
