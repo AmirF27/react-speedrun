@@ -3,7 +3,7 @@ const moment = require('moment');
 
 const SYMBOL_PLACEHOLDER = ':symbol';
 const QUANDL_URL = `https://www.quandl.com/api/v3/datasets/WIKI/${SYMBOL_PLACEHOLDER}.json`;
-const YEAR = 365;
+const YEAR = 12;
 const DATE_FORMAT = 'YYYY-MM-DD';
 
 function StockService(options) {
@@ -30,7 +30,7 @@ StockService.prototype.getRequestOptions = function getRequestOptions() {
     api_key: process.env.QUANDL_API_KEY,
     order: 'asc',
     collapse: 'monthly',
-    start_date: moment().subtract(this.duration * YEAR, 'd').format(DATE_FORMAT),
+    start_date: moment().subtract(this.duration * YEAR - 1, 'month').format(DATE_FORMAT),
     end_date: moment().format(DATE_FORMAT)
   };
 

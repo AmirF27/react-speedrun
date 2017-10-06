@@ -1,7 +1,7 @@
 .grid {
   display: flex;
+  flex-wrap: wrap;
   justify-content: flex-start;
-  margin-right: $grid-spacing;
 
   .col {
     box-sizing: border-box;

@@ -344,6 +344,39 @@ module.exports = function(wagner, passport) {
     };
   }));
 
+  api.delete('/stock-market', wagner.invoke(function(Stock, socket) {
+    return function(req, res) {
+      Stock.findOne({ symbol: req.body.symbol }, function(err, stock) {
+        if (err) {
+          return res.
+            status(status.INTERNAL_SERVER_ERROR).
+            json(new ErrorMessage(
+              'An error occured while attempting to delete stock.'
+            ));
+        }
+
+        if (!stock) {
+          return res.
+            status(status.NOT_FOUND).
+            json(new ErrorMessage('Stock not found.'));
+        }
+
+        stock.remove(function(err) {
+          if (err) {
+            return res.
+              status(status.INTERNAL_SERVER_ERROR).
+              json(new ErrorMessage(
+                'An error occured while attempting to delete stock.'
+              ));
+          }
+
+          socket.emit('delete stock', req.body.symbol);
+          return res.json(new SuccessMessage('Stock deleted successfully!'));
+        });
+      });
+    };
+  }));
+
   api.get('/profile/polls', wagner.invoke(function(Poll) {
     return function(req, res) {
       if (!req.user) {

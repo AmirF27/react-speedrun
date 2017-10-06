@@ -40,6 +40,10 @@ export default class Ajax {
     }
 
     static delete(url, options = {}) {
+      // assign an empty object to headers if it's undefined
+      options.headers = options.headers || {};
+      options.headers['Content-Type'] = 'application/json';
+
       return this.processRequest('DELETE', url, options);
     }
 
@@ -62,7 +66,7 @@ export default class Ajax {
           if (options.headers) {
               this.setHeaders(xhr, options.headers);
           }
-          xhr.send(options.form || null);
+          xhr.send(JSON.stringify(options.body) || options.form || null);
       }.bind(this));
     }
 
@@ -70,7 +74,7 @@ export default class Ajax {
       const url = form.getAttribute('action');
       const options = {
         headers: [
-          { 'Content-type': 'application/x-www-form-urlencoded' }
+          { 'Content-Type': 'application/x-www-form-urlencoded' }
         ],
         form: new FormData(form)
       };

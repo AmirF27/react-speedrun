@@ -22,6 +22,7 @@ const server = require('http').createServer(app);
 require('./socket')(server, wagner);
 
 app.use(express.static(STATIC_PATH));
+app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(require('express-session')({
