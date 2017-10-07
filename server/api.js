@@ -378,6 +378,20 @@ module.exports = function(wagner) {
     };
   }));
 
+  api.get('/book-trading-club', wagner.invoke(function(Book) {
+    return function(req, res) {
+      Book.getAllBooks(function(err, books) {
+        if (err) {
+          return res.
+            status(status.INTERNAL_SERVER_ERROR).
+            json(new ErrorMessage('An error occured while attempting to retireve books.'));
+        }
+
+        res.json(books);
+      });
+    };
+  }));
+
   api.get('/book-trading-club/search', function(req, res) {
     if (!req.query.title) {
       return res.

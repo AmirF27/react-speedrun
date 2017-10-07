@@ -9,15 +9,28 @@ class BookTrade extends Component {
   constructor(props) {
     super(props);
 
+    this.getBooks = this.getBooks.bind(this);
+
     this.state = {
       books: []
     };
+  }
+
+  getBooks() {
+    Ajax.get('/api/book-trading-club').
+      then(books => this.setState({ books })).
+      catch(console.error);
+  }
+
+  componentDidMount() {
+    this.getBooks();
   }
 
   render() {
     return (
       <main className="container">
         <RequireLogin />
+        {this.props.children}
         <BookList type="all" books={this.state.books} />
       </main>
     );

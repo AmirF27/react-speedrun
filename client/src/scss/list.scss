@@ -34,6 +34,12 @@
     height: $book-image-height;
   }
 
+  i {
+    display: inline-block;
+    font-size: .9rem;
+    margin-bottom: $list-item-spacing;
+  }
+
   .list__item:nth-child(4n) {
     margin-right: 0;
   }

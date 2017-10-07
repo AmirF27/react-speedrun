@@ -13,7 +13,10 @@ class BookList extends Component {
       return (
         <li className="list__item col col-d-3">
           <img src={book.imageUrl} alt={book.title} />
-          <h3>{book.title}</h3>
+          <h4>{book.title}</h4>
+          {this.props.type == 'all' &&
+            <i>Owner: {book.owner.name}</i>
+          }
           {this.getCorrectButton(book)}
         </li>
       );
@@ -36,13 +39,13 @@ class BookList extends Component {
       case 'user':
         button.props.className = 'button button--negative';
         button.props.onClick = this.props.onDeleteBook;
-        button.icon = <i class="fa fa-trash" aria-hidden="true"></i>;
+        button.icon = <i className="fa fa-trash" aria-hidden="true"></i>;
         button.text = 'Delete Book';
         break;
       case 'all':
         button.props.className = 'button button--default';
         button.props.onClick = this.props.onRequestTrade;
-        button.icon = <i class="fa fa-exchange" aria-hidden="true"></i>;
+        button.icon = <i className="fa fa-exchange" aria-hidden="true"></i>;
         button.text = 'Request Trade';
         break;
     }
