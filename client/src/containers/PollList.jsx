@@ -8,13 +8,13 @@ class PollList extends Component {
         <p>
           {this.props.type == 'all'
             ? 'There are no polls at the moment.'
-            : 'Looks like this user has no polls yet.'
+            : 'You haven\'t added any polls.'
           }
         </p>
       );
     }
 
-    const list = this.props.polls.map(poll => {
+    const pollList = this.props.polls.map(poll => {
       return (
         <li className="list__item list__item--link">
           <Link to={`/voting-app/poll/${poll.title}`}>{poll.title}</Link>
@@ -33,7 +33,7 @@ class PollList extends Component {
       <div className="grid grid--center">
         <div className="col col-d-5">
           <ul className="list">
-            {list}
+            {pollList}
           </ul>
         </div>
       </div>

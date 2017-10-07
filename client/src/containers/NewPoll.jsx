@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
-import { Redirect } from 'react-router';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import Ajax from '../js/ajax';
-import { checkAuth, mapStateToProps } from '../js/util';
 
 import makeAlertable from './Alertable.jsx';
-import { login, logout } from '../actions';
+import RequireLogin from './RequireLogin.jsx';
 
 class NewPoll extends Component {
   constructor() {
@@ -16,8 +14,7 @@ class NewPoll extends Component {
     this.submitPoll = this.submitPoll.bind(this);
 
     this.state = {
-      nOptions: 2,
-      checkedAuth: false
+      nOptions: 2
     };
   }
 
@@ -35,12 +32,9 @@ class NewPoll extends Component {
       );
     }
 
-    if (this.state.checkedAuth && !this.props.authed) {
-      return (<Redirect to="/login" />);
-    }
-
     return (
       <main className="container">
+        <RequireLogin />
         <h3>Create a new poll</h3>
         {this.props.children}
         <form action="/api/voting-app/new-poll"
@@ -66,14 +60,6 @@ class NewPoll extends Component {
                  className="button button--primary button--block" />
         </form>
       </main>
-    );
-  }
-
-  componentDidMount() {
-    checkAuth(
-      this.props.login,
-      this.props.logout,
-      () => this.setState({ checkedAuth: true })
     );
   }
 
@@ -103,7 +89,4 @@ class NewPoll extends Component {
 
 NewPoll = makeAlertable(NewPoll);
 
-export default connect(
-  mapStateToProps,
-  { login, logout }
-)(NewPoll);
+export default NewPoll;

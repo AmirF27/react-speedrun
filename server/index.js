@@ -35,7 +35,7 @@ app.use(passport.session());
 
 wagner.invoke(require('./auth'), { passport, app });
 
-app.use('/api', require('./api')(wagner, passport));
+app.use('/api', require('./api')(wagner));
 
 app.get('*', function(req, res) {
   res.sendFile(INDEX_PAGE);

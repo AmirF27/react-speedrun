@@ -4,11 +4,12 @@ const upload = require('multer')();
 const Timestamp = require('./timestamp');
 const HeaderParser = require('./header-parser');
 const Nightlife = require('./nightlife');
+const BookService = require('./book-service');
 const message = require('./message.js');
 const ErrorMessage = message.ErrorMessage;
 const SuccessMessage = message.SuccessMessage;
 
-module.exports = function(wagner, passport) {
+module.exports = function(wagner) {
   const ImageSearch = require('./image-search')(wagner);
 
   const api = express.Router();
@@ -376,6 +377,60 @@ module.exports = function(wagner, passport) {
       });
     };
   }));
+
+  api.get('/book-trading-club/search', function(req, res) {
+    if (!req.query.title) {
+      return res.
+        status(status.BAD_REQUEST).
+        json(new ErrorMessage('Book title missing.'));
+    }
+
+    const bookService = new BookService(req.query.title);
+
+    bookService.search(function(err, books) {
+      if (err) {
+        return res.
+          status(status.INTERNAL_SERVER_ERROR).
+          json(new ErrorMessage('An error occured.'));
+      }
+
+      res.json(books);
+    });
+  });
+
+  api.post('/book-trading-club/add-book',
+    upload.any(),
+    wagner.invoke(function(Book) {
+      return function(req, res) {
+        if (!req.user) {
+          return res.
+            status(status.UNAUTHORIZED).
+            json(new ErrorMessage('Not logged in!'));
+        }
+
+        if (!req.body.title) {
+          return res.
+            status(status.BAD_REQUEST).
+            json(new ErrorMessage('Book title or image not specified.'));
+        }
+
+        const book = new Book({
+          title: req.body.title,
+          imageUrl: req.body.imageUrl,
+          owner: req.user._id
+        });
+
+        book.save(function(err) {
+          if (err) {
+            res.
+              status(status.INTERNAL_SERVER_ERROR).
+              json(new ErrorMessage('An error occured while attempting to add book'));
+          } else {
+            res.json('Book added successfully!');
+          }
+        });
+      };
+    }));
 
   api.get('/profile/polls', wagner.invoke(function(Poll) {
     return function(req, res) {

@@ -2,12 +2,10 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import Ajax from '../js/ajax';
-import { checkAuth, mapStateToProps } from '../js/util';
 
 import PollList from './PollList.jsx';
 import makeAlertable from './Alertable.jsx';
-
-import { login, logout } from '../actions';
+import RequireLogin from './RequireLogin.jsx';
 
 class UserPolls extends Component {
   constructor(props) {
@@ -23,31 +21,19 @@ class UserPolls extends Component {
   }
 
   render() {
-    if (!this.state.ready) {
-      return (
-        <main className="container">
-          <p>Loading polls...</p>
-        </main>
-      );
-    }
-
     return (
       <main className="container">
+        <RequireLogin callback={this.getUserPolls} />
         {this.props.children}
-        <PollList
-          polls={this.state.polls}
-          type="user"
-          onDeletePoll={this.deletePoll}>
-        </PollList>
+        {this.state.ready
+          ? <PollList
+              polls={this.state.polls}
+              type="user"
+              onDeletePoll={this.deletePoll}>
+            </PollList>
+          : <p>Loading polls...</p>
+        }
       </main>
-    );
-  }
-
-  componentDidMount() {
-    checkAuth(
-      this.props.login,
-      this.props.logout,
-      this.getUserPolls
     );
   }
 
@@ -91,7 +77,4 @@ class UserPolls extends Component {
 
 UserPolls = makeAlertable(UserPolls);
 
-export default connect(
-  mapStateToProps,
-  { login, logout }
-)(UserPolls);
+export default UserPolls;

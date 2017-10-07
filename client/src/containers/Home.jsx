@@ -12,6 +12,7 @@ class Home extends Component {
           <li><Link to="/voting-app">Voting App</Link></li>
           <li><Link to="/nightlife">Nightlife Coordination App</Link></li>
           <li><Link to="/stock-market">Stock Market Chart</Link></li>
+          <li><Link to="/book-trading-club">Book Trading Club</Link></li>
         </ul>
       </main>
     );
