@@ -398,39 +398,37 @@ module.exports = function(wagner) {
     });
   });
 
-  api.post('/book-trading-club/add-book',
-    upload.any(),
-    wagner.invoke(function(Book) {
-      return function(req, res) {
-        if (!req.user) {
-          return res.
-            status(status.UNAUTHORIZED).
-            json(new ErrorMessage('Not logged in!'));
+  api.post('/book-trading-club/add-book', wagner.invoke(function(Book) {
+    return function(req, res) {
+      if (!req.user) {
+        return res.
+          status(status.UNAUTHORIZED).
+          json(new ErrorMessage('Not logged in!'));
+      }
+
+      if (!req.body.title || !req.body.imageUrl) {
+        return res.
+          status(status.BAD_REQUEST).
+          json(new ErrorMessage('Book title or image not specified.'));
+      }
+
+      const book = new Book({
+        title: req.body.title,
+        imageUrl: req.body.imageUrl,
+        owner: req.user._id
+      });
+
+      book.save(function(err) {
+        if (err) {
+          res.
+            status(status.INTERNAL_SERVER_ERROR).
+            json(new ErrorMessage('An error occured while attempting to add book'));
+        } else {
+          res.json(new SuccessMessage('Book added successfully!'));
         }
-
-        if (!req.body.title) {
-          return res.
-            status(status.BAD_REQUEST).
-            json(new ErrorMessage('Book title or image not specified.'));
-        }
-
-        const book = new Book({
-          title: req.body.title,
-          imageUrl: req.body.imageUrl,
-          owner: req.user._id
-        });
-
-        book.save(function(err) {
-          if (err) {
-            res.
-              status(status.INTERNAL_SERVER_ERROR).
-              json(new ErrorMessage('An error occured while attempting to add book'));
-          } else {
-            res.json('Book added successfully!');
-          }
-        });
-      };
-    }));
+      });
+    };
+  }));
 
   api.get('/profile/polls', wagner.invoke(function(Poll) {
     return function(req, res) {

@@ -8,6 +8,10 @@ main {
   margin: 0 auto;
 }
 
+.center-text {
+  text-align: center;
+}
+
 .container {
   @extend .center-block;
   @include clearfix;

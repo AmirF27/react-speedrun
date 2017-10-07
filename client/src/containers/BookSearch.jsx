@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Ajax from '../js/ajax';
 
+import makeAlertable from './Alertable.jsx';
 import RequireLogin from './RequireLogin.jsx';
 import BookList from './BookList.jsx';
 
@@ -9,6 +10,7 @@ class BookSearch extends Component {
     super(props);
 
     this.search = this.search.bind(this);
+    this.addBook = this.addBook.bind(this);
 
     this.state = {
       books: []
@@ -27,10 +29,22 @@ class BookSearch extends Component {
       catch(err => console.error(err));
   }
 
+  addBook(book) {
+    const body = {
+      title: book.title,
+      imageUrl: book.imageUrl
+    };
+
+    Ajax.post('/api/book-trading-club/add-book', { body }).
+      then(this.props.alert).
+      catch(this.props.alert);
+  }
+
   render() {
     return (
       <main className="container">
         <RequireLogin />
+        {this.props.children}
         <form action="/api/book-trading-club/search" method="get"
           className="form form--inline" onSubmit={this.search}>
           <input type="text" name="title" className="form__input"
@@ -39,10 +53,11 @@ class BookSearch extends Component {
             <i className="fa fa-search" aria-hidden="true"></i>
           </button>
         </form>
-        <BookList books={this.state.books} />
+        <BookList type="search" books={this.state.books}
+          onAddBook={this.addBook} />
       </main>
     );
   }
 }
 
-export default BookSearch;
+export default makeAlertable(BookSearch);

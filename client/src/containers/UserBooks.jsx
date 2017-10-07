@@ -8,8 +8,8 @@ class UserBooks extends Component {
     return (
       <main className="container">
         <RequireLogin />
-        <Link to="/book-trading-club/search" className="button button--default">
-          <i className="fa fa-plus" aria-hidden="true"></i> Add a New Book
+        <Link to="/book-trading-club/search" className="button button--primary">
+          Add a New Book
         </Link>
       </main>
     );

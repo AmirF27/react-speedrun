@@ -36,6 +36,12 @@ export default class Ajax {
     }
 
     static post(url, options = {}) {
+      if (options.body) {
+        // assign an empty object to headers if it's undefined
+        options.headers = options.headers || {};
+        options.headers['Content-Type'] = 'application/json';
+      }
+
       return this.processRequest('POST', url, options);
     }
 

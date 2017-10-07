@@ -18,7 +18,9 @@ BookService.prototype.search = function search(callback) {
       const books = res.items.map(function(book) {
         return {
           title: book.volumeInfo.title,
-          image_url: book.volumeInfo.imageLinks.thumbnail
+          imageUrl: book.volumeInfo.imageLinks
+            ? book.volumeInfo.imageLinks.thumbnail
+            : ''
         };
       });
       callback(null, books);
