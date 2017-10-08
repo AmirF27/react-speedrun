@@ -25,7 +25,9 @@ const makeAuthable = WrappedComponent => {
             message: data.error
           });
         } else {
-          this.props.login(data.user);
+          Ajax.get('/api/user').
+            then(res => this.props.login(res.user)).
+            catch(console.error);
         }
       });
     }

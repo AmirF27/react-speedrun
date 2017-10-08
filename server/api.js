@@ -456,7 +456,7 @@ module.exports = function(wagner) {
         if (err) {
           return res.
             status(status.INTERNAL_SERVER_ERROR).
-            json({ error: 'An error occured.' });
+            json(new ErrorMessage('An error occured.'));
         }
 
         res.json(polls);
@@ -464,22 +464,26 @@ module.exports = function(wagner) {
     };
   }));
 
+  api.put('/profile/address', upload.any(), function(req, res) {
+    if (!req.user) {
+      return res.
+        status(status.UNAUTHORIZED).
+        json(new ErrorMessage('Not logged in!'));
+    }
+
+    req.user.setAddress(req.body.address, function(err) {
+      if (err) {
+        return res.
+          status().
+          json(new ErrorMessage('Could not update address.'));
+      }
+      res.json(new SuccessMessage('Address updated successfully!'));
+    });
+  });
+
   api.get('/user', function(req, res) {
     if (req.user) {
-      const user = {};
-      if (req.user.local.email) {
-        user.local = {
-          name: req.user.local.name,
-          email: req.user.local.email
-        };
-      } else {
-        user.twitter = {
-          displayName: req.user.twitter.displayName,
-          username: req.user.twitter.username
-        };
-      }
-      user.bars = req.user.bars;
-      res.json({ user });
+      res.json({ user: req.user.format() });
     } else {
       res.json({ user: null });
     }

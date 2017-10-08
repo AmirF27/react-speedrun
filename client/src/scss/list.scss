@@ -30,13 +30,14 @@
 }
 
 .list--books {
-  img {
+  .list--book__image {
     height: $book-image-height;
   }
 
-  i {
-    display: inline-block;
-    font-size: .9rem;
+  .list--book__info {
+    display: block;
+    font-size: .8rem;
+    font-style: italic;
     margin-bottom: $list-item-spacing;
   }
 

@@ -12,15 +12,30 @@ class BookList extends Component {
     return this.props.books.map(book => {
       return (
         <li className="list__item col col-d-3">
-          <img src={book.imageUrl} alt={book.title} />
+          <img className="list--book__image" src={book.imageUrl} alt={book.title} />
           <h4>{book.title}</h4>
           {this.props.type == 'all' &&
-            <i>Owner: {book.owner.name}</i>
+            this.getUserInfo(book)
           }
           {this.getCorrectButton(book)}
         </li>
       );
     });
+  }
+
+  getUserInfo(book) {
+    return [
+      <span className="list--book__info">Owner: {book.owner.name}</span>,
+      <span className="list--book__info">Location: {this.formatAddress(book.owner.address)}</span>
+    ];
+  }
+
+  formatAddress(address) {
+    if (!address) return 'N/A';
+
+    return `${address.city}, ` +
+           `${address.state ? `${address.state}, ` : ''}` +
+           `${address.country}`;
   }
 
   getCorrectButton(book) {

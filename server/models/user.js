@@ -22,6 +22,11 @@ const userSchema = new Schema({
     token: String,
     username: String,
     displayName: String
+  },
+  address: {
+    city: String,
+    state: String,
+    country: String
   }
 });
 
@@ -31,6 +36,30 @@ userSchema.statics.encryptPassword = function encryptPassword(password) {
 
 userSchema.methods.verifyPassword = function verifyPassword(password) {
   return bcrypt.compareSync(password, this.local.password);
+};
+
+userSchema.methods.format = function format() {
+  const user = {};
+
+  if (this.local.email) {
+    user.local = {
+      name: this.local.name,
+      email: this.local.email
+    };
+  } else {
+    user.twitter = {
+      displayName: this.twitter.displayName,
+      username: this.twitter.username
+    };
+  }
+  user.address = this.address;
+
+  return user;
+};
+
+userSchema.methods.setAddress = function setAddress(address, callback) {
+  this.address = address;
+  this.save(callback);
 };
 
 module.exports = userSchema;

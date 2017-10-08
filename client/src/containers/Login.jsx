@@ -3,10 +3,6 @@ import React, { Component } from 'react';
 import makeAuthable from './Authable.jsx';
 
 class Login extends Component {
-  constructor() {
-    super();
-  }
-
   render() {
     return (
       <main className="container">

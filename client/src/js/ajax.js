@@ -53,7 +53,7 @@ export default class Ajax {
       return this.processRequest('DELETE', url, options);
     }
 
-    static processRequest(type, url, options) {
+    static processRequest(method, url, options) {
       return new Promise(function(resolve, reject) {
           let xhr = new XMLHttpRequest();
 
@@ -68,7 +68,7 @@ export default class Ajax {
               }
           };
 
-          xhr.open(type, url, true);
+          xhr.open(method, url, true);
           if (options.headers) {
               this.setHeaders(xhr, options.headers);
           }
@@ -76,7 +76,8 @@ export default class Ajax {
       }.bind(this));
     }
 
-    static submitForm(form, cb) {
+    static submitForm(form, callback) {
+      const method = form.getAttribute('method');
       const url = form.getAttribute('action');
       const options = {
         headers: [
@@ -85,14 +86,13 @@ export default class Ajax {
         form: new FormData(form)
       };
 
-      this.
-        post(url, options).
+      this.processRequest(method, url, options).
         then(
           function fulfilled(response) {
-            cb(null, response);
+            callback(null, response);
           },
           function rejected(reason) {
-            cb(reason);
+            callback(reason);
           });
     }
 };
