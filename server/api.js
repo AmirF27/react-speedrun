@@ -464,6 +464,26 @@ module.exports = function(wagner) {
     };
   }));
 
+  api.get('/profile/books', wagner.invoke(function(Book) {
+    return function(req, res) {
+      if (!req.user) {
+        return res.
+          status(status.UNAUTHORIZED).
+          json(new ErrorMessage('Not logged in!'));
+      }
+
+      Book.findByOwnerId(req.user._id, function(err, books) {
+        if (err) {
+          return res.
+            status(status.INTERNAL_SERVER_ERROR).
+            json(new ErrorMessage('An error occured.'));
+        }
+
+        res.json(books);
+      });
+    };
+  }));
+
   api.put('/profile/address', upload.any(), function(req, res) {
     if (!req.user) {
       return res.

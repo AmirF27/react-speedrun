@@ -19,14 +19,8 @@ class BookSearch extends Component {
 
   search(event) {
     event.preventDefault();
-
-    const params = {
-      title: event.target.elements['title'].value
-    };
-
-    Ajax.get('/api/book-trading-club/search', { params }).
-      then(books => this.setState({ books })).
-      catch(err => console.error(err));
+    
+    this.refs.bookList.getBooks(event.target.elements['title'].value);
   }
 
   addBook(book) {
@@ -53,8 +47,7 @@ class BookSearch extends Component {
             <i className="fa fa-search" aria-hidden="true"></i>
           </button>
         </form>
-        <BookList type="search" books={this.state.books}
-          onAddBook={this.addBook} />
+        <BookList type="search" onAddBook={this.addBook} ref="bookList" />
       </main>
     );
   }

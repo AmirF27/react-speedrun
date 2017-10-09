@@ -30,6 +30,13 @@ bookSchema.statics.getAllBooks = function getAllBooks(callback) {
     });
 };
 
+bookSchema.statics.findByOwnerId = function findByOwnerId(id, callback) {
+  this.
+    find({ owner: id }).
+    select({ _id: 0, title: 1, imageUrl: 1 }).
+    exec(callback);
+};
+
 bookSchema.methods.formatInfo = function formatInfo() {
   return {
     title: this.title,

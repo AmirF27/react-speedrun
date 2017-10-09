@@ -25,37 +25,37 @@ const pollSchema = new Schema({
 pollSchema.index({ title: 1 });
 pollSchema.index({ author: 1 });
 
-pollSchema.statics.allPolls = function allPolls(cb) {
+pollSchema.statics.allPolls = function allPolls(callback) {
   this.find({}).
        select({ _id: 0, title: 1, options: 1 }).
        sort({ title: 1 }).
-       exec(cb);
+       exec(callback);
 };
 
-pollSchema.statics.findByTitle = function findByTitle(title, cb) {
+pollSchema.statics.findByTitle = function findByTitle(title, callback) {
   this.findOne({ title }).
        select({ _id: 0, title: 1, options: 1, author: 1 }).
        populate('author', { _id: 0, name: 1, email: 1 }).
-       exec(cb);
+       exec(callback);
 };
 
-pollSchema.statics.findByAuthorId = function findByAuthorId(id, cb) {
+pollSchema.statics.findByAuthorId = function findByAuthorId(id, callback) {
   this.find({ author: id }).
        select({ _id: 0, title: 1, options: 1 }).
-       exec(cb);
+       exec(callback);
 };
 
-pollSchema.statics.vote = function vote(title, option, cb) {
+pollSchema.statics.vote = function vote(title, option, callback) {
   this.findByTitle(title, function(err, poll) {
-    if (err || !poll) return cb(err);
+    if (err || !poll) return callback(err);
 
     const index = poll.options.findIndex(op => op.name === option);
-    this.update({ title }, { $inc: { [`options.${index}.votes`]: 1 } }, cb);
+    this.update({ title }, { $inc: { [`options.${index}.votes`]: 1 } }, callback);
   }.bind(this));
 };
 
-pollSchema.statics.addOption = function addOption(title, option, cb) {
-  this.update({ title }, { $push: { options: { name: option } } }, cb);
+pollSchema.statics.addOption = function addOption(title, option, callback) {
+  this.update({ title }, { $push: { options: { name: option } } }, callback);
 };
 
 pollSchema.methods.verifyAuthor = function verifyAuthor(user) {

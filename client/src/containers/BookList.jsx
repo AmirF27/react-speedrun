@@ -1,15 +1,42 @@
 import React, { Component } from 'react';
+import Ajax from '../js/ajax';
 
 class BookList extends Component {
   constructor(props) {
     super(props);
 
+    this.getBooks = this.getBooks.bind(this);
+    this.getApiUrl = this.getApiUrl.bind(this);
     this.constructBookList = this.constructBookList.bind(this);
     this.getCorrectButton = this.getCorrectButton.bind(this);
+
+    this.state = {
+      books: []
+    };
+  }
+
+  getBooks(searchTerm) {
+    Ajax.get(this.getApiUrl(searchTerm)).
+      then(books => this.setState({ books })).
+      catch(console.error);
+  }
+
+  getApiUrl(searchTerm) {
+    switch (this.props.type) {
+      case 'all':
+        return '/api/book-trading-club';
+      case 'user':
+        return '/api/profile/books';
+      case 'search':
+        return Ajax.resolveUrl(
+          '/api/book-trading-club/search',
+          { title: searchTerm }
+        );
+    }
   }
 
   constructBookList() {
-    return this.props.books.map(book => {
+    return this.state.books.map(book => {
       return (
         <li className="list__item col col-d-3">
           <img className="list--book__image" src={book.imageUrl} alt={book.title} />
@@ -68,6 +95,12 @@ class BookList extends Component {
     return (
       <button { ...button.props }>{button.icon} {button.text}</button>
     );
+  }
+
+  componentDidMount() {
+    if (this.props.type != 'search') {
+      this.getBooks();
+    }
   }
 
   render() {
