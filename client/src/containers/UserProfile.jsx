@@ -38,6 +38,9 @@ class UserProfile extends Component {
                 <li className="list__item list__item--link">
                   <Link to="/profile/books">Books</Link>
                 </li>
+                <li className="list__item list__item--link">
+                  <Link to="/profile/trade-requests">Book Trade Requests</Link>
+                </li>
               </ul>
             </section>
             <section className="col col-d-6">

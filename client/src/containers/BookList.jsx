@@ -86,7 +86,7 @@ class BookList extends Component {
         break;
       case 'all':
         button.props.className = 'button button--default';
-        button.props.onClick = this.props.onRequestTrade;
+        button.props.onClick = () => this.props.onRequestTrade(book.id);
         button.icon = <i className="fa fa-exchange" aria-hidden="true"></i>;
         button.text = 'Request Trade';
         break;

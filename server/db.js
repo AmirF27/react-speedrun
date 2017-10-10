@@ -7,6 +7,7 @@ const userSchema = require('./models/user');
 const barSchema = require('./models/bar');
 const stockSchema = require('./models/stock');
 const bookSchema = require('./models/book');
+const tradeRequestSchema = require('./models/trade-request');
 
 module.exports = function(wagner) {
   if (!process.env.DB_PATH) {
@@ -23,7 +24,8 @@ module.exports = function(wagner) {
     User: mongoose.model('User', userSchema, 'users'),
     Bar: mongoose.model('Bar', barSchema, 'bars'),
     Stock: mongoose.model('Stock', stockSchema, 'stocks'),
-    Book: mongoose.model('Book', bookSchema, 'books')
+    Book: mongoose.model('Book', bookSchema, 'books'),
+    TradeRequest: mongoose.model('TradeRequest', tradeRequestSchema, 'trade_requests')
   };
 
   for (const [key, value] of Object.entries(models)) {

@@ -25,6 +25,7 @@ import BookSearch from './containers/BookSearch.jsx';
 import UserProfile from './containers/UserProfile.jsx';
 import UserPolls from './containers/UserPolls.jsx';
 import UserBooks from './containers/UserBooks.jsx';
+import TradeRequests from './containers/TradeRequests.jsx';
 import Register from './containers/Register.jsx';
 import Login from './containers/Login.jsx';
 
@@ -48,6 +49,7 @@ ReactDOM.render((
         <Route exact path="/profile" component={UserProfile} />
         <Route path="/profile/polls" component={UserPolls} />
         <Route path="/profile/books" component={UserBooks} />
+        <Route path="/profile/trade-requests" component={TradeRequests} />
         <Route path="/register" component={Register} />
         <Route path="/login" component={Login} />
       </div>

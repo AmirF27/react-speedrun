@@ -444,6 +444,47 @@ module.exports = function(wagner) {
     };
   }));
 
+  api.post('/book-trading-club/trade-request',
+    wagner.invoke(function(Book, TradeRequest) {
+      return function(req, res) {
+        if (!req.user) {
+          return res.
+            status(status.UNAUTHORIZED).
+            json(new ErrorMessage('Not logged in!'));
+        }
+
+        Book.findOne({ _id: req.body.bookId }, function(err, book) {
+          if (err) {
+            return res.
+              status(status.INTERNAL_SERVER_ERROR).
+              json(new ErrorMessage('An error occured.'));
+          }
+
+          if (!book) {
+            return res.
+              status(status.NOT_FOUND).
+              json(new ErrorMessage('Book not found.'));
+          }
+
+          const tradeRequest = new TradeRequest({
+            book: req.body.bookId,
+            owner: book.owner,
+            requester: req.user._id
+          });
+
+          tradeRequest.save(function(err) {
+            if (err) {
+              res.
+                status(status.INTERNAL_SERVER_ERROR).
+                json(new ErrorMessage('An error occured.'));
+            } else {
+              res.json(new SuccessMessage('Trade request submitted successfully!'));
+            }
+          });
+        });
+      };
+    }));
+
   api.get('/profile/polls', wagner.invoke(function(Poll) {
     return function(req, res) {
       if (!req.user) {
@@ -480,6 +521,32 @@ module.exports = function(wagner) {
         }
 
         res.json(books);
+      });
+    };
+  }));
+
+  api.get('/profile/trade-requests', wagner.invoke(function(TradeRequest) {
+    return function(req, res) {
+      if (!req.user) {
+        return res.
+          status(status.UNAUTHORIZED).
+          json(new ErrorMessage('Not logged in!'));
+      }
+
+      if (!req.query.type) {
+        return res.
+          status().
+          json(new ErrorMessage('Trade request type missing.'));
+      }
+
+      TradeRequest.getRequests(req.query.type, req.user._id, function(err, requests) {
+        if (err) {
+          return res.
+            status(status.INTERNAL_SERVER_ERROR).
+            json(new ErrorMessage('An error occured.'));
+        }
+
+        res.json(requests);
       });
     };
   }));
