@@ -35,6 +35,7 @@ tradeRequestSchema.statics.getRequests = function getRequests(type, userId, call
 
       requests = requests.map(function(request) {
         return {
+          id: request._id,
           book: request.book,
           owner: request.owner.format(),
           requester: request.requester.format(),

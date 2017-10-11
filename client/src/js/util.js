@@ -42,8 +42,18 @@ const palette = (function(count) {
   });
 })(COLOR_COUNT);
 
+function deleteItem(array, callback) {
+  const updatedArray = array.slice();
+  const index = updatedArray.findIndex(callback);
+
+  updatedArray.splice(index, 1);
+
+  return updatedArray;
+}
+
 export {
   checkAuth,
   mapStateToProps,
-  palette
+  palette,
+  deleteItem
 };

@@ -27,7 +27,12 @@ class RequireLogin extends Component {
 
   render() {
     if (this.state.checked && !this.props.authed) {
-      return (<Redirect to="/login" />);
+      return (
+        <Redirect push to={{
+            pathname: "/login",
+            state: { referrer: window.location.pathname }
+          }} />
+      );
     }
 
     return null;

@@ -34,7 +34,15 @@ const makeAuthable = WrappedComponent => {
 
     render() {
       if (this.props.authed) {
-        return (<Redirect to='/' />);
+        let next = '/';
+
+        if (this.props.location.state) {
+          next = this.props.location.state.referrer;
+        }
+
+        return (
+          <Redirect to={next} />
+        );
       }
 
       return (

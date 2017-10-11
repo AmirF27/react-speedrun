@@ -380,7 +380,13 @@ module.exports = function(wagner) {
 
   api.get('/book-trading-club', wagner.invoke(function(Book) {
     return function(req, res) {
-      Book.getAllBooks(function(err, books) {
+      if (!req.user) {
+        return res.
+          status(status.UNAUTHORIZED).
+          json(new ErrorMessage('Not logged in!'));
+      }
+
+      Book.getAllBooks(req.user._id, function(err, books) {
         if (err) {
           return res.
             status(status.INTERNAL_SERVER_ERROR).
@@ -549,6 +555,28 @@ module.exports = function(wagner) {
         res.json(requests);
       });
     };
+  }));
+
+  api.delete('/profile/trade-requests', wagner.invoke(function(TradeRequest) {
+    return function(req, res) {
+      if (!req.user) {
+        return res.
+          status(status.UNAUTHORIZED).
+          json(new ErrorMessage('Not logged in!'));
+      }
+
+      console.log(req.body);
+
+      TradeRequest.deleteOne({ _id: req.body.requestId }, function(err) {
+        if (err) {
+          return res.
+            status(status.INTERNAL_SERVER_ERROR).
+            json(new ErrorMessage('An error occured.'));
+        }
+
+        res.json(new SuccessMessage('Trade request canceled successfully.'));
+      });
+    }
   }));
 
   api.put('/profile/address', upload.any(), function(req, res) {

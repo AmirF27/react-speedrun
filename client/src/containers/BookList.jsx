@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import Ajax from '../js/ajax';
 
+import User from '../js/user';
+
 class BookList extends Component {
   constructor(props) {
     super(props);
@@ -39,10 +41,10 @@ class BookList extends Component {
     return this.state.books.map(book => {
       return (
         <li className="list__item col col-d-3">
-          <img className="list--book__image" src={book.imageUrl} alt={book.title} />
+          <img className="list--books__image" src={book.imageUrl} alt={book.title} />
           <h4>{book.title}</h4>
           {this.props.type == 'all' &&
-            this.getUserInfo(book)
+            this.getUserInfo(book.owner)
           }
           {this.getCorrectButton(book)}
         </li>
@@ -50,19 +52,13 @@ class BookList extends Component {
     });
   }
 
-  getUserInfo(book) {
+  getUserInfo(user) {
+    const owner = new User(user);
+
     return [
-      <span className="list--book__info">Owner: {book.owner.name}</span>,
-      <span className="list--book__info">Location: {this.formatAddress(book.owner.address)}</span>
+      <span className="list--books__info">Owner: {owner.getName()}</span>,
+      <span className="list--books__info">Location: {owner.formatAddress()}</span>
     ];
-  }
-
-  formatAddress(address) {
-    if (!address) return 'N/A';
-
-    return `${address.city}, ` +
-           `${address.state ? `${address.state}, ` : ''}` +
-           `${address.country}`;
   }
 
   getCorrectButton(book) {

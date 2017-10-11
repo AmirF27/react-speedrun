@@ -14,9 +14,9 @@ const bookSchema = new Schema({
   }
 });
 
-bookSchema.statics.getAllBooks = function getAllBooks(callback) {
+bookSchema.statics.getAllBooks = function getAllBooks(userId, callback) {
   this.
-    find({}).
+    find({ owner: { $ne: userId } }).
     populate('owner', { local: 1, twitter: 1, address: 1 }).
     exec(function(err, books) {
       if (err) return callback(err);
@@ -42,13 +42,6 @@ bookSchema.methods.formatInfo = function formatInfo() {
     title: this.title,
     imageUrl: this.imageUrl,
     owner: this.owner.format()
-    // owner: {
-    //   _id: this.owner._id,
-    //   name: this.owner.local
-    //     ? this.owner.local.name || this.owner.local.email
-    //     : this.owner.twitter.displayName,
-    //   address: this.owner.address
-    // }
   };
 };
 
