@@ -565,8 +565,6 @@ module.exports = function(wagner) {
           json(new ErrorMessage('Not logged in!'));
       }
 
-      console.log(req.body);
-
       TradeRequest.deleteOne({ _id: req.body.requestId }, function(err) {
         if (err) {
           return res.
@@ -575,6 +573,26 @@ module.exports = function(wagner) {
         }
 
         res.json(new SuccessMessage('Trade request canceled successfully.'));
+      });
+    }
+  }));
+
+  api.put('/profile/trade-requests', wagner.invoke(function(TradeRequest) {
+    return function(req, res) {
+      if (!req.user) {
+        return res.
+          status(status.UNAUTHORIZED).
+          json(new ErrorMessage('Not logged in!'));
+      }
+
+      TradeRequest.markApproved(req.body.requestId, function(err) {
+        if (err) {
+          return res.
+            status(status.INTERNAL_SERVER_ERROR).
+            json(new ErrorMessage('An error occured.'));
+        }
+
+        res.json(new SuccessMessage('Trade request approved.'));
       });
     }
   }));

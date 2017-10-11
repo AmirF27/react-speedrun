@@ -12,8 +12,11 @@ class TradeRequests extends Component {
 
     this.getTradeRequests = this.getTradeRequests.bind(this);
     this.getRequestsByType = this.getRequestsByType.bind(this);
-    this.cancelRequest = this.cancelRequest.bind(this);
     this.deleteRequest = this.deleteRequest.bind(this);
+    this.deleteRequestFromState = this.deleteRequestFromState.bind(this);
+    this.approveRequest = this.approveRequest.bind(this);
+    this.markApproved = this.markApproved.bind(this);
+    this.setTradeRequests = this.setTradeRequests.bind(this);
     this.constructRequestList = this.constructRequestList.bind(this);
 
     this.state = {
@@ -44,26 +47,53 @@ class TradeRequests extends Component {
     });
   }
 
-  cancelRequest(requestId) {
+  deleteRequest(requestId, type) {
     const body = { requestId };
 
     Ajax.delete('/api/profile/trade-requests', { body }).
       then(res => {
         if (res.type == 'error') return this.prop.alert(res);
-        this.deleteRequest(requestId, 'made');
+        this.deleteRequestFromState(requestId, type);
         this.props.alert(res);
       }).
       catch(this.props.alert);
   }
 
-  deleteRequest(requestId, type) {
-    const targetList = this.state.tradeRequests[type];
-    const updatedRequests = deleteItem(targetList, item => item._id == requestId);
+  deleteRequestFromState(requestId, type) {
+    const updatedRequests = deleteItem(
+      this.state.tradeRequests[type],
+      request => request.id == requestId
+    );
 
+    this.setTradeRequests(updatedRequests, type);
+  }
+
+  approveRequest(requestId) {
+    const body = { requestId };
+
+    Ajax.put('/api/profile/trade-requests', { body }).
+      then(res => {
+        if (res.type == 'error') return this.prop.alert(res);
+        this.markApproved(requestId);
+        this.props.alert(res);
+      }).
+      catch(console.error);
+  }
+
+  markApproved(requestId) {
+    const updatedRequests = this.state.tradeRequests.received.slice();
+    const requestIndex = updatedRequests.findIndex(request => request.id == requestId);
+
+    updatedRequests[requestIndex].approved = true;
+
+    this.setTradeRequests(updatedRequests, 'received');
+  }
+
+  setTradeRequests(requests, type) {
     this.setState({
       tradeRequests: {
         ...this.state.tradeRequests,
-        [type]: updatedRequests
+        [type]: requests
       }
     });
   }
@@ -105,17 +135,17 @@ class TradeRequests extends Component {
                   </span>
               }
               {type == 'made'
-                ? [
-                    <button className="button button--negative button--small button--block"
-                      onClick={() => this.cancelRequest(request.id)}>
-                      <i className="fa fa-ban" aria-hidden="true"></i> Cancel
-                    </button>
-                  ]
+                ? <button className="button button--negative button--small button--block"
+                    onClick={() => this.deleteRequest(request.id, 'made')}>
+                    <i className="fa fa-ban" aria-hidden="true"></i> Cancel
+                  </button>
                 : [
-                    <button className="button button--primary button--small button--block">
+                    <button className="button button--primary button--small button--block"
+                      onClick={() => this.approveRequest(request.id)}>
                       <i className="fa fa-check" aria-hidden="true"></i> Approve
                     </button>,
-                    <button className="button button--negative button--small button--block">
+                    <button className="button button--negative button--small button--block"
+                      onClick={() => this.deleteRequest(request.id, 'received')}>
                       <i className="fa fa-times" aria-hidden="true"></i> Refuse
                     </button>
                   ]

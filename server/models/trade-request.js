@@ -34,17 +34,27 @@ tradeRequestSchema.statics.getRequests = function getRequests(type, userId, call
       if (err) return callback(err);
 
       requests = requests.map(function(request) {
-        return {
-          id: request._id,
-          book: request.book,
-          owner: request.owner.format(),
-          requester: request.requester.format(),
-          approved: request.approved
-        };
+        return request.format();
       });
 
       return callback(null, requests);
     });
+};
+
+tradeRequestSchema.statics.markApproved = function markApproved(id, callback) {
+  this.
+    updateOne({ _id: id }, { approved: true }).
+    exec(callback);
+};
+
+tradeRequestSchema.methods.format = function format() {
+  return {
+    id: this._id,
+    book: this.book,
+    owner: this.owner.format(),
+    requester: this.requester.format(),
+    approved: this.approved
+  };
 };
 
 module.exports = tradeRequestSchema;

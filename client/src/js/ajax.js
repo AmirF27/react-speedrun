@@ -53,6 +53,14 @@ export default class Ajax {
       return this.processRequest('DELETE', url, options);
     }
 
+    static put(url, options = {}) {
+      // assign an empty object to headers if it's undefined
+      options.headers = options.headers || {};
+      options.headers['Content-Type'] = 'application/json';
+
+      return this.processRequest('PUT', url, options);
+    }
+
     static processRequest(method, url, options) {
       return new Promise(function(resolve, reject) {
           let xhr = new XMLHttpRequest();

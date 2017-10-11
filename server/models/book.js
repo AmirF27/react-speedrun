@@ -22,7 +22,7 @@ bookSchema.statics.getAllBooks = function getAllBooks(userId, callback) {
       if (err) return callback(err);
 
       books = books.map(function(book) {
-        return book.formatInfo();
+        return book.format();
       });
 
       return callback(null, books);
@@ -36,7 +36,7 @@ bookSchema.statics.findByOwnerId = function findByOwnerId(id, callback) {
     exec(callback);
 };
 
-bookSchema.methods.formatInfo = function formatInfo() {
+bookSchema.methods.format = function format() {
   return {
     id: this._id,
     title: this.title,
